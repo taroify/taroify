@@ -62,7 +62,7 @@ import { Switch } from "@taroify/core"
 ### 搭配单元格使用
 
 ```tsx
-<Cell align="center" title="标题" rightIcon={<Switch size="24" />} />
+<Cell align="center" title="标题" extra={<Switch size="24" />} />
 ```
 
 ## API

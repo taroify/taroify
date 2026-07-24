@@ -103,6 +103,7 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
       bordered,
       icon,
       rightIcon: rightIconProp,
+      extra,
       size,
       isLink = false,
       arrowDirection = "right",
@@ -260,6 +261,7 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
           size={size}
           icon={cloneIconElement(icon, { className: prefixClassname("form-item__icon") })}
           rightIcon={rightIcon}
+          extra={extra}
           required={required}
           {...(onClick && { onClick })}
         >

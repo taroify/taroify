@@ -10,6 +10,7 @@ $cell-color: var(--cell-color, var(--text-color, $text-color));
 $cell-background-color: var(--cell-background-color, var(--background-color-2, $background-color-2));
 $cell-border-color: var(--cell-border-color, var(--border-color, $border-color));
 $cell-value-color: var(--cell-value-color, var(--gray-6, $gray-6));
+$cell-value-font-size: var(--cell-value-font-size, inherit);
 $cell-active-color: var(--cell-active-color, var(--active-color, $active-color));
 $cell-required-color: var(--cell-required-color, var(--danger-color, $danger-color));
 $cell-required-padding-right: var(--cell-required-padding-right, 2px * $hd);
@@ -17,6 +18,10 @@ $cell-required-padding-right: var(--cell-required-padding-right, 2px * $hd);
 $cell-icon-size: var(--cell-icon-size, 16px * $hd);
 $cell-icon-margin-left: var(--cell-icon-margin-left, 4px * $hd);
 $cell-right-icon-margin-right: var(--cell-right-icon-margin-right, 4px * $hd);
+$cell-left-icon-margin-right: var(--cell-left-icon-margin-right, $cell-icon-margin-left);
+$cell-right-icon-margin-left: var(--cell-right-icon-margin-left, $cell-right-icon-margin-right);
+$cell-right-icon-color: var(--cell-right-icon-color, $cell-value-color);
+$cell-extra-margin-left: var(--cell-extra-margin-left, var(--padding-base, $padding-base));
 
 $cell-brief-margin-top: var(--cell-brief-margin-top, var(--padding-base, $padding-base));
 $cell-brief-font-size: var(--cell-brief-font-size, var(--font-size-sm, $font-size-sm));
@@ -29,6 +34,8 @@ $cell-horizontal-padding: var(--cell-horizontal-padding, var(--padding-md, $padd
 $cell-vertical-padding-large: var(--cell-vertical-padding-large, var(--padding-sm, $padding-sm));
 $cell-title-font-size-large: var(--cell-title-font-size-large, var(--font-size-lg, $font-size-lg));
 $cell-subtitle-font-size-large: var(--cell-subtitle-font-size-large, var(--font-size-md, $font-size-md));
+$cell-brief-font-size-large: var(--cell-brief-font-size-large, $cell-subtitle-font-size-large);
+$cell-value-font-size-large: var(--cell-value-font-size-large, inherit);
 
 $cell-group-background-color: var(--cell-group-background-color, var(--background-color-2, $background-color-2));
 $cell-group-title-color: var(--cell-group-title-color, var(--gray-6, $gray-6));

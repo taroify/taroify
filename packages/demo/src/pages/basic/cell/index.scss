@@ -1,6 +1,8 @@
 @import "../../../styles/prefix";
 
 .cell-demo {
+  background-color: var(--background-color, #f7f8fa);
+
   .#{$demo-prefix}block__content {
     padding: 0;
   }
