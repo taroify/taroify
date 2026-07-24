@@ -2,9 +2,10 @@
 
 body,
 page {
-  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Segoe UI, Arial, Roboto, "PingFang SC", "miui", "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Arial, Roboto, "PingFang SC", miui, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
   background: var(--background-color, #fff);
   color: var(--text-color, #323233);
+  -webkit-font-smoothing: antialiased;
 }
 
 html[data-taroify-theme="dark"] {
