@@ -130,8 +130,9 @@
 .taroify-cell:last-child::after, .taroify-cell--borderless::after {
   display: none;
 }
-.taroify-cell__title {
+.taroify-cell__title, .taroify-cell__value {
   flex: 1;
+  min-width: 0;
 }
 .taroify-cell--required .taroify-cell__title::before {
   padding-right: var(--cell-required-padding-right, 2px);
@@ -161,8 +162,11 @@
 .taroify-cell--large .taroify-cell__title {
   font-size: var(--cell-title-font-size-large, var(--font-size-lg, 16px));
 }
-.taroify-cell--large .taroify-cell__subtitle {
-  font-size: var(--cell-subtitle-font-size-large, var(--font-size-md, 14px));
+.taroify-cell--large .taroify-cell__brief {
+  font-size: var(--cell-brief-font-size-large, var(--cell-subtitle-font-size-large, var(--font-size-md, 14px)));
+}
+.taroify-cell--large .taroify-cell__value {
+  font-size: var(--cell-value-font-size-large, inherit);
 }
 .taroify-cell--clickable {
   cursor: pointer;
@@ -170,10 +174,16 @@
 .taroify-cell--clickable:active {
   background: var(--cell-active-color, var(--active-color, var(--active-color, var(--gray-2, #f2f3f5))));
 }
+.taroify-cell--active {
+  background: var(--cell-active-color, var(--active-color, var(--active-color, var(--gray-2, #f2f3f5))));
+}
 .taroify-cell__value {
-  flex: 1;
+  position: relative;
+  overflow: hidden;
+  font-size: var(--cell-value-font-size, inherit);
   color: var(--cell-value-color, var(--gray-6, #969799));
   text-align: right;
+  word-wrap: break-word;
 }
 .taroify-cell__value--empty {
   flex: 0 0 auto;
@@ -183,20 +193,25 @@
   text-align: left;
 }
 .taroify-cell__icon, .taroify-cell__right-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
   height: var(--cell-line-height, 24px);
   font-size: var(--cell-icon-size, 16px);
   line-height: var(--cell-line-height, 24px);
 }
 .taroify-cell__icon {
-  display: flex;
-  align-items: center;
-  margin-right: var(--cell-icon-margin-left, 4px);
+  margin-right: var(--cell-left-icon-margin-right, var(--cell-icon-margin-left, 4px));
 }
 .taroify-cell__right-icon {
+  margin-left: var(--cell-right-icon-margin-left, var(--cell-right-icon-margin-right, 4px));
+  color: var(--cell-right-icon-color, var(--cell-value-color, var(--gray-6, #969799)));
+}
+.taroify-cell__extra {
   display: flex;
+  flex: none;
   align-items: center;
-  margin-left: var(--cell-right-icon-margin-right, 4px);
-  color: var(--cell-value-color, var(--gray-6, #969799));
+  margin-left: var(--cell-extra-margin-left, var(--padding-base, 4px));
 }
 
 .taroify-form-control {

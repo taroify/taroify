@@ -1,5 +1,5 @@
 import { Cell, Switch } from "@taroify/core"
-import { useState } from "react"
+import * as React from "react"
 import Block from "../../../components/block"
 import Page from "../../../components/page"
 import "./index.scss"
@@ -23,7 +23,7 @@ function LoadingSwitch({ checked }: SwitchListProps) {
 }
 
 function SwitchList() {
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = React.useState(false)
   return (
     <>
       <Block title="基础用法">
@@ -50,7 +50,7 @@ export default function SwitchDemo() {
         <Switch className="custom-color" defaultChecked />
       </Block>
       <Block title="搭配单元格使用" className="switch-with-cell">
-        <Cell align="center" title="标题" rightIcon={<Switch size="24" />} />
+        <Cell align="center" title="标题" extra={<Switch size="24" />} />
       </Block>
     </Page>
   )

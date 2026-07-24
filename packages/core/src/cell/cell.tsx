@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { ReactNode } from "react"
+import type { ComponentType, ReactNode } from "react"
 import CellBase from "./cell-base"
 import CellBrief from "./cell-brief"
 import CellTitle from "./cell-title"
@@ -11,7 +11,11 @@ export interface CellProps extends CellBaseProps {
   brief?: ReactNode
 }
 
-function Cell(props: CellProps) {
+type CellRootProps = CellProps & {
+  component?: ComponentType<any>
+}
+
+export function CellRoot(props: CellRootProps) {
   const { title, brief, children, titleStyle, titleClass, valueClass, briefClass, ...restProps } =
     props
   const hasTitle = React.Children.toArray(title).length > 0
@@ -27,6 +31,10 @@ function Cell(props: CellProps) {
       <CellValue alone={!hasTitle} children={children} valueClass={valueClass} />
     </CellBase>
   )
+}
+
+function Cell(props: CellProps) {
+  return <CellRoot {...props} />
 }
 
 export default Cell

@@ -1,8 +1,7 @@
-import { cloneIconElement, isIconElement } from "@taroify/icons/utils"
 import { View } from "@tarojs/components"
 import classNames from "classnames"
 import * as React from "react"
-import { useContext, useMemo } from "react"
+import { type ComponentType, useContext, useMemo } from "react"
 import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp } from "@taroify/icons"
 import { prefixClassname } from "../styles"
 import CellGroupContext from "./cell-group.context"
@@ -15,48 +14,61 @@ export const iconMap: Record<ArrowDirection, any> = {
   down: ArrowDown,
 }
 
-function CellBase(props: CellBaseProps) {
+type CellBaseComponentProps = CellBaseProps & {
+  component?: ComponentType<any>
+}
+
+function CellBase(props: CellBaseComponentProps) {
   const {
+    component,
     className,
-    size = "medium",
+    size = "normal",
     align,
-    clickable: clickableProp = false,
+    clickable: clickableProp,
     required = false,
     bordered = true,
     isLink = false,
     icon,
     arrowDirection = "right",
     rightIcon: rightIconProps,
+    extra,
+    role,
+    ariaRole,
+    hoverClass,
     children,
     ...restProps
   } = props
 
+  const Component = (component ?? View) as ComponentType<any>
   const { clickable } = useContext(CellGroupContext)
-  const cellClickable = isLink || clickable || clickableProp
+  const cellClickable = clickableProp ?? (isLink || clickable)
 
   const leftIcon = useMemo(() => {
     if (icon) {
-      return isIconElement(icon)
-        ? cloneIconElement(icon, { className: prefixClassname("cell__icon") })
-        : icon
+      return <View className={prefixClassname("cell__icon")}>{icon}</View>
     }
     return null
   }, [icon])
 
   const rightIcon = useMemo(() => {
     if (rightIconProps) {
-      return isIconElement(rightIconProps)
-        ? cloneIconElement(rightIconProps, { className: prefixClassname("cell__right-icon") })
-        : rightIconProps
-      // biome-ignore lint/style/noUselessElse: <explanation>
-    } else if (isLink && iconMap[arrowDirection]) {
+      return <View className={prefixClassname("cell__right-icon")}>{rightIconProps}</View>
+    }
+    if (isLink && iconMap[arrowDirection]) {
       const Icon = iconMap[arrowDirection]
-      return <Icon className={prefixClassname("cell__right-icon")} />
+      return (
+        <View className={prefixClassname("cell__right-icon")}>
+          <Icon />
+        </View>
+      )
     }
     return null
   }, [rightIconProps, isLink, arrowDirection])
+
+  const hasExtra = React.Children.toArray(extra).length > 0
+
   return (
-    <View
+    <Component
       className={classNames(
         prefixClassname("cell"),
         {
@@ -71,11 +83,15 @@ function CellBase(props: CellBaseProps) {
         className,
       )}
       {...restProps}
+      role={role ?? (cellClickable ? "button" : undefined)}
+      ariaRole={ariaRole ?? (cellClickable ? "button" : undefined)}
+      hoverClass={hoverClass ?? (cellClickable ? prefixClassname("cell--active") : "none")}
     >
       {leftIcon}
       {children}
       {rightIcon}
-    </View>
+      {hasExtra && <View className={prefixClassname("cell__extra")}>{extra}</View>}
+    </Component>
   )
 }
 

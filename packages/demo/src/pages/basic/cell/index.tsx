@@ -1,5 +1,5 @@
-import { Cell } from "@taroify/core"
-import { ArrowDown, ArrowRight, LocationOutlined } from "@taroify/icons"
+import { Cell, Switch } from "@taroify/core"
+import { LocationOutlined } from "@taroify/icons"
 import Block from "../../../components/block"
 import Page from "../../../components/page"
 import "./index.scss"
@@ -11,6 +11,12 @@ export default function CellDemo() {
         <Cell title="单元格">内容</Cell>
         <Cell title="单元格" brief="描述信息" children="内容" />
       </Block>
+      <Block title="卡片风格">
+        <Cell.Group inset>
+          <Cell title="单元格">内容</Cell>
+          <Cell title="单元格">内容</Cell>
+        </Cell.Group>
+      </Block>
       <Block title="单元格大小">
         <Cell title="单元格">内容</Cell>
         <Cell title="单元格" brief="描述信息" size="large" children="内容" />
@@ -18,13 +24,21 @@ export default function CellDemo() {
       <Block title="展示图标">
         <Cell icon={<LocationOutlined />} title="单元格" children="内容" />
       </Block>
-      <Block title="只设置 value">
+      <Block title="只设置内容">
         <Cell>内容</Cell>
       </Block>
       <Block title="展示箭头">
-        <Cell title="单元格" isLink  />
+        <Cell title="单元格" isLink />
         <Cell title="单元格" isLink children="内容" />
         <Cell title="单元格" isLink arrowDirection="down" children="内容" />
+      </Block>
+      <Block title="页面导航">
+        <Cell.Link title="返回首页" url="/pages/home/index" />
+      </Block>
+      <Block title="额外内容">
+        <Cell title="消息通知" extra={<Switch size="24" defaultChecked />}>
+          已开启
+        </Cell>
       </Block>
       <Block title="分组标题">
         <Cell.Group title="分组 1">
