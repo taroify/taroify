@@ -55,7 +55,7 @@
     "git-cz": "^4.9.0",
     "jest": "^26.6.0",
     "jest-transform-css": "^2.1.0",
-    "lefthook": "^1.10.10",
+    "lefthook": "^2.0.0",
     "lerna": "^3.22.1",
     "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-gfm": "^3.1.0",
