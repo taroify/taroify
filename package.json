@@ -62,7 +62,7 @@
     "micromark-extension-gfm": "^3.0.0",
     "prettier": "^3.5.1",
     "sass": "^1.85.0",
-    "stylelint": "^13.13.1",
+    "stylelint": "^17.0.0",
     "ts-jest": "^26.5.4",
     "typescript": "^5.9.2"
   },
