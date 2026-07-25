@@ -1390,7 +1390,7 @@
   font-style: normal;
   font-display: auto;
   font-family: "vant-icon";
-  src: url("//at.alicdn.com/t/c/font_2553510_kfwma2yq1rs.woff2?t=1694918397022") format("woff2"), url("//at.alicdn.com/t/c/font_2553510_kfwma2yq1rs.woff?t=1694918397022") format("woff");
+  src: url("//at.alicdn.com/t/c/font_2553510_ciljc7axaw7.woff2?t=1705587463221") format("woff2"), url("//at.alicdn.com/t/c/font_2553510_ciljc7axaw7.woff?t=1705587463221") format("woff");
 }
 .van-icon {
   position: relative;
@@ -1410,6 +1410,38 @@
 }
 .van-icon:before {
   display: inline-block;
+}
+
+.van-icon-arrow-double-left:before {
+  content: "\e653";
+}
+
+.van-icon-arrow-double-right:before {
+  content: "\e654";
+}
+
+.van-icon-link-o:before {
+  content: "\e751";
+}
+
+.van-icon-miniprogram-o:before {
+  content: "\e752";
+}
+
+.van-icon-qq:before {
+  content: "\e74e";
+}
+
+.van-icon-wechat-moments:before {
+  content: "\e74f";
+}
+
+.van-icon-weibo:before {
+  content: "\e750";
+}
+
+.van-icon-cash-o:before {
+  content: "\e74d";
 }
 
 .van-icon-list-switch:before {

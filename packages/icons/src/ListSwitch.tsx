@@ -1,4 +1,4 @@
 import { createVanIconComponent } from "./van"
 
-const Add = createVanIconComponent("list-switch")
-export default Add
+const ListSwitch = createVanIconComponent("list-switch")
+export default ListSwitch
