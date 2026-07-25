@@ -1,6 +1,8 @@
 @import "~@taroify/core/styles/prefix";
 
 .flex-demo {
+  background-color: var(--background-color, #f7f8fa);
+
   .#{$component-prefix}flex {
     margin-bottom: 10px;
   }

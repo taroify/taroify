@@ -1,4 +1,5 @@
 import type { ViewProps } from "@tarojs/components/types/View"
+import type { ITouchEvent } from "@tarojs/components/types/common"
 import * as _ from "lodash"
 import * as React from "react"
 import {
@@ -21,15 +22,23 @@ export interface PopupBackdropProps extends ViewProps {
 }
 
 export default function PopupBackdrop(props: PopupBackdropProps) {
-  const { open: openProp = true, duration, closeable = true, lock, ...restProps } = props
-  const { open, duration: ctxDuration, onClose } = useContext(PopupContext)
+  const { open: openProp = true, duration, closeable = true, lock, onClick, ...restProps } = props
+  const { open, duration: ctxDuration, onRequestClose } = useContext(PopupContext)
+
+  function handleClick(event: ITouchEvent) {
+    onClick?.(event)
+    if (closeable) {
+      void onRequestClose?.("backdrop")
+    }
+  }
+
   return (
     <SharedBackdrop
       open={openProp && open}
       lock={lock}
       duration={duration ?? ctxDuration}
-      closeable={closeable}
-      onClose={onClose}
+      closeable={false}
+      onClick={handleClick}
       {...restProps}
     />
   )

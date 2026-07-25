@@ -96,9 +96,9 @@
   &__close-icon {
     position: absolute;
     z-index: $popup-close-icon-z-index;
+    font-size: $popup-close-icon-size;
     color: $popup-close-icon-color;
     cursor: pointer;
-    size: $popup-close-icon-size;
 
     &:active {
       color: $popup-close-icon-active-color;

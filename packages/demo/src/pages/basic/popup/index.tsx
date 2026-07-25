@@ -1,8 +1,12 @@
 import { ScrollView } from "@tarojs/components"
-import { Cell, Popup } from "@taroify/core"
-import { PopupPlacement } from "@taroify/core/popup"
+import {
+  Cell,
+  Popup,
+  type PopupCloseAction,
+  type PopupPlacement,
+} from "@taroify/core"
 import { Close } from "@taroify/icons"
-import { CSSProperties, useState } from "react"
+import { type CSSProperties, useState } from "react"
 import Block from "../../../components/block"
 import Page from "../../../components/page"
 import "./index.scss"
@@ -83,7 +87,8 @@ function LockPopup() {
 interface OpenOptions {
   open?: boolean
   closeable?: boolean
-  customer?: boolean
+  custom?: boolean
+  intercept?: boolean
   style?: CSSProperties
   placement?: PopupPlacement
   rounded?: boolean
@@ -92,13 +97,14 @@ interface OpenOptions {
 export default function PopupDemo() {
   const [options, setOptions] = useState<OpenOptions>({})
 
-  function handleOpen({ placement, rounded, closeable, customer }: OpenOptions) {
+  function handleOpen({ placement, rounded, closeable, custom, intercept }: OpenOptions) {
     const openOptions: OpenOptions = {
       open: true,
       placement,
       rounded,
       closeable,
-      customer,
+      custom,
+      intercept,
     }
     if (placement === "left" || placement === "right") {
       openOptions.style = {
@@ -108,9 +114,12 @@ export default function PopupDemo() {
     } else if (placement) {
       openOptions.style = { height: "30%" }
     }
-    setOptions({
-      ...options,
-      ...openOptions,
+    setOptions(openOptions)
+  }
+
+  function handleBeforeClose(action: PopupCloseAction) {
+    return new Promise<boolean>((resolve) => {
+      setTimeout(() => resolve(action === "close"), 1000)
     })
   }
 
@@ -174,7 +183,21 @@ export default function PopupDemo() {
           clickable
           title="自定义图标"
           isLink
-          onClick={() => handleOpen({ placement: "bottom", closeable: true, customer: true })}
+          onClick={() => handleOpen({ placement: "bottom", closeable: true, custom: true })}
+        />
+      </Block>
+      <Block variant="card" title="关闭前回调">
+        <Cell
+          clickable
+          title="异步关闭"
+          isLink
+          onClick={() =>
+            handleOpen({
+              placement: "bottom",
+              closeable: true,
+              intercept: true,
+            })
+          }
         />
       </Block>
       <Block variant="card" title="圆角弹窗">
@@ -194,6 +217,8 @@ export default function PopupDemo() {
         placement={options.placement}
         rounded={options.rounded}
         style={options.style}
+        closeable={options.closeable && !options.custom}
+        beforeClose={options.intercept ? handleBeforeClose : undefined}
         onClose={() =>
           setOptions({
             ...options,
@@ -201,9 +226,7 @@ export default function PopupDemo() {
           })
         }
       >
-        <Popup.Backdrop />
-        {options.closeable && !options.customer && <Popup.Close />}
-        {options.closeable && options.customer && (
+        {options.closeable && options.custom && (
           <Popup.Close>
             <Close />
           </Popup.Close>

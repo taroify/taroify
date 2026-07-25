@@ -436,8 +436,8 @@
   position: absolute;
   z-index: var(--popup-close-icon-z-index, 1);
   color: var(--popup-close-icon-color, var(--gray-5, #c8c9cc));
+  font-size: var(--popup-close-icon-size, 22px);
   cursor: pointer;
-  size: var(--popup-close-icon-size, 22px);
 }
 .taroify-popup__close-icon:active {
   color: var(--popup-close-icon-active-color, var(--gray-6, #969799));

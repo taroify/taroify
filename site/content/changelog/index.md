@@ -14,6 +14,33 @@ Taroify 遵循 [Semver](https://semver.org/lang/zh-CN/) 语义化版本规范。
 
 ## 更新内容
 
+### v1.0.1
+
+`2026-07-25`
+
+#### What's Changed
+##### New Features 🎉
+* feat(button): 完善按钮自定义、加载和无障碍能力 by [@Pilotager](https://github.com/Pilotager) in [#1032](https://github.com/taroify/taroify/pull/1032)
+* feat(site): 自动同步 GitHub Release 变更日志 by [@Pilotager](https://github.com/Pilotager) in [#1028](https://github.com/taroify/taroify/pull/1028)
+* feat(cell): 升级单元格组件 by [@Pilotager](https://github.com/Pilotager) in [#1036](https://github.com/taroify/taroify/pull/1036)
+* feat: 新增 Taroify CLI 与 MCP 支持 by [@Pilotager](https://github.com/Pilotager) in [#1043](https://github.com/taroify/taroify/pull/1043)
+* feat: 🎸 Release 1.0.1 by [@Pilotager](https://github.com/Pilotager) in [#1046](https://github.com/taroify/taroify/pull/1046)
+##### Bug Fixes 🐞
+* fix: 🐛 Radio 和 Checkbox 的背景色和边框区分度不够明显 by [@Pilotager](https://github.com/Pilotager) in [#1025](https://github.com/taroify/taroify/pull/1025)
+##### Document 📖
+* docs(site): 完善文档展示与版本标记 by [@Pilotager](https://github.com/Pilotager) in [#1023](https://github.com/taroify/taroify/pull/1023)
+##### Other Changes
+* test(core): 补全组件测试 by [@Pilotager](https://github.com/Pilotager) in [#1022](https://github.com/taroify/taroify/pull/1022)
+* docs: ✏️ 更改地址 by [@Pilotager](https://github.com/Pilotager) in [#1026](https://github.com/taroify/taroify/pull/1026)
+* chore(deps): update jamesives/github-pages-deploy-action action to v4.8.0 by [@renovate[bot]](https://github.com/apps/renovate) in [#1038](https://github.com/taroify/taroify/pull/1038)
+* chore(deps): update actions/checkout action to v7 by [@renovate[bot]](https://github.com/apps/renovate) in [#1039](https://github.com/taroify/taroify/pull/1039)
+* chore(deps): update actions/setup-node action to v7 by [@renovate[bot]](https://github.com/apps/renovate) in [#1040](https://github.com/taroify/taroify/pull/1040)
+
+#### New Contributors
+* [@renovate[bot]](https://github.com/apps/renovate) made their first contribution in [#1038](https://github.com/taroify/taroify/pull/1038)
+
+**Full Changelog**: https://github.com/taroify/taroify/compare/v1.0.0...v1.0.1
+
 ### v1.0.0
 
 `2026-07-20`
