@@ -1,2 +1,3 @@
 export { default } from "./image"
-export type { ImageMode, ImageThemeVars } from "./image.shared"
+export type { ImageErrorEvent, ImageLoadEvent, ImageProps } from "./image"
+export type { ImageMode, ImageShape, ImageThemeVars } from "./image.shared"

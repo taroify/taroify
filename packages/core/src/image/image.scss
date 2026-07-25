@@ -1,6 +1,14 @@
 @use "./variables" as *;
 
 .#{$component-prefix}image {
+  &--square {
+    border-radius: 0;
+  }
+
+  &--rounded {
+    border-radius: var(--border-radius-md, $border-radius-md);
+  }
+
   &--circle {
     overflow: hidden;
     border-radius: 50%;
@@ -11,9 +19,7 @@
   }
 
   &--loading {
-    position: absolute;
-    width: 0;
-    height: 0;
+    visibility: hidden;
   }
 
   &__fallback,

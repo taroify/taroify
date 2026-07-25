@@ -12,6 +12,13 @@ export { default as Col } from "./col"
 export { default as Row } from "./row"
 export { default as Flex } from "./flex"
 export { default as Image } from "./image"
+export type {
+  ImageErrorEvent,
+  ImageLoadEvent,
+  ImageMode,
+  ImageProps,
+  ImageShape,
+} from "./image"
 export { default as Popup } from "./popup"
 export { default as Space } from "./space"
 export { default as Toast } from "./toast"
