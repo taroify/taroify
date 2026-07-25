@@ -7,8 +7,8 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 204,
-    "demos": 449,
-    "componentTokens": 790,
+    "demos": 452,
+    "componentTokens": 797,
     "globalTokens": 60
   },
   "categories": [
@@ -1087,7 +1087,7 @@
               {
                 "name": "title",
                 "description": "分组标题",
-                "type": "string",
+                "type": "ReactNode",
                 "defaultValue": "-",
                 "extra": []
               },
@@ -1100,14 +1100,14 @@
               },
               {
                 "name": "bordered",
-                "description": "是否显示外边框",
+                "description": "是否显示非卡片模式的外边框",
                 "type": "boolean",
                 "defaultValue": "true",
                 "extra": []
               },
               {
                 "name": "clickable",
-                "description": "是否开启点击反馈",
+                "description": "是否为子单元格开启点击反馈",
                 "type": "boolean",
                 "defaultValue": "false",
                 "extra": []
@@ -1127,29 +1127,29 @@
               {
                 "name": "title",
                 "description": "左侧标题",
-                "type": "number | string",
+                "type": "ReactNode",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "children",
                 "description": "右侧内容",
-                "type": "number | string",
+                "type": "ReactNode",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "brief",
                 "description": "标题下方的描述信息",
-                "type": "string",
+                "type": "ReactNode",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "size",
-                "description": "单元格大小，可选值为 large",
+                "description": "单元格大小，可选值为 normal large，medium 已废弃",
                 "type": "string",
-                "defaultValue": "-",
+                "defaultValue": "normal",
                 "extra": []
               },
               {
@@ -1161,7 +1161,14 @@
               },
               {
                 "name": "rightIcon",
-                "description": "右侧图标或图片",
+                "description": "右侧自定义图标",
+                "type": "ReactNode",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "extra",
+                "description": "右侧图标之后的额外内容",
                 "type": "ReactNode",
                 "defaultValue": "-",
                 "extra": []
@@ -1175,9 +1182,9 @@
               },
               {
                 "name": "clickable",
-                "description": "是否开启点击反馈",
+                "description": "是否开启点击反馈，显式值优先于分组和链接状态",
                 "type": "boolean",
-                "defaultValue": "false",
+                "defaultValue": "-",
                 "extra": []
               },
               {
@@ -1250,7 +1257,7 @@
               {
                 "name": "onClick",
                 "description": "点击单元格时触发",
-                "type": "event: MouseEvent",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               }
@@ -1267,42 +1274,60 @@
         },
         {
           "id": "demo2",
+          "title": "卡片风格",
+          "language": "tsx",
+          "code": "<Cell.Group inset>\n  <Cell title=\"单元格\">内容</Cell>\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>"
+        },
+        {
+          "id": "demo3",
           "title": "单元格大小",
           "language": "tsx",
           "code": "<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\" size=\"large\">内容</Cell>"
         },
         {
-          "id": "demo3",
+          "id": "demo4",
           "title": "展示图标",
           "language": "tsx",
           "code": "<Cell icon={<LocationOutlined />} title=\"单元格\">\n  内容\n</Cell>"
         },
         {
-          "id": "demo4",
-          "title": "只设置 value",
+          "id": "demo5",
+          "title": "只设置内容",
           "language": "tsx",
           "code": "<Cell>内容</Cell>"
         },
         {
-          "id": "demo5",
+          "id": "demo6",
           "title": "展示箭头",
           "language": "tsx",
-          "code": "<Cell title=\"单元格\" isLink  />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />"
+          "code": "<Cell title=\"单元格\" isLink />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />"
         },
         {
-          "id": "demo6",
+          "id": "demo7",
+          "title": "页面导航",
+          "language": "tsx",
+          "code": "<Cell.Link title=\"订单详情\" url=\"/pages/order/detail/index\">\n  查看\n</Cell.Link>\n<Cell.Link title=\"返回上一页\" openType=\"navigateBack\" />"
+        },
+        {
+          "id": "demo8",
+          "title": "额外内容",
+          "language": "tsx",
+          "code": "<Cell title=\"消息通知\" isLink extra={<Switch checked />}>\n  已开启\n</Cell>"
+        },
+        {
+          "id": "demo9",
           "title": "分组标题",
           "language": "tsx",
           "code": "<Cell.Group title=\"分组 1\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n<Cell.Group title=\"分组 2\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>"
         },
         {
-          "id": "demo7",
+          "id": "demo10",
           "title": "对齐方式",
           "language": "tsx",
           "code": "<Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\">内容</Cell>"
         }
       ],
-      "demoPage": "import { Cell } from \"@taroify/core\"\nimport { ArrowDown, ArrowRight, LocationOutlined } from \"@taroify/icons\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function CellDemo() {\n  return (\n    <Page title=\"Cell 单元格\" className=\"cell-demo\">\n      <Block title=\"基础用法\">\n        <Cell title=\"单元格\">内容</Cell>\n        <Cell title=\"单元格\" brief=\"描述信息\" children=\"内容\" />\n      </Block>\n      <Block title=\"单元格大小\">\n        <Cell title=\"单元格\">内容</Cell>\n        <Cell title=\"单元格\" brief=\"描述信息\" size=\"large\" children=\"内容\" />\n      </Block>\n      <Block title=\"展示图标\">\n        <Cell icon={<LocationOutlined />} title=\"单元格\" children=\"内容\" />\n      </Block>\n      <Block title=\"只设置 value\">\n        <Cell>内容</Cell>\n      </Block>\n      <Block title=\"展示箭头\">\n        <Cell title=\"单元格\" isLink  />\n        <Cell title=\"单元格\" isLink children=\"内容\" />\n        <Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n      </Block>\n      <Block title=\"分组标题\">\n        <Cell.Group title=\"分组 1\">\n          <Cell title=\"单元格\">内容</Cell>\n        </Cell.Group>\n        <Cell.Group title=\"分组 2\">\n          <Cell title=\"单元格\">内容</Cell>\n        </Cell.Group>\n      </Block>\n      <Block title=\"对齐方式\">\n        <Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\" children=\"内容\" />\n        <Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\" children=\"内容\" />\n        <Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\" children=\"内容\" />\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Cell, Switch } from \"@taroify/core\"\nimport { LocationOutlined } from \"@taroify/icons\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function CellDemo() {\n  return (\n    <Page title=\"Cell 单元格\" className=\"cell-demo\">\n      <Block title=\"基础用法\">\n        <Cell title=\"单元格\">内容</Cell>\n        <Cell title=\"单元格\" brief=\"描述信息\" children=\"内容\" />\n      </Block>\n      <Block title=\"卡片风格\">\n        <Cell.Group inset>\n          <Cell title=\"单元格\">内容</Cell>\n          <Cell title=\"单元格\">内容</Cell>\n        </Cell.Group>\n      </Block>\n      <Block title=\"单元格大小\">\n        <Cell title=\"单元格\">内容</Cell>\n        <Cell title=\"单元格\" brief=\"描述信息\" size=\"large\" children=\"内容\" />\n      </Block>\n      <Block title=\"展示图标\">\n        <Cell icon={<LocationOutlined />} title=\"单元格\" children=\"内容\" />\n      </Block>\n      <Block title=\"只设置内容\">\n        <Cell>内容</Cell>\n      </Block>\n      <Block title=\"展示箭头\">\n        <Cell title=\"单元格\" isLink />\n        <Cell title=\"单元格\" isLink children=\"内容\" />\n        <Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n      </Block>\n      <Block title=\"页面导航\">\n        <Cell.Link title=\"返回首页\" url=\"/pages/home/index\" />\n      </Block>\n      <Block title=\"额外内容\">\n        <Cell title=\"消息通知\" extra={<Switch size=\"24\" defaultChecked />}>\n          已开启\n        </Cell>\n      </Block>\n      <Block title=\"分组标题\">\n        <Cell.Group title=\"分组 1\">\n          <Cell title=\"单元格\">内容</Cell>\n        </Cell.Group>\n        <Cell.Group title=\"分组 2\">\n          <Cell title=\"单元格\">内容</Cell>\n        </Cell.Group>\n      </Block>\n      <Block title=\"对齐方式\">\n        <Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\" children=\"内容\" />\n        <Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\" children=\"内容\" />\n        <Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\" children=\"内容\" />\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--cell-font-size",
@@ -1325,7 +1350,7 @@
         {
           "cssVar": "--cell-background-color",
           "themeKey": "cellBackgroundColor",
-          "defaultValue": "var(--white)",
+          "defaultValue": "var(--background-color-2)",
           "description": "-"
         },
         {
@@ -1338,6 +1363,12 @@
           "cssVar": "--cell-value-color",
           "themeKey": "cellValueColor",
           "defaultValue": "var(--gray-6)",
+          "description": "-"
+        },
+        {
+          "cssVar": "--cell-value-font-size",
+          "themeKey": "cellValueFontSize",
+          "defaultValue": "inherit",
           "description": "-"
         },
         {
@@ -1365,16 +1396,40 @@
           "description": "-"
         },
         {
+          "cssVar": "--cell-left-icon-margin-right",
+          "themeKey": "cellLeftIconMarginRight",
+          "defaultValue": "4px * $hd",
+          "description": "-"
+        },
+        {
+          "cssVar": "--cell-right-icon-margin-left",
+          "themeKey": "cellRightIconMarginLeft",
+          "defaultValue": "4px * $hd",
+          "description": "-"
+        },
+        {
+          "cssVar": "--cell-right-icon-color",
+          "themeKey": "cellRightIconColor",
+          "defaultValue": "var(--cell-value-color)",
+          "description": "-"
+        },
+        {
+          "cssVar": "--cell-extra-margin-left",
+          "themeKey": "cellExtraMarginLeft",
+          "defaultValue": "var(--padding-base)",
+          "description": "-"
+        },
+        {
           "cssVar": "--cell-icon-margin-left",
           "themeKey": "cellIconMarginLeft",
           "defaultValue": "4px * $hd",
-          "description": "-"
+          "description": "即将废弃"
         },
         {
           "cssVar": "--cell-right-icon-margin-right",
           "themeKey": "cellRightIconMarginRight",
           "defaultValue": "4px * $hd",
-          "description": "-"
+          "description": "即将废弃"
         },
         {
           "cssVar": "--cell-brief-margin-top",
@@ -1425,15 +1480,27 @@
           "description": "-"
         },
         {
-          "cssVar": "--cell-subtitle-font-size-large",
-          "themeKey": "cellSubtitleFontSizeLarge",
+          "cssVar": "--cell-brief-font-size-large",
+          "themeKey": "cellBriefFontSizeLarge",
           "defaultValue": "var(--font-size-md)",
           "description": "-"
         },
         {
+          "cssVar": "--cell-value-font-size-large",
+          "themeKey": "cellValueFontSizeLarge",
+          "defaultValue": "inherit",
+          "description": "-"
+        },
+        {
+          "cssVar": "--cell-subtitle-font-size-large",
+          "themeKey": "cellSubtitleFontSizeLarge",
+          "defaultValue": "var(--font-size-md)",
+          "description": "即将废弃"
+        },
+        {
           "cssVar": "--cell-group-background-color",
           "themeKey": "cellGroupBackgroundColor",
-          "defaultValue": "var(--white)",
+          "defaultValue": "var(--background-color-2)",
           "description": "-"
         },
         {
@@ -1480,7 +1547,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Cell 单元格\n\n### 介绍\n\n单元格为列表中的单个展示项。\n\n### 引入\n\n```tsx\nimport { Cell } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Cell` 可以单独使用，也可以与 `Cell.Group` 搭配使用，`Cell.Group` 可以为 `Cell` 提供上下外边框。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\">内容</Cell>\n```\n\n### 单元格大小\n\n通过 `size` 属性可以控制单元格的大小。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\" size=\"large\">内容</Cell>\n```\n\n### 展示图标\n\n通过 `icon` 属性在标题左侧展示图标。\n\n```tsx\n<Cell icon={<LocationOutlined />} title=\"单元格\">\n  内容\n</Cell>\n```\n\n### 只设置 value\n\n只设置 `value` 时，内容会靠左对齐。\n\n```tsx\n<Cell>内容</Cell>\n```\n\n### 展示箭头\n\n通过 `rightIcon` 属性在标题右侧展示箭头，并且可以通过不同图标控制箭头方向。\n\n```tsx\n<Cell title=\"单元格\" isLink  />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n```\n\n### 分组标题\n\n通过 `Cell.Group` 的 `title` 属性可以指定分组标题。\n\n```tsx\n<Cell.Group title=\"分组 1\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n<Cell.Group title=\"分组 2\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 对齐方式\n\n通过 `align` 属性可以改变 `Cell` 的左右内容的对齐方式。\n\n```tsx\n<Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\">内容</Cell>\n```\n\n## API\n\n### Cell.Group Props\n\n| 参数      | 说明                   | 类型      | 默认值  |\n| --------- | ---------------------- | --------- | ------- |\n| title     | 分组标题               | _string_  | `-`     |\n| inset     | 是否展示为圆角卡片风格 | _boolean_ | `false` |\n| bordered  | 是否显示外边框         | _boolean_ | `true`  |\n| clickable | 是否开启点击反馈       | _boolean_ | `false` |\n\n### Cell Props\n\n| 参数                                | 说明                                                    | 类型               | 默认值  |\n| ----------------------------------- | ------------------------------------------------------- | ------------------ | ------- |\n| title                               | 左侧标题                                                | _number \\| string_ | -       |\n| children                            | 右侧内容                                                | _number \\| string_ | -       |\n| brief                               | 标题下方的描述信息                                      | _string_           | -       |\n| size                                | 单元格大小，可选值为 `large`                            | _string_           | -       |\n| icon                                | 左侧[图标](/components/icon)或[图片](/components/image) | _ReactNode_        | -       |\n| rightIcon                           | 右侧[图标](/components/icon)或[图片](/components/image) | _ReactNode_        | -       |\n| bordered                            | 是否显示内边框                                          | _boolean_          | `true`  |\n| clickable                           | 是否开启点击反馈                                        | _boolean_          | `false` |\n| isLink         | 是否展示右侧箭头并开启点击反馈                          | _boolean_          | `false` |\n| arrowDirection | 箭头方向，可选值为 `left` `right` `up` `down`           | _string_           | `right` |\n| required                            | 是否显示表单必填星号                                    | _boolean_          | `false` |\n| align                               | 对齐方式，可选值为 `start` `center` `end`               | _string_           | -       |\n| titleStyle                 | 左侧标题额外样式               | _CSSProperties_           | -       |\n| titleClass                 | 左侧标题额外类名               | _string_           | -       |\n| valueClass                 | 右侧内容额外类名               | _string_           | -       |\n| briefClass                | 标题下方的描述信息额外类名               | _string_           | -       |\n\n### Cell Events\n\n| 事件名  | 说明             | 回调参数            |\n| ------- | ---------------- | ------------------- |\n| onClick | 点击单元格时触发 | _event: MouseEvent_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                             | 默认值                                                                    | 描述 |\n| -------------------------------- | ------------------------------------------------------------------------- | ---- |\n| --cell-font-size                 | _var(--font-size-md)_                                                     | -    |\n| --cell-line-height               | _24px \\* $hd_                                                             | -    |\n| --cell-color                     | _var(--text-color)_                                                       | -    |\n| --cell-background-color          | _var(--white)_                                                            | -    |\n| --cell-border-color              | _var(--border-color)_                                                     | -    |\n| --cell-value-color               | _var(--gray-6)_                                                           | -    |\n| --cell-active-color              | _var(--active-color)_                                                     | -    |\n| --cell-required-color            | _var(--danger-color)_                                                     | -    |\n| --cell-required-padding-right    | _2px \\* $hd_                                                              | -    |\n| --cell-icon-size                 | _16px \\* $hd_                                                             | -    |\n| --cell-icon-margin-left          | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-margin-right   | _4px \\* $hd_                                                              | -    |\n| --cell-brief-margin-top          | _var(--padding-base)_                                                     | -    |\n| --cell-brief-font-size           | _var(--font-size-sm)_                                                     | -    |\n| --cell-brief-line-height         | _var(--line-height-sm)_                                                   | -    |\n| --cell-brief-color               | _var(--gray-6)_                                                           | -    |\n| --cell-vertical-padding          | _10px \\* $hd_                                                             | -    |\n| --cell-horizontal-padding        | _var(--padding-md)_                                                       | -    |\n| --cell-vertical-padding-large    | _var(--padding-sm)_                                                       | -    |\n| --cell-title-font-size-large     | _var(--font-size-lg)_                                                     | -    |\n| --cell-subtitle-font-size-large  | _var(--font-size-md)_                                                     | -    |\n| --cell-group-background-color    | _var(--white)_                                                            | -    |\n| --cell-group-title-color         | _var(--gray-6)_                                                           | -    |\n| --cell-group-title-padding       | _var(--padding-md) var(--padding-md) var(--padding-xs)_                   | -    |\n| --cell-group-title-font-size     | _var(--font-size-md)_                                                     | -    |\n| --cell-group-title-line-height   | _16px \\* $hd_                                                             | -    |\n| --cell-group-inset-padding       | _0 var(--padding-md)_                                                     | -    |\n| --cell-group-inset-border-radius | _var(--border-radius-lg)_                                                 | -    |\n| --cell-group-inset-title-padding | _var(--padding-md) var(--padding-md) var(--padding-xs) var(--padding-xl)_ | -    |\n"
+        "zhCN": "# Cell 单元格\n\n### 介绍\n\n单元格为列表中的单个展示项。\n\n### 引入\n\n```tsx\nimport { Cell } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Cell` 可以单独使用，也可以与 `Cell.Group` 搭配使用，`Cell.Group` 可以为 `Cell` 提供上下外边框。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\">内容</Cell>\n```\n\n### 卡片风格\n\n通过 `Cell.Group` 的 `inset` 属性，可以将单元格转换为圆角卡片风格。卡片模式不会显示上下外边框。\n\n```tsx\n<Cell.Group inset>\n  <Cell title=\"单元格\">内容</Cell>\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 单元格大小\n\n通过 `size` 属性可以控制单元格的大小。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\" size=\"large\">内容</Cell>\n```\n\n### 展示图标\n\n通过 `icon` 属性在标题左侧展示图标。\n\n```tsx\n<Cell icon={<LocationOutlined />} title=\"单元格\">\n  内容\n</Cell>\n```\n\n### 只设置内容\n\n只设置 `children` 时，内容会靠左对齐。\n\n```tsx\n<Cell>内容</Cell>\n```\n\n### 展示箭头\n\n设置 `isLink` 属性后会在单元格右侧展示箭头，并且可以通过 `arrowDirection` 控制箭头方向。\n\n```tsx\n<Cell title=\"单元格\" isLink />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n```\n\n### 页面导航 <Tag tag=\"v1.0.1\" />\n\n使用 `Cell.Link` 可以通过 Taro `Navigator` 完成页面跳转。`Cell.Link` 默认展示右侧箭头并开启点击反馈。\n\n```tsx\n<Cell.Link title=\"订单详情\" url=\"/pages/order/detail/index\">\n  查看\n</Cell.Link>\n<Cell.Link title=\"返回上一页\" openType=\"navigateBack\" />\n```\n\n### 额外内容 <Tag tag=\"v1.0.1\" />\n\n通过 `extra` 属性可以在右侧图标之后放置额外内容。\n\n```tsx\n<Cell title=\"消息通知\" isLink extra={<Switch checked />}>\n  已开启\n</Cell>\n```\n\n### 分组标题\n\n通过 `Cell.Group` 的 `title` 属性可以指定分组标题。\n\n```tsx\n<Cell.Group title=\"分组 1\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n<Cell.Group title=\"分组 2\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 对齐方式\n\n通过 `align` 属性可以改变 `Cell` 的左右内容的对齐方式。\n\n```tsx\n<Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\">内容</Cell>\n```\n\n## 升级提示\n\n- `Cell.Group` 的标题和内容容器现在是同级节点，传入的原生 View 属性会作用于内容容器。\n- `Cell.Group` 在 `inset` 模式下不再显示上下外边框。\n- `Cell` 显式设置的 `clickable` 优先于 `isLink` 和 `Cell.Group clickable`。\n- `icon` 和 `rightIcon` 会被统一的布局节点包裹，自定义图标会自动获得标准间距和对齐。\n- `size=\"large\"` 现在会正确应用大尺寸描述文字样式。\n\n## API\n\n### Cell.Group Props\n\n| 参数      | 说明                       | 类型        | 默认值  |\n| --------- | -------------------------- | ----------- | ------- |\n| title     | 分组标题                   | _ReactNode_ | `-`     |\n| inset     | 是否展示为圆角卡片风格     | _boolean_   | `false` |\n| bordered  | 是否显示非卡片模式的外边框 | _boolean_   | `true`  |\n| clickable | 是否为子单元格开启点击反馈 | _boolean_   | `false` |\n\n### Cell Props\n\n| 参数           | 说明                                                    | 类型            | 默认值   |\n| -------------- | ------------------------------------------------------- | --------------- | -------- |\n| title          | 左侧标题                                                | _ReactNode_     | `-`      |\n| children       | 右侧内容                                                | _ReactNode_     | `-`      |\n| brief          | 标题下方的描述信息                                      | _ReactNode_     | `-`      |\n| size <Tag tag=\"v1.0.1\" /> | 单元格大小，可选值为 `normal` `large`，`medium` 已废弃  | _string_        | `normal` |\n| icon           | 左侧[图标](/components/icon)或[图片](/components/image) | _ReactNode_     | `-`      |\n| rightIcon      | 右侧自定义图标                                          | _ReactNode_     | `-`      |\n| extra <Tag tag=\"v1.0.1\" /> | 右侧图标之后的额外内容                                  | _ReactNode_     | `-`      |\n| bordered       | 是否显示内边框                                          | _boolean_       | `true`   |\n| clickable      | 是否开启点击反馈，显式值优先于分组和链接状态            | _boolean_       | `-`      |\n| isLink         | 是否展示右侧箭头并开启点击反馈                          | _boolean_       | `false`  |\n| arrowDirection | 箭头方向，可选值为 `left` `right` `up` `down`           | _string_        | `right`  |\n| required       | 是否显示表单必填星号                                    | _boolean_       | `false`  |\n| align          | 对齐方式，可选值为 `start` `center` `end`               | _string_        | `-`      |\n| titleStyle     | 左侧标题额外样式                                        | _CSSProperties_ | `-`      |\n| titleClass     | 左侧标题额外类名                                        | _string_        | `-`      |\n| valueClass     | 右侧内容额外类名                                        | _string_        | `-`      |\n| briefClass     | 标题下方的描述信息额外类名                              | _string_        | `-`      |\n\n`Cell` 还继承了 Taro `View` 的原生属性。\n\n### Cell.Link Props <Tag tag=\"v1.0.1\" />\n\n`Cell.Link` 支持 Cell 内容与样式属性，并继承 Taro `Navigator` 的 `url`、`openType`、`target` 等原生属性。`isLink` 和 `clickable` 的默认值均为 `true`。\n\n### Cell Events\n\n| 事件名  | 说明             | 回调参数             |\n| ------- | ---------------- | -------------------- |\n| onClick | 点击单元格时触发 | _event: ITouchEvent_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                             | 默认值                                                                    | 描述 |\n| -------------------------------- | ------------------------------------------------------------------------- | ---- |\n| --cell-font-size                 | _var(--font-size-md)_                                                     | -    |\n| --cell-line-height               | _24px \\* $hd_                                                             | -    |\n| --cell-color                     | _var(--text-color)_                                                       | -    |\n| --cell-background-color          | _var(--background-color-2)_                                               | -    |\n| --cell-border-color              | _var(--border-color)_                                                     | -    |\n| --cell-value-color               | _var(--gray-6)_                                                           | -    |\n| --cell-value-font-size <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-active-color              | _var(--active-color)_                                                     | -    |\n| --cell-required-color            | _var(--danger-color)_                                                     | -    |\n| --cell-required-padding-right    | _2px \\* $hd_                                                              | -    |\n| --cell-icon-size                 | _16px \\* $hd_                                                             | -    |\n| --cell-left-icon-margin-right <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-margin-left <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-color <Tag tag=\"v1.0.1\" /> | _var(--cell-value-color)_                                                 | -    |\n| --cell-extra-margin-left <Tag tag=\"v1.0.1\" /> | _var(--padding-base)_                                                     | -    |\n| --cell-icon-margin-left          | _4px \\* $hd_                                                              | 即将废弃 |\n| --cell-right-icon-margin-right   | _4px \\* $hd_                                                              | 即将废弃 |\n| --cell-brief-margin-top          | _var(--padding-base)_                                                     | -    |\n| --cell-brief-font-size           | _var(--font-size-sm)_                                                     | -    |\n| --cell-brief-line-height         | _var(--line-height-sm)_                                                   | -    |\n| --cell-brief-color               | _var(--gray-6)_                                                           | -    |\n| --cell-vertical-padding          | _10px \\* $hd_                                                             | -    |\n| --cell-horizontal-padding        | _var(--padding-md)_                                                       | -    |\n| --cell-vertical-padding-large    | _var(--padding-sm)_                                                       | -    |\n| --cell-title-font-size-large     | _var(--font-size-lg)_                                                     | -    |\n| --cell-brief-font-size-large <Tag tag=\"v1.0.1\" /> | _var(--font-size-md)_                                                     | -    |\n| --cell-value-font-size-large <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-subtitle-font-size-large  | _var(--font-size-md)_                                                     | 即将废弃 |\n| --cell-group-background-color    | _var(--background-color-2)_                                               | -    |\n| --cell-group-title-color         | _var(--gray-6)_                                                           | -    |\n| --cell-group-title-padding       | _var(--padding-md) var(--padding-md) var(--padding-xs)_                   | -    |\n| --cell-group-title-font-size     | _var(--font-size-md)_                                                     | -    |\n| --cell-group-title-line-height   | _16px \\* $hd_                                                             | -    |\n| --cell-group-inset-padding       | _0 var(--padding-md)_                                                     | -    |\n| --cell-group-inset-border-radius | _var(--border-radius-lg)_                                                 | -    |\n| --cell-group-inset-title-padding | _var(--padding-md) var(--padding-md) var(--padding-xs) var(--padding-xl)_ | -    |\n"
       },
       "source": {
         "docs": "packages/core/src/cell/README.md",
@@ -8263,13 +8330,13 @@
           "id": "demo7",
           "title": "搭配单元格使用",
           "language": "tsx",
-          "code": "<Cell align=\"center\" title=\"标题\" rightIcon={<Switch size=\"24\" />} />"
+          "code": "<Cell align=\"center\" title=\"标题\" extra={<Switch size=\"24\" />} />"
         }
       ],
-      "demoPage": "import { Cell, Switch } from \"@taroify/core\"\nimport { useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\ninterface SwitchListProps {\n  checked?: boolean\n\n  onChange?(checked: boolean): void\n}\n\nfunction BasicSwitch({ checked, onChange }: SwitchListProps) {\n  return <Switch checked={checked} onChange={onChange} />\n}\n\nfunction DisabledSwitch({ checked }: SwitchListProps) {\n  return <Switch checked={checked} disabled />\n}\n\nfunction LoadingSwitch({ checked }: SwitchListProps) {\n  return <Switch checked={checked} loading />\n}\n\nfunction SwitchList() {\n  const [checked, setChecked] = useState(false)\n  return (\n    <>\n      <Block title=\"基础用法\">\n        <BasicSwitch checked={checked} onChange={setChecked} />\n      </Block>\n      <Block title=\"禁用状态\">\n        <DisabledSwitch checked={checked} />\n      </Block>\n      <Block title=\"加载状态\">\n        <LoadingSwitch checked={checked} />\n      </Block>\n    </>\n  )\n}\n\nexport default function SwitchDemo() {\n  return (\n    <Page title=\"Switch 开关\" className=\"switch-demo\">\n      <SwitchList />\n      <Block title=\"自定义大小\">\n        <Switch size=\"24\" />\n      </Block>\n      <Block title=\"自定义颜色\">\n        <Switch className=\"custom-color\" defaultChecked />\n      </Block>\n      <Block title=\"搭配单元格使用\" className=\"switch-with-cell\">\n        <Cell align=\"center\" title=\"标题\" rightIcon={<Switch size=\"24\" />} />\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Cell, Switch } from \"@taroify/core\"\nimport * as React from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\ninterface SwitchListProps {\n  checked?: boolean\n\n  onChange?(checked: boolean): void\n}\n\nfunction BasicSwitch({ checked, onChange }: SwitchListProps) {\n  return <Switch checked={checked} onChange={onChange} />\n}\n\nfunction DisabledSwitch({ checked }: SwitchListProps) {\n  return <Switch checked={checked} disabled />\n}\n\nfunction LoadingSwitch({ checked }: SwitchListProps) {\n  return <Switch checked={checked} loading />\n}\n\nfunction SwitchList() {\n  const [checked, setChecked] = React.useState(false)\n  return (\n    <>\n      <Block title=\"基础用法\">\n        <BasicSwitch checked={checked} onChange={setChecked} />\n      </Block>\n      <Block title=\"禁用状态\">\n        <DisabledSwitch checked={checked} />\n      </Block>\n      <Block title=\"加载状态\">\n        <LoadingSwitch checked={checked} />\n      </Block>\n    </>\n  )\n}\n\nexport default function SwitchDemo() {\n  return (\n    <Page title=\"Switch 开关\" className=\"switch-demo\">\n      <SwitchList />\n      <Block title=\"自定义大小\">\n        <Switch size=\"24\" />\n      </Block>\n      <Block title=\"自定义颜色\">\n        <Switch className=\"custom-color\" defaultChecked />\n      </Block>\n      <Block title=\"搭配单元格使用\" className=\"switch-with-cell\">\n        <Cell align=\"center\" title=\"标题\" extra={<Switch size=\"24\" />} />\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [],
       "docs": {
-        "zhCN": "# Switch 开关\n\n### 介绍\n\n用于在打开和关闭状态之间进行切换。\n\n### 引入\n\n```tsx\nimport { Switch } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过 `checked` 绑定开关的选中状态，`true` 表示开，`false` 表示关。\n\n```tsx\n<Switch />\n```\n\n### 禁用状态\n\n通过 `disabled` 属性来禁用开关，禁用状态下开关不可点击。\n\n```tsx\n<Switch disabled />\n```\n\n### 加载状态\n\n通过 `loading` 属性设置开关为加载状态，加载状态下开关不可点击。\n\n```tsx\n<Switch loading />\n```\n\n### 自定义大小\n\n通过 `size` 属性自定义开关的大小。\n\n```tsx\n<Switch size=\"24\" />\n```\n\n### 自定义颜色\n\n通过 `css` 设置打开与关闭时的背景色。\n\n```tsx\n<Switch className=\"custom-color\" />\n```\n\n```scss\n.custom-color {\n  --switch-background-color: #dcdee0;\n  --switch-checked-color: #ee0a24;\n}\n```\n\n### 搭配单元格使用\n\n```tsx\n<Cell align=\"center\" title=\"标题\" rightIcon={<Switch size=\"24\" />} />\n```\n\n## API\n\n### Props\n\n| 参数           | 说明                     | 类型               | 默认值    |\n| -------------- | ------------------------ | ------------------ | --------- |\n| defaultChecked | 默认开关选中状态             | _boolean_              | `false`   |\n| checked        | 开关选中状态             | _boolean_              | `false`   |\n| loading        | 是否为加载状态           | _boolean_          | `false`   |\n| disabled       | 是否为禁用状态           | _boolean_          | `false`   |\n| size           | 开关尺寸，默认单位为`px` | _number \\| string_ | `30px`    |\n\n### Events\n\n| 事件名 | 说明               | 回调参数            |\n| ------ | ------------------ | ------------------- |\n| onChange | 开关状态切换时触发 | _value: boolean_        |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                              | 默认值                                                                                                                                              | 描述  |\n|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-----|\n| switch-size                     | _30px * $hd_                                                                                                                                     | -   |\n| switch-font-size                | _var(--switch-size)_                                                                                                                             | -   |\n| switch-width                    | _2em_                                                                                                                                            | -   |\n| switch-height                   | _1em_                                                                                                                                            | -   |\n| switch-border                   | _var(--border-width-base) solid rgba(0, 0, 0, 0.1)_                                                                                              | -   |\n| switch-background-color         | _var(--white)_                                                                                                                                   | -   |\n| switch-transition-duration      | _var(--animation-duration-base)_                                                                                                                 | -   |\n| switch-node-size                | _1em_                                                                                                                                            | -   |\n| switch-node-width               | _var(--switch-node-size)_                                                                                                                        | -   |\n| switch-node-height              | _var(--switch-node-size)_                                                                                                                        | -   |\n| switch-node-translate-x         | _translateX(calc(var(--switch-width) - var(--switch-node-size)))_                                                                                | -   |\n| switch-node-background-color    | _var(--white)_                                                                                                                                   | -   |\n| switch-node-box-shadow          | _0 3px * $hd 1px * $hd 0 rgba(0, 0, 0, 0.05), <br/>0 2px * $hd 2px * $hd 0 rgba(0, 0, 0, 0.1),<br/> 0 3px * $hd 3px * $hd 0 rgba(0, 0, 0, 0.05)_ | -   |\n| switch-checked-color            | _var(var(--primary-color)_                                                                                                                       | -   |\n| switch-checked-background-color | _var(--switch-checked-color)_                                                                                                                    | -   |\n| switch-loading-color            | _var(--switch-checked-color)_                                                                                                                    | -   |\n| switch-disabled-opacity         | _var(--disabled-opacity)_                                                                                                                        | -   |\n"
+        "zhCN": "# Switch 开关\n\n### 介绍\n\n用于在打开和关闭状态之间进行切换。\n\n### 引入\n\n```tsx\nimport { Switch } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过 `checked` 绑定开关的选中状态，`true` 表示开，`false` 表示关。\n\n```tsx\n<Switch />\n```\n\n### 禁用状态\n\n通过 `disabled` 属性来禁用开关，禁用状态下开关不可点击。\n\n```tsx\n<Switch disabled />\n```\n\n### 加载状态\n\n通过 `loading` 属性设置开关为加载状态，加载状态下开关不可点击。\n\n```tsx\n<Switch loading />\n```\n\n### 自定义大小\n\n通过 `size` 属性自定义开关的大小。\n\n```tsx\n<Switch size=\"24\" />\n```\n\n### 自定义颜色\n\n通过 `css` 设置打开与关闭时的背景色。\n\n```tsx\n<Switch className=\"custom-color\" />\n```\n\n```scss\n.custom-color {\n  --switch-background-color: #dcdee0;\n  --switch-checked-color: #ee0a24;\n}\n```\n\n### 搭配单元格使用\n\n```tsx\n<Cell align=\"center\" title=\"标题\" extra={<Switch size=\"24\" />} />\n```\n\n## API\n\n### Props\n\n| 参数           | 说明                     | 类型               | 默认值    |\n| -------------- | ------------------------ | ------------------ | --------- |\n| defaultChecked | 默认开关选中状态             | _boolean_              | `false`   |\n| checked        | 开关选中状态             | _boolean_              | `false`   |\n| loading        | 是否为加载状态           | _boolean_          | `false`   |\n| disabled       | 是否为禁用状态           | _boolean_          | `false`   |\n| size           | 开关尺寸，默认单位为`px` | _number \\| string_ | `30px`    |\n\n### Events\n\n| 事件名 | 说明               | 回调参数            |\n| ------ | ------------------ | ------------------- |\n| onChange | 开关状态切换时触发 | _value: boolean_        |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                              | 默认值                                                                                                                                              | 描述  |\n|---------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|-----|\n| switch-size                     | _30px * $hd_                                                                                                                                     | -   |\n| switch-font-size                | _var(--switch-size)_                                                                                                                             | -   |\n| switch-width                    | _2em_                                                                                                                                            | -   |\n| switch-height                   | _1em_                                                                                                                                            | -   |\n| switch-border                   | _var(--border-width-base) solid rgba(0, 0, 0, 0.1)_                                                                                              | -   |\n| switch-background-color         | _var(--white)_                                                                                                                                   | -   |\n| switch-transition-duration      | _var(--animation-duration-base)_                                                                                                                 | -   |\n| switch-node-size                | _1em_                                                                                                                                            | -   |\n| switch-node-width               | _var(--switch-node-size)_                                                                                                                        | -   |\n| switch-node-height              | _var(--switch-node-size)_                                                                                                                        | -   |\n| switch-node-translate-x         | _translateX(calc(var(--switch-width) - var(--switch-node-size)))_                                                                                | -   |\n| switch-node-background-color    | _var(--white)_                                                                                                                                   | -   |\n| switch-node-box-shadow          | _0 3px * $hd 1px * $hd 0 rgba(0, 0, 0, 0.05), <br/>0 2px * $hd 2px * $hd 0 rgba(0, 0, 0, 0.1),<br/> 0 3px * $hd 3px * $hd 0 rgba(0, 0, 0, 0.05)_ | -   |\n| switch-checked-color            | _var(var(--primary-color)_                                                                                                                       | -   |\n| switch-checked-background-color | _var(--switch-checked-color)_                                                                                                                    | -   |\n| switch-loading-color            | _var(--switch-checked-color)_                                                                                                                    | -   |\n| switch-disabled-opacity         | _var(--disabled-opacity)_                                                                                                                        | -   |\n"
       },
       "source": {
         "docs": "packages/core/src/switch/README.md",
