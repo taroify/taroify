@@ -52,7 +52,7 @@
   },
   "resolutions": {
     "@types/minimatch": "3.0.5",
-    "@types/react": "18.2.0",
+    "@types/react": "18.3.31",
     "enhanced-resolve": "5.22.2"
   },
   "dependencies": {}
