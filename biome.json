@@ -2,7 +2,7 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["problems", "packages/demo", "site/theme/styles/taroify-core.css"]
+    "ignore": ["packages/demo", "packages/cli/meta", "site/theme/styles/taroify-core.css"]
   },
   "vcs": {
     "enabled": true,

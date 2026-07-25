@@ -8,7 +8,7 @@ const {
 } = require("./typescript")
 const { watchRspressDocs } = require("./readme")
 const { buildScss, symlinkScssFiles, watchScss, watchScssSymlink } = require("./scss")
-const { createBundle, cleanBundle } = require("./bundle")
+const { createBundle, cleanBundle, copyBundleDirectory } = require("./bundle")
 const { detectPort, serveDemo, serveSite } = require("./serve")
 const { copyFontFiles, symlinkFontFiles, watchFontFilesSymlink } = require("./font")
 const { buildH5, buildSite, copyH5, copySite, copyGitIgnore } = require("./www")
@@ -40,6 +40,7 @@ const createBundles = parallel(
   createBundle("hooks"),
   createBundle("core"),
   createBundle("commerce"),
+  createBundle("cli"),
 )
 
 exports.createBundles = createBundles
@@ -85,6 +86,19 @@ exports.buildPackages = series(
   buildTypescript("hooks"),
   buildTypescript("core"),
   buildTypescript("commerce"),
+)
+
+exports.buildCli = series(
+  createBundle("cli"),
+  task("npm run build", {
+    cwd: "packages/cli",
+    stdio: "inherit",
+  }),
+  parallel(
+    copyBundleDirectory("cli", "dist"),
+    copyBundleDirectory("cli", "data"),
+    copyBundleDirectory("cli", "skills"),
+  ),
 )
 
 exports.buildWww = series(

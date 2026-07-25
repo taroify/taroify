@@ -174,7 +174,7 @@ html .rp-nav {
   font-weight: 650;
 }
 
-.rp-doc-layout__doc-container {
+html .rp-doc-layout__doc-container {
   padding-top: 62px;
   padding-bottom: 100px;
 }
@@ -844,6 +844,10 @@ html .rp-nav {
 }
 
 @media (min-width: 1280px) {
+  html:root {
+    --rp-content-padding-x: 40px;
+  }
+
   .rp-doc-layout__container .rp-doc-layout__doc {
     max-width: none;
   }
@@ -977,8 +981,8 @@ html .rp-nav {
 
 @media (min-width: 1480px) {
   .rp-doc-layout__outline:not(:has(> .tf-simulator-rail)) {
-    width: 380px;
-    flex: 0 0 380px;
+    width: 300px;
+    flex: 0 0 300px;
     margin-right: 0;
   }
 }

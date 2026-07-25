@@ -30,6 +30,26 @@ env:
   NODE_VERSION: "20.19.0"
 
 jobs:
+  cli:
+    if: github.repository == 'taroify/taroify'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Check catalog
+        run: yarn run check:catalog
+
+      - name: Test CLI and MCP
+        run: yarn run test:cli
+
   lint:
     if: github.repository == 'taroify/taroify'
     runs-on: ubuntu-latest
@@ -72,3 +92,24 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage
+
+  site:
+    if: github.repository == 'taroify/taroify'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install
+        run: |
+          yarn install --frozen-lockfile --ignore-scripts
+          yarn --cwd site install --frozen-lockfile --ignore-scripts
+
+      - name: Build documentation site
+        run: yarn --cwd site site:build
+        env:
+          CHANGELOG_STRICT: "false"

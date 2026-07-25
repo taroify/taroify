@@ -26,9 +26,14 @@ export const authoredPages = [
     description: "查看 Taroify 各版本的新特性、问题修复与变更记录。",
   },
   {
+    source: "cli/index.md",
+    title: "CLI",
+    description: "使用 Taroify CLI 离线查询组件、API、示例与主题变量。",
+  },
+  {
     source: "mcp/index.md",
     title: "MCP",
-    description: "通过 Taroify MCP 为 AI 工具提供组件和 API 文档上下文。",
+    description: "通过 Taroify MCP 为 AI 工具提供只读组件知识、资源与提示词。",
   },
   {
     source: "hooks/index.md",
@@ -54,9 +59,9 @@ export const primaryNavigation = [
     activeMatch: "^/hooks/",
   },
   {
-    text: "MCP",
-    link: "/mcp/",
-    activeMatch: "^/mcp/",
+    text: "AI 工具",
+    link: "/cli/",
+    activeMatch: "^/(cli|mcp)/",
   },
   {
     text: "React Vant",
