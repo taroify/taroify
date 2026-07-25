@@ -3283,6 +3283,46 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
+"@taroify/commerce@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/commerce/-/commerce-1.0.1.tgz#834508c7d9c813726928196c44a81f89bc499005"
+  integrity sha512-ZKaD69jZBbCPR0Rx0oRI1CgYB5YBJNHYzN6THw+8EMmcsZo2rmy/hvKI4xHIQ78jst9lL1bpohxfD1ndDTsr+w==
+  dependencies:
+    "@taroify/core" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/core@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/core/-/core-1.0.1.tgz#428414b65e63910c1af0557fbb84d4770a89bdce"
+  integrity sha512-EIDnFeYBD6GoZ8SC42b2zinmvRS2yNv07ih7VqGSr+z20bdSLedPnsBp4uZ8yHtLhYVvGiFedNy2JGFYVhpcvw==
+  dependencies:
+    "@taroify/hooks" "^1.0.1"
+    "@taroify/icons" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    promise "^8.1.0"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/hooks@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/hooks/-/hooks-1.0.1.tgz#41443344108f0fa620ac3a4830679c0745ad2890"
+  integrity sha512-h5IkhAWGmj9F2yV6LLHUPtsOuepV23cltcMNvIdVfalnDLpv+/x7j3cpHlCkZh2JpToAdwTxFFMI+EgZT/dXBA==
+  dependencies:
+    "@vant/area-data" "^1.2.1"
+
+"@taroify/icons@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/icons/-/icons-1.0.1.tgz#963d131bc2ef60158d8391df8dee62e1903889c9"
+  integrity sha512-7b4F25MiCAZGlD4qgWtTz8u6VBR3kLscs/vBzZ0PlRK37I3IOXlsjsCHvnVEPxBftevKRl5G2GkvhfOkNVf6TA==
+  dependencies:
+    classnames "^2.2.6"
+
 "@tarojs/api@3.6.23":
   version "3.6.23"
   resolved "https://registry.yarnpkg.com/@tarojs/api/-/api-3.6.23.tgz#f9eba394c27d915b081e942e9344c60f2be844d6"
@@ -4094,17 +4134,12 @@
   dependencies:
     undici-types "~8.3.0"
 
-"@types/node@^14.14.25", "@types/node@^14.18.63":
-  version "14.18.63"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.63.tgz#1788fa8da838dbb5f9ea994b834278205db6ca2b"
-  integrity sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==
-
-"@types/node@^20.19.9":
-  version "20.19.43"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.19.43.tgz#fcecf580ba42a0db55cf404c372c97973c376c97"
-  integrity sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==
+"@types/node@^24.0.0":
+  version "24.13.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.13.3.tgz#49f18bd3c647866dcda51a0756c145e14590ce16"
+  integrity sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==
   dependencies:
-    undici-types "~6.21.0"
+    undici-types "~7.18.0"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.4"
@@ -20012,10 +20047,10 @@ undertaker@^1.2.1:
     object.reduce "^1.0.0"
     undertaker-registry "^1.0.0"
 
-undici-types@~6.21.0:
-  version "6.21.0"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.21.0.tgz#691d00af3909be93a7faa13be61b3a5b50ef12cb"
-  integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
+undici-types@~7.18.0:
+  version "7.18.2"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.18.2.tgz#29357a89e7b7ca4aef3bf0fd3fd0cd73884229e9"
+  integrity sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==
 
 undici-types@~8.3.0:
   version "8.3.0"
