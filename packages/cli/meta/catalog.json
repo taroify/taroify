@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 204,
-    "demos": 454,
+    "demos": 456,
     "componentTokens": 797,
     "globalTokens": 60
   },
@@ -1658,6 +1658,13 @@
                 "extra": []
               },
               {
+                "name": "src",
+                "description": "图片图标地址",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
                 "name": "classPrefix",
                 "description": "类名前缀，用于使用自定义图标",
                 "type": "string",
@@ -1695,30 +1702,36 @@
         },
         {
           "id": "demo2",
+          "title": "图片图标",
+          "language": "tsx",
+          "code": "import { Icon } from \"@taroify/icons\"\n\n<Icon src=\"https://example.com/icon.png\" />\n<Icon src=\"https://example.com/icon.png\" size={40} />"
+        },
+        {
+          "id": "demo3",
           "title": "徽标提示",
           "language": "tsx",
           "code": "<Badge dot>\n  <ChatOutlined />\n</Badge>\n\n<Badge content=\"9\">\n  <ChatOutlined />\n</Badge>\n\n<Badge content={100} max={99}>\n  <ChatOutlined />\n</Badge>"
         },
         {
-          "id": "demo3",
+          "id": "demo4",
           "title": "图标颜色",
           "language": "tsx",
           "code": "<CartOutlined style={{ color: \"#1989fa\" }} />\n<FireOutlined style={{ color: \"#ee0a24\" }} />"
         },
         {
-          "id": "demo4",
+          "id": "demo5",
           "title": "图标大小",
           "language": "tsx",
           "code": "<!-- 不指定单位，默认使用 px -->\n<ChatOutlined size=\"40\" />\n<!-- 指定使用 rem 单位 -->\n<ChatOutlined size=\"3rem\" />"
         },
         {
-          "id": "demo5",
+          "id": "demo6",
           "title": "自定义图标",
           "language": "css",
           "code": "/* 引入第三方或自定义的字体图标样式 */\n@font-face {\n  font-family: \"my-icon\";\n  src: url(\"./my-icon.ttf\") format(\"truetype\");\n}\n\n.my-icon {\n  font-family: \"my-icon\";\n}\n\n.my-icon-extra::before {\n  content: \"\\e626\";\n}"
         },
         {
-          "id": "demo6",
+          "id": "demo7",
           "title": "自定义图标",
           "language": "tsx",
           "code": "import { Icon } from \"@taroify/icons\"\n<!-- 通过 classPrefix 指定类名为 my-icon -->\n<Icon classPrefix=\"my-icon\" name=\"extra\" />"
@@ -1727,7 +1740,7 @@
       "demoPage": "import { Badge, Flex, Notify, Tabs } from \"@taroify/core\"\nimport { inBrowser } from \"@taroify/core/utils/base\"\nimport * as icons from \"@taroify/icons\"\nimport { CartOutlined, ChatOutlined, FireOutlined, Icon } from \"@taroify/icons\"\nimport names from \"@taroify/icons/van/names\"\nimport { View } from \"@tarojs/components\"\nimport * as _ from \"lodash\"\nimport { createElement, useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\n// from https://30secondsofcode.org\nfunction copyToClipboard(str: string) {\n  const el = document.createElement(\"textarea\")\n  el.value = str\n  el.setAttribute(\"readonly\", \"\")\n  el.style.position = \"absolute\"\n  el.style.left = \"-9999px\"\n  document.body.appendChild(el)\n\n  const selection = document.getSelection()\n\n  if (!selection) {\n    return\n  }\n\n  const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false\n\n  el.select()\n  document.execCommand(\"copy\")\n  document.body.removeChild(el)\n\n  if (selected) {\n    selection.removeAllRanges()\n    selection.addRange(selected)\n  }\n}\n\nfunction convertIconComponentName(name: string) {\n  const isOutline = _.endsWith(name, \"-o\")\n  name = isOutline ? name.substring(0, _.size(name) - 2) + \"-outlined\" : name\n  return _.upperFirst(_.camelCase(name))\n}\n\ninterface VanIconProps {\n  name: string\n\n  onClick?(name: string): void\n}\n\nfunction VanIcon(props: VanIconProps) {\n  const { name, onClick } = props\n  const iconName = convertIconComponentName(name)\n  return (\n    <Flex.Item span={6} onClick={() => onClick?.(iconName)}>\n      {\n        // @ts-ignore\n        createElement(icons[iconName])\n      }\n      <View className=\"icon-name\">{iconName}</View>\n    </Flex.Item>\n  )\n}\n\nexport default function IconDemo() {\n  const [tab, setTab] = useState(0)\n  const [open, setOpen] = useState(false)\n  const [notify, setNotify] = useState(\"\")\n\n  function copyIcon(name: string) {\n    if (inBrowser) {\n      copyToClipboard(`<${name} />`)\n      setNotify(`复制成功：<${name} />`)\n      setOpen(true)\n    }\n  }\n\n  return (\n    <Page title=\"Icon 图标\" className=\"icon-demo\">\n      <Notify\n        className=\"icon-demo-notify\"\n        duration={1500}\n        color=\"success\"\n        open={open}\n        onClose={setOpen}\n      >\n        {notify}\n      </Notify>\n      <Tabs value={tab} lazyRender={false} onChange={setTab}>\n        <Tabs.TabPane title=\"用法示例\">\n          <Block title=\"基础用法\">\n            <Flex>\n              <Flex.Item span={6}>\n                <ChatOutlined />\n              </Flex.Item>\n              <Flex.Item span={6}>{createElement(icons.ChatOutlined)}</Flex.Item>\n            </Flex>\n          </Block>\n          <Block title=\"徽标提示\">\n            <Flex>\n              <Flex.Item span={6}>\n                <Badge dot>\n                  <ChatOutlined />\n                </Badge>\n              </Flex.Item>\n              <Flex.Item span={6}>\n                <Badge content=\"9\">\n                  <ChatOutlined />\n                </Badge>\n              </Flex.Item>\n              <Flex.Item span={6}>\n                <Badge content={100} max={99}>\n                  <ChatOutlined />\n                </Badge>\n              </Flex.Item>\n            </Flex>\n          </Block>\n          <Block title=\"图标颜色\">\n            <Flex>\n              <Flex.Item span={6}>\n                <CartOutlined style={{ color: \"#1989fa\" }} />\n              </Flex.Item>\n              <Flex.Item span={6}>\n                <FireOutlined style={{ color: \"#ee0a24\" }} />\n              </Flex.Item>\n            </Flex>\n          </Block>\n          <Block title=\"图标大小\">\n            <Flex>\n              <Flex.Item span={6}>\n                <ChatOutlined size=\"40\" />\n              </Flex.Item>\n              <Flex.Item span={6}>\n                <ChatOutlined size=\"3rem\" />\n              </Flex.Item>\n            </Flex>\n          </Block>\n          {/* <Block title=\"自定义图标\">\n            <Flex>\n              <Flex.Item span={6}>\n                <Icon name=\"0-square\" classPrefix=\"bi\" size=\"40\" />\n              </Flex.Item>\n              <Flex.Item span={6}>\n                <Icon name=\"0-square\" classPrefix=\"bi\" size=\"3rem\" />\n              </Flex.Item>\n            </Flex>\n          </Block> */}\n        </Tabs.TabPane>\n        <Tabs.TabPane title=\"基础图标\">\n          <Flex wrap=\"wrap\">\n            {\n              //\n              _.map(names.basic, (name) => (\n                <VanIcon key={name} name={name} onClick={copyIcon} />\n              ))\n            }\n          </Flex>\n        </Tabs.TabPane>\n        <Tabs.TabPane title=\"线框风格\">\n          <Flex wrap=\"wrap\">\n            {\n              //\n              _.map(names.outlined, (name) => (\n                <VanIcon key={name} name={name} onClick={copyIcon} />\n              ))\n            }\n          </Flex>\n        </Tabs.TabPane>\n        <Tabs.TabPane title=\"实底风格\">\n          <Flex wrap=\"wrap\">\n            {\n              //\n              _.map(names.filled, (name) => (\n                <VanIcon key={name} name={name} onClick={copyIcon} />\n              ))\n            }\n          </Flex>\n        </Tabs.TabPane>\n      </Tabs>\n    </Page>\n  )\n}\n",
       "tokens": [],
       "docs": {
-        "zhCN": "# Icon 图标\n\n### 介绍\n\n基于字体的图标集，可以通过 Icon 组件使用，也可以在其他组件中通过 `icon` 属性引用。\n\n### 引入\n\n```tsx\nimport { ChatOutlined } from \"@taroify/icons\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过导入的方式引用需要使用的图标，Taroify 内置了一套 Vant 图标库（见右侧示例），可以直接复制对应的名称来使用。\n\n```tsx\n<ChatOutlined />\n```\n\n### 徽标提示\n\n与 Badge 组件组合使用，会在图标右上角展示相应的徽标。\n\n```tsx\n<Badge dot>\n  <ChatOutlined />\n</Badge>\n\n<Badge content=\"9\">\n  <ChatOutlined />\n</Badge>\n\n<Badge content={100} max={99}>\n  <ChatOutlined />\n</Badge>\n```\n\n### 图标颜色\n\n通过 `style` 属性来设置图标的颜色。\n\n```tsx\n<CartOutlined style={{ color: \"#1989fa\" }} />\n<FireOutlined style={{ color: \"#ee0a24\" }} />\n```\n\n### 图标大小\n\n通过 `size` 属性来设置图标的尺寸大小，可以指定任意 CSS 单位。\n\n```tsx\n<!-- 不指定单位，默认使用 px -->\n<ChatOutlined size=\"40\" />\n<!-- 指定使用 rem 单位 -->\n<ChatOutlined size=\"3rem\" />\n```\n\n### 自定义图标\n\n如果需要在现有 Icon 的基础上使用更多图标，可以引入第三方 iconfont 对应的字体文件和 CSS 文件，之后就可以在 Icon 组件中直接使用。\n\n请升级 `taroify` 到 >= `v0.3.0-alpha.0` 版本来使用该特性。\n\n```css\n/* 引入第三方或自定义的字体图标样式 */\n@font-face {\n  font-family: \"my-icon\";\n  src: url(\"./my-icon.ttf\") format(\"truetype\");\n}\n\n.my-icon {\n  font-family: \"my-icon\";\n}\n\n.my-icon-extra::before {\n  content: \"\\e626\";\n}\n```\n\n```tsx\nimport { Icon } from \"@taroify/icons\"\n<!-- 通过 classPrefix 指定类名为 my-icon -->\n<Icon classPrefix=\"my-icon\" name=\"extra\" />\n```\n\n## API\n\n### Props\n\n| 参数        | 说明                                       | 类型               | 默认值     |\n| ----------- | ------------------------------------------ | ------------------ | ---------- |\n| color       | 图标颜色                                   | _string_           | `inherit`  |\n| size        | 图标大小，如 `20px` `2em`，默认单位为 `px` | _number \\| string_ | `inherit`  |\n| classPrefix | 类名前缀，用于使用自定义图标               | _string_           | `van-icon` |\n\n### Events\n\n| 事件名  | 说明           | 回调参数             |\n| ------- | -------------- | -------------------- |\n| onClick | 点击图标时触发 | _event: ITouchEvent_ |\n"
+        "zhCN": "# Icon 图标\n\n### 介绍\n\n基于字体的图标集，可以通过 Icon 组件使用，也可以在其他组件中通过 `icon` 属性引用。\n\n### 引入\n\n```tsx\nimport { ChatOutlined } from \"@taroify/icons\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过导入的方式引用需要使用的图标，Taroify 内置了一套 Vant 图标库（见右侧示例），可以直接复制对应的名称来使用。\n\n```tsx\n<ChatOutlined />\n```\n\n### 图片图标\n\n通过 `src` 属性可以将图片作为图标，图片尺寸会跟随图标的 `size` 属性。\n\n```tsx\nimport { Icon } from \"@taroify/icons\"\n\n<Icon src=\"https://example.com/icon.png\" />\n<Icon src=\"https://example.com/icon.png\" size={40} />\n```\n\n### 徽标提示\n\n与 Badge 组件组合使用，会在图标右上角展示相应的徽标。\n\n```tsx\n<Badge dot>\n  <ChatOutlined />\n</Badge>\n\n<Badge content=\"9\">\n  <ChatOutlined />\n</Badge>\n\n<Badge content={100} max={99}>\n  <ChatOutlined />\n</Badge>\n```\n\n### 图标颜色\n\n通过 `style` 属性来设置图标的颜色。\n\n```tsx\n<CartOutlined style={{ color: \"#1989fa\" }} />\n<FireOutlined style={{ color: \"#ee0a24\" }} />\n```\n\n### 图标大小\n\n通过 `size` 属性来设置图标的尺寸大小，可以指定任意 CSS 单位。\n\n```tsx\n<!-- 不指定单位，默认使用 px -->\n<ChatOutlined size=\"40\" />\n<!-- 指定使用 rem 单位 -->\n<ChatOutlined size=\"3rem\" />\n```\n\n### 自定义图标\n\n如果需要在现有 Icon 的基础上使用更多图标，可以引入第三方 iconfont 对应的字体文件和 CSS 文件，之后就可以在 Icon 组件中直接使用。\n\n请升级 `taroify` 到 >= `v0.3.0-alpha.0` 版本来使用该特性。\n\n```css\n/* 引入第三方或自定义的字体图标样式 */\n@font-face {\n  font-family: \"my-icon\";\n  src: url(\"./my-icon.ttf\") format(\"truetype\");\n}\n\n.my-icon {\n  font-family: \"my-icon\";\n}\n\n.my-icon-extra::before {\n  content: \"\\e626\";\n}\n```\n\n```tsx\nimport { Icon } from \"@taroify/icons\"\n<!-- 通过 classPrefix 指定类名为 my-icon -->\n<Icon classPrefix=\"my-icon\" name=\"extra\" />\n```\n\n## API\n\n### Props\n\n| 参数        | 说明                                       | 类型               | 默认值     |\n| ----------- | ------------------------------------------ | ------------------ | ---------- |\n| color       | 图标颜色                                   | _string_           | `inherit`  |\n| size        | 图标大小，如 `20px` `2em`，默认单位为 `px` | _number \\| string_ | `inherit`  |\n| src         | 图片图标地址                               | _string_           | -          |\n| classPrefix | 类名前缀，用于使用自定义图标               | _string_           | `van-icon` |\n\n### Events\n\n| 事件名  | 说明           | 回调参数             |\n| ------- | -------------- | -------------------- |\n| onClick | 点击图标时触发 | _event: ITouchEvent_ |\n"
       },
       "source": {
         "docs": "packages/core/docs/icon/README.md",
@@ -2095,36 +2108,36 @@
             "rows": [
               {
                 "name": "gutter",
-                "description": "列元素之间的间距（单位为 px）",
-                "type": "number",
+                "description": "列元素之间的间距，数组第一项为水平间距、第二项为垂直间距（单位为 px）",
+                "type": "number | string | [number | string, number | string]",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "direction",
                 "description": "项目定位方向，可选值为 row row-reverse column column-reverse",
-                "type": "boolean",
+                "type": "FlexDirection",
                 "defaultValue": "row",
                 "extra": []
               },
               {
                 "name": "wrap",
                 "description": "子元素的换行方式，可选值为 nowrap wrap wrap-reverse",
-                "type": "boolean",
+                "type": "FlexWrap",
                 "defaultValue": "nowrap",
                 "extra": []
               },
               {
                 "name": "justify",
                 "description": "主轴对齐方式，可选值为 start end center space-around space-between",
-                "type": "string",
+                "type": "FlexJustify",
                 "defaultValue": "start",
                 "extra": []
               },
               {
                 "name": "align",
-                "description": "交叉轴对齐方式，可选值为 start center end baseline stretch",
-                "type": "string",
+                "description": "交叉轴对齐方式，可选值为 start center end baseline stretch initial",
+                "type": "FlexAlign",
                 "defaultValue": "start",
                 "extra": []
               }
@@ -2143,14 +2156,14 @@
               {
                 "name": "span",
                 "description": "列元素宽度",
-                "type": "number",
+                "type": "number | string",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "offset",
                 "description": "列元素偏移距离",
-                "type": "number",
+                "type": "number | string",
                 "defaultValue": "-",
                 "extra": []
               }
@@ -2173,15 +2186,21 @@
         },
         {
           "id": "demo3",
+          "title": "垂直间距",
+          "language": "tsx",
+          "code": "<Flex gutter={[20, 20]} wrap=\"wrap\">\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n</Flex>"
+        },
+        {
+          "id": "demo4",
           "title": "对齐方式",
           "language": "tsx",
           "code": "<!-- 居中 -->\n<Flex justify=\"center\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 右对齐 -->\n<Flex justify=\"end\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 两端对齐 -->\n<Flex justify=\"space-between\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 每个元素的两侧间隔相等 -->\n<Flex justify=\"space-around\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>"
         }
       ],
-      "demoPage": "import { Flex } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function FlexDemo() {\n  return (\n    <Page title=\"Flex 布局\" className=\"flex-demo\">\n      <Block title=\"基础用法\">\n        <Flex>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item span={4}>span: 4</Flex.Item>\n          <Flex.Item span={10} offset={4}>\n            offset: 4, span: 10\n          </Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item offset={12} span={12}>\n            offset: 12, span: 12\n          </Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"在列元素之间增加间距\">\n        <Flex gutter={12}>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"Flex 布局\">\n        <Flex justify=\"center\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"end\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-between\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-around\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Flex } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function FlexDemo() {\n  return (\n    <Page title=\"Flex 布局\" className=\"flex-demo\">\n      <Block title=\"基础用法\">\n        <Flex>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item span={4}>span: 4</Flex.Item>\n          <Flex.Item span={10} offset={4}>\n            offset: 4, span: 10\n          </Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item offset={12} span={12}>\n            offset: 12, span: 12\n          </Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"在列元素之间增加间距\">\n        <Flex gutter={12}>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"垂直间距\">\n        <Flex gutter={[12, 20]} wrap=\"wrap\">\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"Flex 布局\">\n        <Flex justify=\"center\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"end\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-between\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-around\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [],
       "docs": {
-        "zhCN": "# Layout 布局\n\n### 介绍\n\n`Flex` 组件是 CSS `flex` 布局的一个封装。\n\n### 引入\n\n```tsx\nimport { Flex } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Flex` 组件提供了 `24列栅格`，通过在 `Flex.Item` 上添加 `span` 属性设置列所占的宽度百分比。此外，添加 `offset` 属性可以设置列的偏移宽度，计算方式与 span 相同。\n\n```tsx\n<Flex>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item span={4}>span: 4</Flex.Item>\n  <Flex.Item span={10} offset={4}>\n    offset: 4, span: 10\n  </Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item offset={12} span={12}>\n    offset: 12, span: 12\n  </Flex.Item>\n</Flex>\n```\n\n### 设置列元素间距\n\n通过 `gutter` 属性可以设置列元素之间的间距，默认间距为 0。\n\n```tsx\n<Flex gutter={20}>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n```\n\n### 对齐方式\n\n通过 `justify` 属性可以设置主轴上内容的对齐方式，等价于 flex 布局中的 `justify-content` 属性。\n\n```tsx\n<!-- 居中 -->\n<Flex justify=\"center\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 右对齐 -->\n<Flex justify=\"end\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 两端对齐 -->\n<Flex justify=\"space-between\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 每个元素的两侧间隔相等 -->\n<Flex justify=\"space-around\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n```\n\n## API\n\n### Flex Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| gutter | 列元素之间的间距（单位为 px） | _number_ | - |\n| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse` | _boolean_ | `row` |\n| wrap | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse` | _boolean_ | `nowrap` |\n| justify | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _string_ | `start` |\n| align | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` | _string_ | `start` |\n\n### Flex.Item Props\n\n| 参数   | 说明           | 类型               | 默认值 |\n| ------ | -------------- | ------------------ | ------ |\n| span   | 列元素宽度     | _number_ | -      |\n| offset | 列元素偏移距离 | _number_ | -      |\n"
+        "zhCN": "# Layout 布局\n\n### 介绍\n\n`Flex` 组件是 CSS `flex` 布局的一个封装。\n\n### 引入\n\n```tsx\nimport { Flex } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Flex` 组件提供了 `24列栅格`，通过在 `Flex.Item` 上添加 `span` 属性设置列所占的宽度百分比。此外，添加 `offset` 属性可以设置列的偏移宽度，计算方式与 span 相同。\n\n```tsx\n<Flex>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item span={4}>span: 4</Flex.Item>\n  <Flex.Item span={10} offset={4}>\n    offset: 4, span: 10\n  </Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item offset={12} span={12}>\n    offset: 12, span: 12\n  </Flex.Item>\n</Flex>\n```\n\n### 设置列元素间距\n\n通过 `gutter` 属性可以设置列元素之间的间距，默认间距为 0。\n\n```tsx\n<Flex gutter={20}>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n```\n\n### 垂直间距 <Tag tag=\"v1.0.2\" />\n\n通过数组形式设置 `[水平间距, 垂直间距]`。`Flex` 默认不换行，使用垂直间距时需要同时设置 `wrap=\"wrap\"`。\n\n```tsx\n<Flex gutter={[20, 20]} wrap=\"wrap\">\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n</Flex>\n```\n\n### 对齐方式\n\n通过 `justify` 属性可以设置主轴上内容的对齐方式，等价于 flex 布局中的 `justify-content` 属性。\n\n```tsx\n<!-- 居中 -->\n<Flex justify=\"center\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 右对齐 -->\n<Flex justify=\"end\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 两端对齐 -->\n<Flex justify=\"space-between\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 每个元素的两侧间隔相等 -->\n<Flex justify=\"space-around\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n```\n\n## API\n\n### Flex Props\n\n| 参数      | 说明                                                                             | 类型                                               | 默认值   |\n| --------- | -------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |\n| gutter    | 列元素之间的间距，数组第一项为水平间距、第二项为垂直间距（单位为 px）           | _number \\| string \\| [number \\| string, number \\| string]_ | -        |\n| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse`            | _FlexDirection_                                    | `row`    |\n| wrap      | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                       | _FlexWrap_                                         | `nowrap` |\n| justify   | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between`     | _FlexJustify_                                      | `start`  |\n| align     | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` `initial`   | _FlexAlign_                                        | `start`  |\n\n### Flex.Item Props\n\n| 参数   | 说明           | 类型               | 默认值 |\n| ------ | -------------- | ------------------ | ------ |\n| span   | 列元素宽度     | _number \\| string_ | -      |\n| offset | 列元素偏移距离 | _number \\| string_ | -      |\n\n### 类型定义\n\n组件导出以下类型定义：\n\n```tsx\nimport type {\n  FlexAlign,\n  FlexDirection,\n  FlexGutter,\n  FlexGutterValue,\n  FlexItemProps,\n  FlexJustify,\n  FlexProps,\n  FlexWrap,\n} from \"@taroify/core\"\n```\n"
       },
       "source": {
         "docs": "packages/core/src/flex/README.md",

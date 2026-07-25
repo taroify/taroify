@@ -11,6 +11,16 @@ export type {
 export { default as Col } from "./col"
 export { default as Row } from "./row"
 export { default as Flex } from "./flex"
+export type {
+  FlexAlign,
+  FlexDirection,
+  FlexGutter,
+  FlexGutterValue,
+  FlexItemProps,
+  FlexJustify,
+  FlexProps,
+  FlexWrap,
+} from "./flex"
 export { default as Image } from "./image"
 export type {
   ImageErrorEvent,

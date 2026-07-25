@@ -1412,6 +1412,12 @@
   display: inline-block;
 }
 
+.taroify-icon__image {
+  display: block;
+  width: 1em;
+  height: 1em;
+}
+
 .van-icon-arrow-double-left:before {
   content: "\e653";
 }

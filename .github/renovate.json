@@ -5,6 +5,11 @@
   "ignorePaths": ["site/**"],
   "packageRules": [
     {
+      "matchPackageNames": ["@testing-library/**"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "matchPackagePatterns": ["^@tarojs"],
       "enabled": false
     }

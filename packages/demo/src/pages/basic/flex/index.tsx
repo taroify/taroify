@@ -31,6 +31,14 @@ export default function FlexDemo() {
           <Flex.Item span={8}>span: 8</Flex.Item>
         </Flex>
       </Block>
+      <Block title="垂直间距">
+        <Flex gutter={[12, 20]} wrap="wrap">
+          <Flex.Item span={12}>span: 12</Flex.Item>
+          <Flex.Item span={12}>span: 12</Flex.Item>
+          <Flex.Item span={12}>span: 12</Flex.Item>
+          <Flex.Item span={12}>span: 12</Flex.Item>
+        </Flex>
+      </Block>
       <Block title="Flex 布局">
         <Flex justify="center">
           <Flex.Item span={6}>span: 6</Flex.Item>

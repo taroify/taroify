@@ -23,13 +23,9 @@ function useFlexGutter(gutter?: FlexGutter): [undefined | number, undefined | nu
       return [undefined, undefined]
     }
 
-    if (_.isNumber(gutter)) {
-      return [gutter, gutter]
-    }
-
-    if (_.isString(gutter)) {
+    if (_.isNumber(gutter) || _.isString(gutter)) {
       const gutterNumber = _.toNumber(gutter)
-      return [gutterNumber, gutterNumber]
+      return [gutterNumber, undefined]
     }
 
     if (_.isArray(gutter)) {
@@ -39,6 +35,39 @@ function useFlexGutter(gutter?: FlexGutter): [undefined | number, undefined | nu
 
     return [0, 0]
   }, [gutter])
+}
+
+function useVerticalGutterIndexes(
+  children: ReactNode,
+  verticalGutter: number | undefined,
+  wrap: FlexWrap,
+) {
+  return useMemo(() => {
+    if (!verticalGutter || verticalGutter < 0 || wrap === "nowrap") {
+      return []
+    }
+
+    const groups: number[][] = [[]]
+    let totalSpan = 0
+
+    Children.forEach(children, (item, index) => {
+      if (!isValidElement<{ span?: string | number }>(item)) {
+        return
+      }
+
+      const span = _.toNumber(item.props.span) || 0
+      totalSpan += span
+
+      if (totalSpan > 24) {
+        groups.push([index])
+        totalSpan = span
+      } else {
+        groups[groups.length - 1].push(index)
+      }
+    })
+
+    return groups.slice(0, -1).flat()
+  }, [children, verticalGutter, wrap])
 }
 
 export interface FlexProps extends ViewProps {
@@ -64,17 +93,8 @@ const Flex = forwardRef((props: FlexProps, ref) => {
     ...restProps
   } = props
   const gutter = useFlexGutter(gutterProp)
-  const [horizontalGutter] = gutter
-
-  const gutterStyle = useMemo<CSSProperties>(() => {
-    const gutterStyle: CSSProperties = {}
-    if (horizontalGutter) {
-      const averagePadding = _.toNumber(horizontalGutter) / 2
-      gutterStyle.marginLeft = addUnitPx(-averagePadding)
-      gutterStyle.marginRight = addUnitPx(-averagePadding)
-    }
-    return {}
-  }, [horizontalGutter])
+  const [horizontalGutter, verticalGutter] = gutter
+  const verticalGutterIndexes = useVerticalGutterIndexes(childrenProp, verticalGutter, wrap)
 
   const rowStyle = useMemo<CSSProperties>(() => {
     const rowStyle: CSSProperties = {}
@@ -130,7 +150,6 @@ const Flex = forwardRef((props: FlexProps, ref) => {
       )}
       style={{
         ...style,
-        ...gutterStyle,
         ...rowStyle,
       }}
       {...restProps}
@@ -138,6 +157,7 @@ const Flex = forwardRef((props: FlexProps, ref) => {
       <FlexContext.Provider
         value={{
           gutter,
+          verticalGutterIndexes,
         }}
         children={children}
       />
