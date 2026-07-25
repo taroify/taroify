@@ -1,4 +1,4 @@
 import { createVanIconComponent } from "./van"
 
-const Records = createVanIconComponent("records-o")
-export default Records
+const RecordsOutlined = createVanIconComponent("records-o")
+export default RecordsOutlined

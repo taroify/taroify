@@ -1,4 +1,4 @@
 import { createVanIconComponent } from "./van"
 
-const Discount = createVanIconComponent("discount-o")
-export default Discount
+const DiscountOutlined = createVanIconComponent("discount-o")
+export default DiscountOutlined

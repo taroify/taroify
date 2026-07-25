@@ -1,4 +1,4 @@
 import { createVanIconComponent } from "./van"
 
-const NewspaperOutlined = createVanIconComponent("newspaper")
-export default NewspaperOutlined
+const Newspaper = createVanIconComponent("newspaper")
+export default Newspaper

@@ -1,5 +1,5 @@
 // biome-ignore lint/style/useNodejsImportProtocol: <explanation>
-const { writeFileSync, appendFileSync, truncateSync } = require("fs")
+const { writeFileSync, appendFileSync } = require("fs")
 const _ = require("lodash")
 const names = require("../src/van/names")
 
@@ -36,7 +36,7 @@ function createIconTsxFile(name) {
   }
 }
 
-truncateSync("./src/index.ts")
+writeFileSync("./src/index.ts", 'export { VanIcon as Icon } from "./van"\n')
 
 _.forEach(names.basic, createIconTsxFile)
 _.forEach(names.outlined, createIconTsxFile)

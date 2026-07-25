@@ -20,6 +20,17 @@ import { ChatOutlined } from "@taroify/icons"
 <ChatOutlined />
 ```
 
+### 图片图标
+
+通过 `src` 属性可以将图片作为图标，图片尺寸会跟随图标的 `size` 属性。
+
+```tsx
+import { Icon } from "@taroify/icons"
+
+<Icon src="https://example.com/icon.png" />
+<Icon src="https://example.com/icon.png" size={40} />
+```
+
 ### 徽标提示
 
 与 Badge 组件组合使用，会在图标右上角展示相应的徽标。
@@ -94,6 +105,7 @@ import { Icon } from "@taroify/icons"
 | ----------- | ------------------------------------------ | ------------------ | ---------- |
 | color       | 图标颜色                                   | _string_           | `inherit`  |
 | size        | 图标大小，如 `20px` `2em`，默认单位为 `px` | _number \| string_ | `inherit`  |
+| src         | 图片图标地址                               | _string_           | -          |
 | classPrefix | 类名前缀，用于使用自定义图标               | _string_           | `van-icon` |
 
 ### Events
