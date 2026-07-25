@@ -49,6 +49,19 @@ import { Flex } from "@taroify/core"
 </Flex>
 ```
 
+### 垂直间距 <Tag tag="v1.0.2" />
+
+通过数组形式设置 `[水平间距, 垂直间距]`。`Flex` 默认不换行，使用垂直间距时需要同时设置 `wrap="wrap"`。
+
+```tsx
+<Flex gutter={[20, 20]} wrap="wrap">
+  <Flex.Item span={12}>span: 12</Flex.Item>
+  <Flex.Item span={12}>span: 12</Flex.Item>
+  <Flex.Item span={12}>span: 12</Flex.Item>
+  <Flex.Item span={12}>span: 12</Flex.Item>
+</Flex>
+```
+
 ### 对齐方式
 
 通过 `justify` 属性可以设置主轴上内容的对齐方式，等价于 flex 布局中的 `justify-content` 属性。
@@ -87,17 +100,34 @@ import { Flex } from "@taroify/core"
 
 ### Flex Props
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| gutter | 列元素之间的间距（单位为 px） | _number_ | - |
-| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse` | _boolean_ | `row` |
-| wrap | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse` | _boolean_ | `nowrap` |
-| justify | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _string_ | `start` |
-| align | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` | _string_ | `start` |
+| 参数      | 说明                                                                             | 类型                                               | 默认值   |
+| --------- | -------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |
+| gutter    | 列元素之间的间距，数组第一项为水平间距、第二项为垂直间距（单位为 px）           | _number \| string \| [number \| string, number \| string]_ | -        |
+| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse`            | _FlexDirection_                                    | `row`    |
+| wrap      | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                       | _FlexWrap_                                         | `nowrap` |
+| justify   | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between`     | _FlexJustify_                                      | `start`  |
+| align     | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` `initial`   | _FlexAlign_                                        | `start`  |
 
 ### Flex.Item Props
 
 | 参数   | 说明           | 类型               | 默认值 |
 | ------ | -------------- | ------------------ | ------ |
-| span   | 列元素宽度     | _number_ | -      |
-| offset | 列元素偏移距离 | _number_ | -      |
+| span   | 列元素宽度     | _number \| string_ | -      |
+| offset | 列元素偏移距离 | _number \| string_ | -      |
+
+### 类型定义
+
+组件导出以下类型定义：
+
+```tsx
+import type {
+  FlexAlign,
+  FlexDirection,
+  FlexGutter,
+  FlexGutterValue,
+  FlexItemProps,
+  FlexJustify,
+  FlexProps,
+  FlexWrap,
+} from "@taroify/core"
+```

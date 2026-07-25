@@ -10,22 +10,24 @@ import FlexContext from "./flex.context"
 export interface FlexItemProps extends ViewProps {
   __dataIndex__?: number
   style?: CSSProperties
-  span?: number
-  offset?: number
+  span?: string | number
+  offset?: string | number
   children?: ReactNode
 }
 
 export default function FlexItem(props: FlexItemProps) {
   const { __dataIndex__ = 0, className, style, span, offset, ...restProps } = props
-  const { gutter: gutters } = useContext(FlexContext)
-  const [horizontalGutter] = gutters
+  const { gutter: gutters, verticalGutterIndexes } = useContext(FlexContext)
+  const [horizontalGutter, verticalGutter] = gutters
 
-  // Horizontal gutter use padding
   const gutterStyle: CSSProperties = {}
   if (horizontalGutter) {
     const averagePadding = horizontalGutter / 2
     gutterStyle.paddingLeft = addUnitPx(averagePadding)
     gutterStyle.paddingRight = addUnitPx(averagePadding)
+  }
+  if (verticalGutter && verticalGutterIndexes.includes(__dataIndex__)) {
+    gutterStyle.marginBottom = addUnitPx(verticalGutter)
   }
 
   return (

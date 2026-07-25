@@ -3,7 +3,14 @@ import FlexComponent, { type FlexProps } from "./flex"
 import FlexItem from "./flex-item"
 
 export type { FlexProps } from "./flex"
-export type { FlexAlign, FlexDirection, FlexJustify } from "./flex.shared"
+export type {
+  FlexAlign,
+  FlexDirection,
+  FlexGutter,
+  FlexGutterValue,
+  FlexJustify,
+  FlexWrap,
+} from "./flex.shared"
 export type { FlexItemProps } from "./flex-item"
 
 interface FlexInterface extends ForwardRefExoticComponent<FlexProps> {

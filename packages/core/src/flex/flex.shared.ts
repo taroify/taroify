@@ -6,4 +6,6 @@ export type FlexJustify = "start" | "center" | "end" | "space-around" | "space-b
 
 export type FlexAlign = "start" | "center" | "end" | "baseline" | "stretch" | "initial"
 
-export type FlexGutter = number | [number, number]
+export type FlexGutterValue = string | number
+
+export type FlexGutter = FlexGutterValue | [FlexGutterValue, FlexGutterValue]

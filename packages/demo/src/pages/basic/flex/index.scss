@@ -1,9 +1,12 @@
 @import "~@taroify/core/styles/prefix";
 
 .flex-demo {
+  .#{$component-prefix}flex {
+    margin-bottom: 10px;
+  }
+
   .#{$component-prefix}flex-item {
     height: 30px * 2;
-    margin-bottom: 10px;
     font-size: 13px * 2;
     line-height: 30px * 2;
     color: #fff;

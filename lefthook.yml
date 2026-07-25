@@ -30,7 +30,7 @@ pre-commit:
       run: npx stylelint --fix {staged_files}
     catalog:
       priority: 8
-      run: yarn generate:catalog
+      run: node scripts/build-catalog.mjs
       stage_fixed: true
 
 prepare-commit-msg:
