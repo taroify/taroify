@@ -36,7 +36,7 @@
     "@testing-library/user-event": "^13.1.2",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^14.14.25",
+    "@types/node": "^24.0.0",
     "@types/raf": "^3.4.0",
     "@types/react-is": "^18.2.0",
     "@types/react-transition-group": "^4.4.1"
