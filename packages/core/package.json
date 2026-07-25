@@ -1,6 +1,6 @@
 {
   "name": "@taroify/~core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "private": "true",
   "keywords": ["ui", "taro", "react", "mobile", "frontend", "component", "components"],
@@ -21,8 +21,8 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@taroify/hooks": "^1.0.0",
-    "@taroify/icons": "^1.0.0",
+    "@taroify/hooks": "^1.0.1",
+    "@taroify/icons": "^1.0.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "promise": "^8.1.0",
