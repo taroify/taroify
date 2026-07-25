@@ -54,7 +54,7 @@
     "cross-env": "^7.0.3",
     "git-cz": "^4.9.0",
     "jest": "^26.6.0",
-    "jest-transform-css": "^2.1.0",
+    "jest-transform-css": "^6.0.0",
     "lefthook": "^1.10.10",
     "lerna": "^3.22.1",
     "mdast-util-from-markdown": "^2.0.3",
