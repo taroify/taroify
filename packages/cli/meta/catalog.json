@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 204,
-    "demos": 452,
+    "demos": 454,
     "componentTokens": 797,
     "globalTokens": 60
   },
@@ -1774,7 +1774,7 @@
               {
                 "name": "mode",
                 "description": "图片填充模式",
-                "type": "string",
+                "type": "ImageMode",
                 "defaultValue": "scaleToFill",
                 "extra": []
               },
@@ -1788,21 +1788,28 @@
               {
                 "name": "width",
                 "description": "宽度",
-                "type": "string|number",
+                "type": "string | number",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "height",
-                "description": "长度",
-                "type": "string|number",
+                "description": "高度",
+                "type": "string | number",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "shape",
                 "description": "图片形状 square rounded circle",
-                "type": "boolean",
+                "type": "ImageShape",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "radius",
+                "description": "圆角大小",
+                "type": "string | number",
                 "defaultValue": "-",
                 "extra": []
               },
@@ -1816,15 +1823,15 @@
               {
                 "name": "placeholder",
                 "description": "加载中提示",
-                "type": "ReactNode",
-                "defaultValue": "-",
+                "type": "boolean | ReactNode",
+                "defaultValue": "false",
                 "extra": []
               },
               {
                 "name": "fallback",
                 "description": "加载失败提示",
-                "type": "ReactNode",
-                "defaultValue": "-",
+                "type": "boolean | ReactNode",
+                "defaultValue": "false",
                 "extra": []
               }
             ]
@@ -1949,21 +1956,21 @@
               {
                 "name": "onClick",
                 "description": "点击图片时触发",
-                "type": "event: MouseEvent",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               },
               {
                 "name": "onLoad",
                 "description": "图片加载完毕时触发",
-                "type": "-",
+                "type": "event: ImageLoadEvent",
                 "defaultValue": "",
                 "extra": []
               },
               {
                 "name": "onError",
                 "description": "图片加载失败时触发",
-                "type": "-",
+                "type": "event: ImageErrorEvent",
                 "defaultValue": "",
                 "extra": []
               }
@@ -1988,22 +1995,34 @@
           "id": "demo3",
           "title": "圆形图片",
           "language": "tsx",
-          "code": "<Image shape=\"round\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />"
+          "code": "<Image shape=\"circle\" mode=\"scaleToFill\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image shape=\"circle\" mode=\"aspectFit\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image shape=\"circle\" mode=\"aspectFill\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />"
         },
         {
           "id": "demo4",
+          "title": "圆角图片",
+          "language": "tsx",
+          "code": "<Image shape=\"rounded\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image radius={24} width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />"
+        },
+        {
+          "id": "demo5",
           "title": "图片懒加载",
           "language": "tsx",
           "code": "<Image lazyLoad width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />"
         },
         {
-          "id": "demo5",
-          "title": "加载中，加载失败提示",
+          "id": "demo6",
+          "title": "加载中提示",
           "language": "tsx",
-          "code": "import { Photo, PhotoFail } from \"@taroify/icons\"\n\n<Image width={200} height={200} placeholder=\"加载中...\" />\n<Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n<Image width={200} height={200} src=\"error\" fallback={<PhotoFail />} />\n<Image width={200} height={200} placeholder={<Photo />} />"
+          "code": "import { Photo } from \"@taroify/icons\"\n\n<Image width={200} height={200} src=\"image.png\" placeholder />\n<Image width={200} height={200} src=\"image.png\" placeholder=\"加载中...\" />\n<Image width={200} height={200} src=\"image.png\" placeholder={<Photo />} />"
+        },
+        {
+          "id": "demo7",
+          "title": "加载失败提示",
+          "language": "tsx",
+          "code": "import { PhotoFail } from \"@taroify/icons\"\n\n<Image width={200} height={200} src=\"error\" fallback />\n<Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n<Image width={200} height={200} src=\"error\" fallback={<PhotoFail />} />"
         }
       ],
-      "demoPage": "import { Flex, Image } from \"@taroify/core\"\nimport { ImageMode } from \"@taroify/core/image\"\nimport { Photo, PhotoFail } from \"@taroify/icons\"\nimport { Text } from \"@tarojs/components\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function ImageDemo() {\n  const imageUrl = \"https://img01.yzcdn.cn/vant/cat.jpeg\"\n\n  const modes: ImageMode[] = [\n    \"scaleToFill\",\n    \"aspectFit\",\n    \"aspectFill\",\n    \"widthFix\",\n    \"heightFix\",\n    // \"top\",\n    // \"bottom\",\n    // \"center\",\n    // \"left\",\n    // \"right\",\n    // \"topLeft\",\n    // \"topRight\",\n    // \"bottomLeft\",\n    // \"bottomRight\",\n  ]\n\n  return (\n    <Page title=\"Image 图片\" className=\"image-demo\">\n      <Block title=\"基础用法\">\n        <Image width={200} height={200} src={imageUrl} />\n      </Block>\n      <Block title=\"填充模式\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          {modes.map((mode) => (\n            <Flex.Item span={8} key={mode}>\n              <Image width={200} height={200} mode={mode} src={imageUrl} />\n              <Text className=\"text\">{mode}</Text>\n            </Flex.Item>\n          ))}\n        </Flex>\n      </Block>\n      <Block title=\"圆形图片\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          {modes.map((mode) => (\n            <Flex.Item span={8} key={mode}>\n              <Image width={200} height={200} mode={mode} src={imageUrl} round />\n              <Text className=\"text\">{mode}</Text>\n            </Flex.Item>\n          ))}\n        </Flex>\n      </Block>\n      <Block title=\"加载中,加载失败提示\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} placeholder={<Photo />} />\n            <Text className=\"text\">加载提示</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} placeholder=\"加载中...\" />\n            <Text className=\"text\">加载提示</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} src=\"error\" fallback={<PhotoFail />} />\n            <Text className=\"text\">失败提示</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n            <Text className=\"text\">失败提示</Text>\n          </Flex.Item>\n        </Flex>\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Flex, Image } from \"@taroify/core\"\nimport type { ImageMode } from \"@taroify/core/image\"\nimport { Text } from \"@tarojs/components\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function ImageDemo() {\n  const imageUrl = \"https://img01.yzcdn.cn/vant/cat.jpeg\"\n\n  const modes: ImageMode[] = [\"scaleToFill\", \"aspectFit\", \"aspectFill\"]\n\n  return (\n    <Page title=\"Image 图片\" className=\"image-demo\">\n      <Block title=\"基础用法\">\n        <Image width={200} height={200} src={imageUrl} />\n      </Block>\n      <Block title=\"填充模式\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          {modes.map((mode) => (\n            <Flex.Item span={8} key={mode}>\n              <Image width={200} height={200} mode={mode} src={imageUrl} />\n              <Text className=\"text\">{mode}</Text>\n            </Flex.Item>\n          ))}\n        </Flex>\n      </Block>\n      <Block title=\"圆形图片\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          {modes.map((mode) => (\n            <Flex.Item span={8} key={mode}>\n              <Image\n                width={200}\n                height={200}\n                mode={mode}\n                src={imageUrl}\n                shape=\"circle\"\n              />\n              <Text className=\"text\">{mode}</Text>\n            </Flex.Item>\n          ))}\n        </Flex>\n      </Block>\n      <Block title=\"圆角图片\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          <Flex.Item span={8}>\n            <Image\n              width={200}\n              height={200}\n              mode=\"aspectFill\"\n              src={imageUrl}\n              shape=\"rounded\"\n            />\n            <Text className=\"text\">默认圆角</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} mode=\"aspectFill\" src={imageUrl} radius={24} />\n            <Text className=\"text\">自定义圆角</Text>\n          </Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"加载中提示\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} placeholder />\n            <Text className=\"text\">默认提示</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} placeholder=\"加载中...\" />\n            <Text className=\"text\">文字提示</Text>\n          </Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"加载失败提示\">\n        <Flex wrap=\"wrap\" gutter={20}>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} src=\"error\" fallback />\n            <Text className=\"text\">默认提示</Text>\n          </Flex.Item>\n          <Flex.Item span={8}>\n            <Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n            <Text className=\"text\">文字提示</Text>\n          </Flex.Item>\n        </Flex>\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--image-placeholder-color",
@@ -2037,7 +2056,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Image 图片\n\n### 介绍\n\n增强版的 taro Image 组件，提供多种图片填充模式，支持图片懒加载、加载中提示、加载失败提示。\n\n### 引入\n\n```tsx\nimport { Image } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n基础用法与原生 `img` 标签一致，可以设置 `src`、`alt` 等原生属性。<br>\n通过 `width` 和 `height` 设置图片大小，若未指定，会从 style 中读取`width`,`height`属性。 <br>\nwidth 和 height 若为 number, 会经过 `pxTransform` 转换\n\n```tsx\n<Image width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 填充模式\n\n通过 `mode` 属性可以设置图片填充模式，可选值见下方表格。\n\n```tsx\n<Image width={200} height={200} mode=\"scaleToFill\" src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 圆形图片\n\n通过 `round` 属性可以设置图片变圆。\n\n```tsx\n<Image shape=\"round\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 图片懒加载\n\n设置 `lazyLoad` 属性来开启图片懒加载。\n\n```tsx\n<Image lazyLoad width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 加载中，加载失败提示\n\n通过 `placeholder` 设置加载中提示，通过 `fallback`设置加载失败提示\n\n```tsx\nimport { Photo, PhotoFail } from \"@taroify/icons\"\n\n<Image width={200} height={200} placeholder=\"加载中...\" />\n<Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n<Image width={200} height={200} src=\"error\" fallback={<PhotoFail />} />\n<Image width={200} height={200} placeholder={<Photo />} />\n```\n\n## API\n\n### Props\n\n| 参数                    | 说明                                 | 类型             | 默认值        |\n| ----------------------- | ------------------------------------ | ---------------- | ------------- |\n| src                     | 图片链接                             | _string_         | -             |\n| mode                    | 图片填充模式                         | _string_         | `scaleToFill` |\n| alt                     | 替代文本                             | _string_         | -             |\n| width  | 宽度                                 | _string\\|number_ | -             |\n| height | 长度                                 | _string\\|number_ | -             |\n| shape                   | 图片形状 `square` `rounded` `circle` | _boolean_        | -             |\n| lazyLoad                | 是否开启图片懒加载                   | _boolean_        | `false`       |\n| placeholder             | 加载中提示                           | _ReactNode_      | -             |\n| fallback                | 加载失败提示                         | _ReactNode_      | -             |\n\n### Modes\n\n| 名称        | 含义                                                                                                                                 |\n| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |\n| scaleToFill | 缩放模式，不保持纵横比缩放图片，使图片的宽高完全拉伸至填满 image 元素                                                                |\n| aspectFit   | 缩放模式，保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来。                                       |\n| aspectFill  | 缩放模式，保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取。 |\n| widthFix    | 缩放模式，宽度不变，高度自动变化，保持原图宽高比不变                                                                                 |\n| heightFix   | 缩放模式，高度不变，宽度自动变化，保持原图宽高比不变                                                                                 |\n| top         | 裁剪模式，不缩放图片，只显示图片的顶部区域                                                                                           |\n| bottom      | 裁剪模式，不缩放图片，只显示图片的底部区域                                                                                           |\n| center      | 裁剪模式，不缩放图片，只显示图片的中间区域                                                                                           |\n| left        | 裁剪模式，不缩放图片，只显示图片的左边区域                                                                                           |\n| right       | 裁剪模式，不缩放图片，只显示图片的右边区域                                                                                           |\n| topLeft     | 裁剪模式，不缩放图片，只显示图片的左上边区域                                                                                         |\n| topRight    | 裁剪模式，不缩放图片，只显示图片的右上边区域                                                                                         |\n| bottomLeft  | 裁剪模式，不缩放图片，只显示图片的左下边区域                                                                                         |\n| bottomRight | 裁剪模式，不缩放图片，只显示图片的右下边区域                                                                                         |\n\n### Events\n\n| 事件名  | 说明               | 回调参数            |\n| ------- | ------------------ | ------------------- |\n| onClick | 点击图片时触发     | _event: MouseEvent_ |\n| onLoad  | 图片加载完毕时触发 | -                   |\n| onError | 图片加载失败时触发 | -                   |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                 | 默认值                    | 描述 |\n| ------------------------------------ | ------------------------- | ---- |\n| --image-placeholder-color            | _var(var(--gray-6)_       | -    |\n| --image-placeholder-font-size        | _var(--font-size-md)_     | -    |\n| --image-placeholder-icon-size        | _32px \\* $hd_             | -    |\n| --image-placeholder-icon-color       | _var(--gray-4)_           | -    |\n| --image-placeholder-background-color | _var(--background-color)_ | -    |\n"
+        "zhCN": "# Image 图片\n\n### 介绍\n\n增强版的 taro Image 组件，提供多种图片填充模式，支持图片懒加载、加载中提示、加载失败提示。\n\n### 引入\n\n```tsx\nimport { Image } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n基础用法与 Taro `Image` 组件一致，支持 `webp`、`fadeIn`、`showMenuByLongpress`\n等原生图片属性，也可以设置 H5 的 `imgProps`。<br />\n通过 `width` 和 `height` 设置图片大小，若未指定，会从 style 中读取`width`,`height`属性。<br />\n`width`、`height` 和 `radius` 为 number 时，会经过 `pxTransform` 转换。\n\n```tsx\n<Image width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 填充模式\n\n通过 `mode` 属性可以设置图片填充模式，可选值见下方表格。\n\n```tsx\n<Image width={200} height={200} mode=\"scaleToFill\" src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 圆形图片\n\n通过 `shape=\"circle\"` 设置圆形图片，可以配合 `mode` 属性展示不同的填充效果。\n\n```tsx\n<Image shape=\"circle\" mode=\"scaleToFill\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image shape=\"circle\" mode=\"aspectFit\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image shape=\"circle\" mode=\"aspectFill\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 圆角图片 <Tag tag=\"v1.0.2\" />\n\n通过 `shape=\"rounded\"` 设置默认圆角，通过 `radius` 属性自定义圆角大小。\n\n```tsx\n<Image shape=\"rounded\" width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n<Image radius={24} width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 图片懒加载\n\n设置 `lazyLoad` 属性来开启图片懒加载。\n\n```tsx\n<Image lazyLoad width={200} height={200} src=\"https://img.yzcdn.cn/vant/cat.jpeg\" />\n```\n\n### 加载中提示\n\n通过 `placeholder` 设置加载中提示。设置为 `true` 时使用默认图标，也可以传入文本或自定义节点。\n\n```tsx\nimport { Photo } from \"@taroify/icons\"\n\n<Image width={200} height={200} src=\"image.png\" placeholder />\n<Image width={200} height={200} src=\"image.png\" placeholder=\"加载中...\" />\n<Image width={200} height={200} src=\"image.png\" placeholder={<Photo />} />\n```\n\n### 加载失败提示\n\n通过 `fallback` 设置加载失败提示。设置为 `true` 时使用默认图标，也可以传入文本或自定义节点。\n\n```tsx\nimport { PhotoFail } from \"@taroify/icons\"\n\n<Image width={200} height={200} src=\"error\" fallback />\n<Image width={200} height={200} src=\"error\" fallback=\"加载失败\" />\n<Image width={200} height={200} src=\"error\" fallback={<PhotoFail />} />\n```\n\n## API\n\n### Props\n\n| 参数         | 说明                                 | 类型                   | 默认值        |\n| ------------ | ------------------------------------ | ---------------------- | ------------- |\n| src          | 图片链接                             | _string_               | -             |\n| mode         | 图片填充模式                         | _ImageMode_            | `scaleToFill` |\n| alt          | 替代文本                             | _string_               | -             |\n| width        | 宽度                                 | _string \\| number_      | -             |\n| height       | 高度                                 | _string \\| number_      | -             |\n| shape        | 图片形状 `square` `rounded` `circle` | _ImageShape_           | -             |\n| radius <Tag tag=\"v1.0.2\" /> | 圆角大小                             | _string \\| number_      | -             |\n| lazyLoad     | 是否开启图片懒加载                   | _boolean_              | `false`       |\n| placeholder  | 加载中提示                           | _boolean \\| ReactNode_ | `false`       |\n| fallback     | 加载失败提示                         | _boolean \\| ReactNode_ | `false`       |\n\n### Modes\n\n| 名称        | 含义                                                                                                                                 |\n| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |\n| scaleToFill | 缩放模式，不保持纵横比缩放图片，使图片的宽高完全拉伸至填满 image 元素                                                                |\n| aspectFit   | 缩放模式，保持纵横比缩放图片，使图片的长边能完全显示出来。也就是说，可以完整地将图片显示出来。                                       |\n| aspectFill  | 缩放模式，保持纵横比缩放图片，只保证图片的短边能完全显示出来。也就是说，图片通常只在水平或垂直方向是完整的，另一个方向将会发生截取。 |\n| widthFix    | 缩放模式，宽度不变，高度自动变化，保持原图宽高比不变                                                                                 |\n| heightFix   | 缩放模式，高度不变，宽度自动变化，保持原图宽高比不变                                                                                 |\n| top         | 裁剪模式，不缩放图片，只显示图片的顶部区域                                                                                           |\n| bottom      | 裁剪模式，不缩放图片，只显示图片的底部区域                                                                                           |\n| center      | 裁剪模式，不缩放图片，只显示图片的中间区域                                                                                           |\n| left        | 裁剪模式，不缩放图片，只显示图片的左边区域                                                                                           |\n| right       | 裁剪模式，不缩放图片，只显示图片的右边区域                                                                                           |\n| topLeft     | 裁剪模式，不缩放图片，只显示图片的左上边区域                                                                                         |\n| topRight    | 裁剪模式，不缩放图片，只显示图片的右上边区域                                                                                         |\n| bottomLeft  | 裁剪模式，不缩放图片，只显示图片的左下边区域                                                                                         |\n| bottomRight | 裁剪模式，不缩放图片，只显示图片的右下边区域                                                                                         |\n\n### Events\n\n| 事件名  | 说明               | 回调参数                 |\n| ------- | ------------------ | ------------------------ |\n| onClick | 点击图片时触发     | _event: ITouchEvent_     |\n| onLoad  | 图片加载完毕时触发 | _event: ImageLoadEvent_  |\n| onError | 图片加载失败时触发 | _event: ImageErrorEvent_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                 | 默认值                    | 描述 |\n| ------------------------------------ | ------------------------- | ---- |\n| --image-placeholder-color            | _var(var(--gray-6)_       | -    |\n| --image-placeholder-font-size        | _var(--font-size-md)_     | -    |\n| --image-placeholder-icon-size        | _32px \\* $hd_             | -    |\n| --image-placeholder-icon-color       | _var(--gray-4)_           | -    |\n| --image-placeholder-background-color | _var(--background-color)_ | -    |\n"
       },
       "source": {
         "docs": "packages/core/src/image/README.md",
