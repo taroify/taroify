@@ -51,7 +51,7 @@
     "@types/jest": "^26.0.24",
     "@types/node": "^14.18.63",
     "babel-jest": "^26.6.3",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "git-cz": "^4.9.0",
     "jest": "^26.6.0",
     "jest-transform-css": "^2.1.0",
