@@ -18,7 +18,7 @@ pre-commit:
     biome:
       priority: 4
       glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
-      run: npx biome check --fix {staged_files} --reporter summary
+      run: npx biome check --fix {staged_files} --reporter summary --no-errors-on-unmatched
       stage_fixed: true
     prettier: # Biome 尚不支持 markdown 文件
       priority: 6
