@@ -1251,6 +1251,11 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
+"@epic-web/invariant@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@epic-web/invariant/-/invariant-1.0.0.tgz#1073e5dee6dd540410784990eb73e4acd25c9813"
+  integrity sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==
+
 "@esbuild/aix-ppc64@0.19.12":
   version "0.19.12"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.19.12.tgz#d1bc06aedb6936b3b6d313bf809a5a40387d2b7f"
@@ -3282,6 +3287,46 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@taroify/commerce@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/commerce/-/commerce-1.0.1.tgz#834508c7d9c813726928196c44a81f89bc499005"
+  integrity sha512-ZKaD69jZBbCPR0Rx0oRI1CgYB5YBJNHYzN6THw+8EMmcsZo2rmy/hvKI4xHIQ78jst9lL1bpohxfD1ndDTsr+w==
+  dependencies:
+    "@taroify/core" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/core@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/core/-/core-1.0.1.tgz#428414b65e63910c1af0557fbb84d4770a89bdce"
+  integrity sha512-EIDnFeYBD6GoZ8SC42b2zinmvRS2yNv07ih7VqGSr+z20bdSLedPnsBp4uZ8yHtLhYVvGiFedNy2JGFYVhpcvw==
+  dependencies:
+    "@taroify/hooks" "^1.0.1"
+    "@taroify/icons" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    promise "^8.1.0"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/hooks@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/hooks/-/hooks-1.0.1.tgz#41443344108f0fa620ac3a4830679c0745ad2890"
+  integrity sha512-h5IkhAWGmj9F2yV6LLHUPtsOuepV23cltcMNvIdVfalnDLpv+/x7j3cpHlCkZh2JpToAdwTxFFMI+EgZT/dXBA==
+  dependencies:
+    "@vant/area-data" "^1.2.1"
+
+"@taroify/icons@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@taroify/icons/-/icons-1.0.1.tgz#963d131bc2ef60158d8391df8dee62e1903889c9"
+  integrity sha512-7b4F25MiCAZGlD4qgWtTz8u6VBR3kLscs/vBzZ0PlRK37I3IOXlsjsCHvnVEPxBftevKRl5G2GkvhfOkNVf6TA==
+  dependencies:
+    classnames "^2.2.6"
 
 "@tarojs/api@3.6.23":
   version "3.6.23"
@@ -7075,12 +7120,13 @@ cosmiconfig@^8.3.5:
     parse-json "^5.2.0"
     path-type "^4.0.0"
 
-cross-env@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
-  integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
+cross-env@^10.0.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-10.1.0.tgz#cfd2a6200df9ed75bfb9cb3d7ce609c13ea21783"
+  integrity sha512-GsYosgnACZTADcmEyJctkJIoqAhHjttw7RsFrVoJNXbsWWqaq6Ym+7kZjq6mS45O0jij6vtiReppKQEtqWy6Dw==
   dependencies:
-    cross-spawn "^7.0.1"
+    "@epic-web/invariant" "^1.0.0"
+    cross-spawn "^7.0.6"
 
 cross-spawn@6.0.5:
   version "6.0.5"
@@ -7104,7 +7150,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.2, cross-spawn@^7.0.3, cross-spawn@^7.0.5, cross-spawn@^7.0.6:
+cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3, cross-spawn@^7.0.5, cross-spawn@^7.0.6:
   version "7.0.6"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
   integrity sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==
