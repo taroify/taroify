@@ -189,8 +189,8 @@ import { Cell } from "@taroify/core"
 | --cell-right-icon-margin-left <Tag tag="v1.0.1" /> | _4px \* $hd_                                                              | -    |
 | --cell-right-icon-color <Tag tag="v1.0.1" /> | _var(--cell-value-color)_                                                 | -    |
 | --cell-extra-margin-left <Tag tag="v1.0.1" /> | _var(--padding-base)_                                                     | -    |
-| --cell-icon-margin-left          | _4px \* $hd_                                                              | 即将废弃 |
-| --cell-right-icon-margin-right   | _4px \* $hd_                                                              | 即将废弃 |
+| --cell-icon-margin-left <Tag tag="待废弃" /> | _4px \* $hd_                                                              | - |
+| --cell-right-icon-margin-right <Tag tag="待废弃" /> | _4px \* $hd_                                                              | - |
 | --cell-brief-margin-top          | _var(--padding-base)_                                                     | -    |
 | --cell-brief-font-size           | _var(--font-size-sm)_                                                     | -    |
 | --cell-brief-line-height         | _var(--line-height-sm)_                                                   | -    |
@@ -201,7 +201,7 @@ import { Cell } from "@taroify/core"
 | --cell-title-font-size-large     | _var(--font-size-lg)_                                                     | -    |
 | --cell-brief-font-size-large <Tag tag="v1.0.1" /> | _var(--font-size-md)_                                                     | -    |
 | --cell-value-font-size-large <Tag tag="v1.0.1" /> | _inherit_                                                                 | -    |
-| --cell-subtitle-font-size-large  | _var(--font-size-md)_                                                     | 即将废弃 |
+| --cell-subtitle-font-size-large <Tag tag="待废弃" /> | _var(--font-size-md)_                                                     | - |
 | --cell-group-background-color    | _var(--background-color-2)_                                               | -    |
 | --cell-group-title-color         | _var(--gray-6)_                                                           | -    |
 | --cell-group-title-padding       | _var(--padding-md) var(--padding-md) var(--padding-xs)_                   | -    |

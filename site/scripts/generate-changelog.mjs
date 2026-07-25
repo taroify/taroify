@@ -11,8 +11,19 @@ function normalizeTag(tag) {
   return tag.replace(/^v(?=\d)/u, "")
 }
 
-function contributorLink(match, whitespace, username) {
-  return `${whitespace}[@${username}](https://github.com/${username})`
+function contributorLink(match, whitespace, username, botSuffix = "") {
+  const profile = botSuffix
+    ? `https://github.com/apps/${username}`
+    : `https://github.com/${username}`
+  return `${whitespace}[@${username}${botSuffix}](${profile})`
+}
+
+function pullRequestLink(url, number, offset, source) {
+  const precedingCharacter = source[offset - 1]
+  if (precedingCharacter === "(" || precedingCharacter === "[") {
+    return url
+  }
+  return `[#${number}](${url})`
 }
 
 function normalizeReleaseBody(body) {
@@ -24,7 +35,12 @@ function normalizeReleaseBody(body) {
     .replaceAll("https://github.com/mallfoundry/taroify", "https://github.com/taroify/taroify")
     .replace(/^(#{1,4})(?=\s)/gmu, (heading) => `##${heading}`)
     .replace(
-      /(^|[ \t])@([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)(?=\s*$)/gmu,
+      /\[(?:\*\*)?(https:\/\/github\.com\/taroify\/taroify\/pull\/(\d+))(?:\*\*)?\]\(\1\)/gu,
+      (match, url, number) => `[#${number}](${url})`,
+    )
+    .replace(/https:\/\/github\.com\/taroify\/taroify\/pull\/(\d+)/gu, pullRequestLink)
+    .replace(
+      /(^|[ \t])@([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)(\[bot\])?(?=\s|$)/gmu,
       contributorLink,
     )
     .trim()
@@ -50,9 +66,7 @@ export function addMissingReleases(source, releases) {
   }
 
   const existingVersions = new Set(
-    [...source.matchAll(/^###\s+(v?\d[^\s]*)\s*$/gmu)].map((match) =>
-      normalizeTag(match[1]),
-    ),
+    [...source.matchAll(/^###\s+(v?\d[^\s]*)\s*$/gmu)].map((match) => normalizeTag(match[1])),
   )
   const missingReleases = releases.filter(
     (release) =>

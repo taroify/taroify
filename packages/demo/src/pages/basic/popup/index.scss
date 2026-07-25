@@ -3,6 +3,7 @@
 @import "../../../styles/prefix";
 
 .popup-demo {
+  background-color: var(--background-color, #f7f8fa);
 
   .#{$component-prefix}popup--center {
     font-size: $font-size-lg;

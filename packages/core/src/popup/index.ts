@@ -3,10 +3,16 @@ import PopupComponent, { type PopupProps } from "./popup"
 import PopupBackdrop from "./popup-backdrop"
 import PopupClose from "./popup-close"
 
-export type { PopupPlacement, PopupThemeVars } from "./popup.shared"
+export type { PopupProps } from "./popup"
+export type {
+  PopupCloseAction,
+  PopupPlacement,
+  PopupThemeVars,
+  PopupTransitionTimeout,
+} from "./popup.shared"
 export type { PopupBackdropProps } from "./popup-backdrop"
 export { usePopupBackdrop } from "./popup-backdrop"
-export type { PopupCloseProps } from "./popup-close"
+export type { PopupClosePlacement, PopupCloseProps } from "./popup-close"
 
 interface PopupInterface extends ForwardRefExoticComponent<PopupProps> {
   (props: PopupProps): JSX.Element

@@ -1,5 +1,3 @@
-@import "~@taroify/core/styles/variables";
-
 .button-demo {
-  background: $background-color-2;
+  background-color: var(--background-color, #f7f8fa);
 }

@@ -360,8 +360,8 @@ function Dialog(props: DialogProps) {
         id={id}
         open={open}
         className={classNames(prefixClassname("dialog"), className)}
-        transaction={prefixClassname("dialog-bounce")}
-        transactionTimeout={transactionTimeout}
+        transition={prefixClassname("dialog-bounce")}
+        transitionTimeout={transactionTimeout}
         onClose={handleClose}
         {...restProps}
       >

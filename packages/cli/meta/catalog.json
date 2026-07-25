@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 204,
-    "demos": 456,
+    "demos": 460,
     "componentTokens": 797,
     "globalTokens": 60
   },
@@ -1423,13 +1423,13 @@
           "cssVar": "--cell-icon-margin-left",
           "themeKey": "cellIconMarginLeft",
           "defaultValue": "4px * $hd",
-          "description": "即将废弃"
+          "description": "-"
         },
         {
           "cssVar": "--cell-right-icon-margin-right",
           "themeKey": "cellRightIconMarginRight",
           "defaultValue": "4px * $hd",
-          "description": "即将废弃"
+          "description": "-"
         },
         {
           "cssVar": "--cell-brief-margin-top",
@@ -1495,7 +1495,7 @@
           "cssVar": "--cell-subtitle-font-size-large",
           "themeKey": "cellSubtitleFontSizeLarge",
           "defaultValue": "var(--font-size-md)",
-          "description": "即将废弃"
+          "description": "-"
         },
         {
           "cssVar": "--cell-group-background-color",
@@ -1547,7 +1547,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Cell 单元格\n\n### 介绍\n\n单元格为列表中的单个展示项。\n\n### 引入\n\n```tsx\nimport { Cell } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Cell` 可以单独使用，也可以与 `Cell.Group` 搭配使用，`Cell.Group` 可以为 `Cell` 提供上下外边框。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\">内容</Cell>\n```\n\n### 卡片风格\n\n通过 `Cell.Group` 的 `inset` 属性，可以将单元格转换为圆角卡片风格。卡片模式不会显示上下外边框。\n\n```tsx\n<Cell.Group inset>\n  <Cell title=\"单元格\">内容</Cell>\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 单元格大小\n\n通过 `size` 属性可以控制单元格的大小。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\" size=\"large\">内容</Cell>\n```\n\n### 展示图标\n\n通过 `icon` 属性在标题左侧展示图标。\n\n```tsx\n<Cell icon={<LocationOutlined />} title=\"单元格\">\n  内容\n</Cell>\n```\n\n### 只设置内容\n\n只设置 `children` 时，内容会靠左对齐。\n\n```tsx\n<Cell>内容</Cell>\n```\n\n### 展示箭头\n\n设置 `isLink` 属性后会在单元格右侧展示箭头，并且可以通过 `arrowDirection` 控制箭头方向。\n\n```tsx\n<Cell title=\"单元格\" isLink />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n```\n\n### 页面导航 <Tag tag=\"v1.0.1\" />\n\n使用 `Cell.Link` 可以通过 Taro `Navigator` 完成页面跳转。`Cell.Link` 默认展示右侧箭头并开启点击反馈。\n\n```tsx\n<Cell.Link title=\"订单详情\" url=\"/pages/order/detail/index\">\n  查看\n</Cell.Link>\n<Cell.Link title=\"返回上一页\" openType=\"navigateBack\" />\n```\n\n### 额外内容 <Tag tag=\"v1.0.1\" />\n\n通过 `extra` 属性可以在右侧图标之后放置额外内容。\n\n```tsx\n<Cell title=\"消息通知\" isLink extra={<Switch checked />}>\n  已开启\n</Cell>\n```\n\n### 分组标题\n\n通过 `Cell.Group` 的 `title` 属性可以指定分组标题。\n\n```tsx\n<Cell.Group title=\"分组 1\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n<Cell.Group title=\"分组 2\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 对齐方式\n\n通过 `align` 属性可以改变 `Cell` 的左右内容的对齐方式。\n\n```tsx\n<Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\">内容</Cell>\n```\n\n## 升级提示\n\n- `Cell.Group` 的标题和内容容器现在是同级节点，传入的原生 View 属性会作用于内容容器。\n- `Cell.Group` 在 `inset` 模式下不再显示上下外边框。\n- `Cell` 显式设置的 `clickable` 优先于 `isLink` 和 `Cell.Group clickable`。\n- `icon` 和 `rightIcon` 会被统一的布局节点包裹，自定义图标会自动获得标准间距和对齐。\n- `size=\"large\"` 现在会正确应用大尺寸描述文字样式。\n\n## API\n\n### Cell.Group Props\n\n| 参数      | 说明                       | 类型        | 默认值  |\n| --------- | -------------------------- | ----------- | ------- |\n| title     | 分组标题                   | _ReactNode_ | `-`     |\n| inset     | 是否展示为圆角卡片风格     | _boolean_   | `false` |\n| bordered  | 是否显示非卡片模式的外边框 | _boolean_   | `true`  |\n| clickable | 是否为子单元格开启点击反馈 | _boolean_   | `false` |\n\n### Cell Props\n\n| 参数           | 说明                                                    | 类型            | 默认值   |\n| -------------- | ------------------------------------------------------- | --------------- | -------- |\n| title          | 左侧标题                                                | _ReactNode_     | `-`      |\n| children       | 右侧内容                                                | _ReactNode_     | `-`      |\n| brief          | 标题下方的描述信息                                      | _ReactNode_     | `-`      |\n| size <Tag tag=\"v1.0.1\" /> | 单元格大小，可选值为 `normal` `large`，`medium` 已废弃  | _string_        | `normal` |\n| icon           | 左侧[图标](/components/icon)或[图片](/components/image) | _ReactNode_     | `-`      |\n| rightIcon      | 右侧自定义图标                                          | _ReactNode_     | `-`      |\n| extra <Tag tag=\"v1.0.1\" /> | 右侧图标之后的额外内容                                  | _ReactNode_     | `-`      |\n| bordered       | 是否显示内边框                                          | _boolean_       | `true`   |\n| clickable      | 是否开启点击反馈，显式值优先于分组和链接状态            | _boolean_       | `-`      |\n| isLink         | 是否展示右侧箭头并开启点击反馈                          | _boolean_       | `false`  |\n| arrowDirection | 箭头方向，可选值为 `left` `right` `up` `down`           | _string_        | `right`  |\n| required       | 是否显示表单必填星号                                    | _boolean_       | `false`  |\n| align          | 对齐方式，可选值为 `start` `center` `end`               | _string_        | `-`      |\n| titleStyle     | 左侧标题额外样式                                        | _CSSProperties_ | `-`      |\n| titleClass     | 左侧标题额外类名                                        | _string_        | `-`      |\n| valueClass     | 右侧内容额外类名                                        | _string_        | `-`      |\n| briefClass     | 标题下方的描述信息额外类名                              | _string_        | `-`      |\n\n`Cell` 还继承了 Taro `View` 的原生属性。\n\n### Cell.Link Props <Tag tag=\"v1.0.1\" />\n\n`Cell.Link` 支持 Cell 内容与样式属性，并继承 Taro `Navigator` 的 `url`、`openType`、`target` 等原生属性。`isLink` 和 `clickable` 的默认值均为 `true`。\n\n### Cell Events\n\n| 事件名  | 说明             | 回调参数             |\n| ------- | ---------------- | -------------------- |\n| onClick | 点击单元格时触发 | _event: ITouchEvent_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                             | 默认值                                                                    | 描述 |\n| -------------------------------- | ------------------------------------------------------------------------- | ---- |\n| --cell-font-size                 | _var(--font-size-md)_                                                     | -    |\n| --cell-line-height               | _24px \\* $hd_                                                             | -    |\n| --cell-color                     | _var(--text-color)_                                                       | -    |\n| --cell-background-color          | _var(--background-color-2)_                                               | -    |\n| --cell-border-color              | _var(--border-color)_                                                     | -    |\n| --cell-value-color               | _var(--gray-6)_                                                           | -    |\n| --cell-value-font-size <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-active-color              | _var(--active-color)_                                                     | -    |\n| --cell-required-color            | _var(--danger-color)_                                                     | -    |\n| --cell-required-padding-right    | _2px \\* $hd_                                                              | -    |\n| --cell-icon-size                 | _16px \\* $hd_                                                             | -    |\n| --cell-left-icon-margin-right <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-margin-left <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-color <Tag tag=\"v1.0.1\" /> | _var(--cell-value-color)_                                                 | -    |\n| --cell-extra-margin-left <Tag tag=\"v1.0.1\" /> | _var(--padding-base)_                                                     | -    |\n| --cell-icon-margin-left          | _4px \\* $hd_                                                              | 即将废弃 |\n| --cell-right-icon-margin-right   | _4px \\* $hd_                                                              | 即将废弃 |\n| --cell-brief-margin-top          | _var(--padding-base)_                                                     | -    |\n| --cell-brief-font-size           | _var(--font-size-sm)_                                                     | -    |\n| --cell-brief-line-height         | _var(--line-height-sm)_                                                   | -    |\n| --cell-brief-color               | _var(--gray-6)_                                                           | -    |\n| --cell-vertical-padding          | _10px \\* $hd_                                                             | -    |\n| --cell-horizontal-padding        | _var(--padding-md)_                                                       | -    |\n| --cell-vertical-padding-large    | _var(--padding-sm)_                                                       | -    |\n| --cell-title-font-size-large     | _var(--font-size-lg)_                                                     | -    |\n| --cell-brief-font-size-large <Tag tag=\"v1.0.1\" /> | _var(--font-size-md)_                                                     | -    |\n| --cell-value-font-size-large <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-subtitle-font-size-large  | _var(--font-size-md)_                                                     | 即将废弃 |\n| --cell-group-background-color    | _var(--background-color-2)_                                               | -    |\n| --cell-group-title-color         | _var(--gray-6)_                                                           | -    |\n| --cell-group-title-padding       | _var(--padding-md) var(--padding-md) var(--padding-xs)_                   | -    |\n| --cell-group-title-font-size     | _var(--font-size-md)_                                                     | -    |\n| --cell-group-title-line-height   | _16px \\* $hd_                                                             | -    |\n| --cell-group-inset-padding       | _0 var(--padding-md)_                                                     | -    |\n| --cell-group-inset-border-radius | _var(--border-radius-lg)_                                                 | -    |\n| --cell-group-inset-title-padding | _var(--padding-md) var(--padding-md) var(--padding-xs) var(--padding-xl)_ | -    |\n"
+        "zhCN": "# Cell 单元格\n\n### 介绍\n\n单元格为列表中的单个展示项。\n\n### 引入\n\n```tsx\nimport { Cell } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Cell` 可以单独使用，也可以与 `Cell.Group` 搭配使用，`Cell.Group` 可以为 `Cell` 提供上下外边框。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\">内容</Cell>\n```\n\n### 卡片风格\n\n通过 `Cell.Group` 的 `inset` 属性，可以将单元格转换为圆角卡片风格。卡片模式不会显示上下外边框。\n\n```tsx\n<Cell.Group inset>\n  <Cell title=\"单元格\">内容</Cell>\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 单元格大小\n\n通过 `size` 属性可以控制单元格的大小。\n\n```tsx\n<Cell title=\"单元格\">内容</Cell>\n<Cell title=\"单元格\" brief=\"描述信息\" size=\"large\">内容</Cell>\n```\n\n### 展示图标\n\n通过 `icon` 属性在标题左侧展示图标。\n\n```tsx\n<Cell icon={<LocationOutlined />} title=\"单元格\">\n  内容\n</Cell>\n```\n\n### 只设置内容\n\n只设置 `children` 时，内容会靠左对齐。\n\n```tsx\n<Cell>内容</Cell>\n```\n\n### 展示箭头\n\n设置 `isLink` 属性后会在单元格右侧展示箭头，并且可以通过 `arrowDirection` 控制箭头方向。\n\n```tsx\n<Cell title=\"单元格\" isLink />\n<Cell title=\"单元格\" isLink children=\"内容\" />\n<Cell title=\"单元格\" isLink arrowDirection=\"down\" children=\"内容\" />\n```\n\n### 页面导航 <Tag tag=\"v1.0.1\" />\n\n使用 `Cell.Link` 可以通过 Taro `Navigator` 完成页面跳转。`Cell.Link` 默认展示右侧箭头并开启点击反馈。\n\n```tsx\n<Cell.Link title=\"订单详情\" url=\"/pages/order/detail/index\">\n  查看\n</Cell.Link>\n<Cell.Link title=\"返回上一页\" openType=\"navigateBack\" />\n```\n\n### 额外内容 <Tag tag=\"v1.0.1\" />\n\n通过 `extra` 属性可以在右侧图标之后放置额外内容。\n\n```tsx\n<Cell title=\"消息通知\" isLink extra={<Switch checked />}>\n  已开启\n</Cell>\n```\n\n### 分组标题\n\n通过 `Cell.Group` 的 `title` 属性可以指定分组标题。\n\n```tsx\n<Cell.Group title=\"分组 1\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n<Cell.Group title=\"分组 2\">\n  <Cell title=\"单元格\">内容</Cell>\n</Cell.Group>\n```\n\n### 对齐方式\n\n通过 `align` 属性可以改变 `Cell` 的左右内容的对齐方式。\n\n```tsx\n<Cell title=\"单元格\" brief=\"align start\" size=\"large\" align=\"start\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align center\" size=\"large\" align=\"center\">内容</Cell>\n<Cell title=\"单元格\" brief=\"align end\" size=\"large\" align=\"end\">内容</Cell>\n```\n\n## 升级提示\n\n- `Cell.Group` 的标题和内容容器现在是同级节点，传入的原生 View 属性会作用于内容容器。\n- `Cell.Group` 在 `inset` 模式下不再显示上下外边框。\n- `Cell` 显式设置的 `clickable` 优先于 `isLink` 和 `Cell.Group clickable`。\n- `icon` 和 `rightIcon` 会被统一的布局节点包裹，自定义图标会自动获得标准间距和对齐。\n- `size=\"large\"` 现在会正确应用大尺寸描述文字样式。\n\n## API\n\n### Cell.Group Props\n\n| 参数      | 说明                       | 类型        | 默认值  |\n| --------- | -------------------------- | ----------- | ------- |\n| title     | 分组标题                   | _ReactNode_ | `-`     |\n| inset     | 是否展示为圆角卡片风格     | _boolean_   | `false` |\n| bordered  | 是否显示非卡片模式的外边框 | _boolean_   | `true`  |\n| clickable | 是否为子单元格开启点击反馈 | _boolean_   | `false` |\n\n### Cell Props\n\n| 参数           | 说明                                                    | 类型            | 默认值   |\n| -------------- | ------------------------------------------------------- | --------------- | -------- |\n| title          | 左侧标题                                                | _ReactNode_     | `-`      |\n| children       | 右侧内容                                                | _ReactNode_     | `-`      |\n| brief          | 标题下方的描述信息                                      | _ReactNode_     | `-`      |\n| size <Tag tag=\"v1.0.1\" /> | 单元格大小，可选值为 `normal` `large`，`medium` 已废弃  | _string_        | `normal` |\n| icon           | 左侧[图标](/components/icon)或[图片](/components/image) | _ReactNode_     | `-`      |\n| rightIcon      | 右侧自定义图标                                          | _ReactNode_     | `-`      |\n| extra <Tag tag=\"v1.0.1\" /> | 右侧图标之后的额外内容                                  | _ReactNode_     | `-`      |\n| bordered       | 是否显示内边框                                          | _boolean_       | `true`   |\n| clickable      | 是否开启点击反馈，显式值优先于分组和链接状态            | _boolean_       | `-`      |\n| isLink         | 是否展示右侧箭头并开启点击反馈                          | _boolean_       | `false`  |\n| arrowDirection | 箭头方向，可选值为 `left` `right` `up` `down`           | _string_        | `right`  |\n| required       | 是否显示表单必填星号                                    | _boolean_       | `false`  |\n| align          | 对齐方式，可选值为 `start` `center` `end`               | _string_        | `-`      |\n| titleStyle     | 左侧标题额外样式                                        | _CSSProperties_ | `-`      |\n| titleClass     | 左侧标题额外类名                                        | _string_        | `-`      |\n| valueClass     | 右侧内容额外类名                                        | _string_        | `-`      |\n| briefClass     | 标题下方的描述信息额外类名                              | _string_        | `-`      |\n\n`Cell` 还继承了 Taro `View` 的原生属性。\n\n### Cell.Link Props <Tag tag=\"v1.0.1\" />\n\n`Cell.Link` 支持 Cell 内容与样式属性，并继承 Taro `Navigator` 的 `url`、`openType`、`target` 等原生属性。`isLink` 和 `clickable` 的默认值均为 `true`。\n\n### Cell Events\n\n| 事件名  | 说明             | 回调参数             |\n| ------- | ---------------- | -------------------- |\n| onClick | 点击单元格时触发 | _event: ITouchEvent_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                             | 默认值                                                                    | 描述 |\n| -------------------------------- | ------------------------------------------------------------------------- | ---- |\n| --cell-font-size                 | _var(--font-size-md)_                                                     | -    |\n| --cell-line-height               | _24px \\* $hd_                                                             | -    |\n| --cell-color                     | _var(--text-color)_                                                       | -    |\n| --cell-background-color          | _var(--background-color-2)_                                               | -    |\n| --cell-border-color              | _var(--border-color)_                                                     | -    |\n| --cell-value-color               | _var(--gray-6)_                                                           | -    |\n| --cell-value-font-size <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-active-color              | _var(--active-color)_                                                     | -    |\n| --cell-required-color            | _var(--danger-color)_                                                     | -    |\n| --cell-required-padding-right    | _2px \\* $hd_                                                              | -    |\n| --cell-icon-size                 | _16px \\* $hd_                                                             | -    |\n| --cell-left-icon-margin-right <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-margin-left <Tag tag=\"v1.0.1\" /> | _4px \\* $hd_                                                              | -    |\n| --cell-right-icon-color <Tag tag=\"v1.0.1\" /> | _var(--cell-value-color)_                                                 | -    |\n| --cell-extra-margin-left <Tag tag=\"v1.0.1\" /> | _var(--padding-base)_                                                     | -    |\n| --cell-icon-margin-left <Tag tag=\"待废弃\" /> | _4px \\* $hd_                                                              | - |\n| --cell-right-icon-margin-right <Tag tag=\"待废弃\" /> | _4px \\* $hd_                                                              | - |\n| --cell-brief-margin-top          | _var(--padding-base)_                                                     | -    |\n| --cell-brief-font-size           | _var(--font-size-sm)_                                                     | -    |\n| --cell-brief-line-height         | _var(--line-height-sm)_                                                   | -    |\n| --cell-brief-color               | _var(--gray-6)_                                                           | -    |\n| --cell-vertical-padding          | _10px \\* $hd_                                                             | -    |\n| --cell-horizontal-padding        | _var(--padding-md)_                                                       | -    |\n| --cell-vertical-padding-large    | _var(--padding-sm)_                                                       | -    |\n| --cell-title-font-size-large     | _var(--font-size-lg)_                                                     | -    |\n| --cell-brief-font-size-large <Tag tag=\"v1.0.1\" /> | _var(--font-size-md)_                                                     | -    |\n| --cell-value-font-size-large <Tag tag=\"v1.0.1\" /> | _inherit_                                                                 | -    |\n| --cell-subtitle-font-size-large <Tag tag=\"待废弃\" /> | _var(--font-size-md)_                                                     | - |\n| --cell-group-background-color    | _var(--background-color-2)_                                               | -    |\n| --cell-group-title-color         | _var(--gray-6)_                                                           | -    |\n| --cell-group-title-padding       | _var(--padding-md) var(--padding-md) var(--padding-xs)_                   | -    |\n| --cell-group-title-font-size     | _var(--font-size-md)_                                                     | -    |\n| --cell-group-title-line-height   | _16px \\* $hd_                                                             | -    |\n| --cell-group-inset-padding       | _0 var(--padding-md)_                                                     | -    |\n| --cell-group-inset-border-radius | _var(--border-radius-lg)_                                                 | -    |\n| --cell-group-inset-title-padding | _var(--padding-md) var(--padding-md) var(--padding-xs) var(--padding-xl)_ | -    |\n"
       },
       "source": {
         "docs": "packages/core/src/cell/README.md",
@@ -2200,7 +2200,7 @@
       "demoPage": "import { Flex } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function FlexDemo() {\n  return (\n    <Page title=\"Flex 布局\" className=\"flex-demo\">\n      <Block title=\"基础用法\">\n        <Flex>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item span={4}>span: 4</Flex.Item>\n          <Flex.Item span={10} offset={4}>\n            offset: 4, span: 10\n          </Flex.Item>\n        </Flex>\n        <Flex>\n          <Flex.Item offset={12} span={12}>\n            offset: 12, span: 12\n          </Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"在列元素之间增加间距\">\n        <Flex gutter={12}>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n          <Flex.Item span={8}>span: 8</Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"垂直间距\">\n        <Flex gutter={[12, 20]} wrap=\"wrap\">\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n          <Flex.Item span={12}>span: 12</Flex.Item>\n        </Flex>\n      </Block>\n      <Block title=\"Flex 布局\">\n        <Flex justify=\"center\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"end\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-between\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n        <Flex justify=\"space-around\">\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n          <Flex.Item span={6}>span: 6</Flex.Item>\n        </Flex>\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [],
       "docs": {
-        "zhCN": "# Layout 布局\n\n### 介绍\n\n`Flex` 组件是 CSS `flex` 布局的一个封装。\n\n### 引入\n\n```tsx\nimport { Flex } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Flex` 组件提供了 `24列栅格`，通过在 `Flex.Item` 上添加 `span` 属性设置列所占的宽度百分比。此外，添加 `offset` 属性可以设置列的偏移宽度，计算方式与 span 相同。\n\n```tsx\n<Flex>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item span={4}>span: 4</Flex.Item>\n  <Flex.Item span={10} offset={4}>\n    offset: 4, span: 10\n  </Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item offset={12} span={12}>\n    offset: 12, span: 12\n  </Flex.Item>\n</Flex>\n```\n\n### 设置列元素间距\n\n通过 `gutter` 属性可以设置列元素之间的间距，默认间距为 0。\n\n```tsx\n<Flex gutter={20}>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n```\n\n### 垂直间距 <Tag tag=\"v1.0.2\" />\n\n通过数组形式设置 `[水平间距, 垂直间距]`。`Flex` 默认不换行，使用垂直间距时需要同时设置 `wrap=\"wrap\"`。\n\n```tsx\n<Flex gutter={[20, 20]} wrap=\"wrap\">\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n</Flex>\n```\n\n### 对齐方式\n\n通过 `justify` 属性可以设置主轴上内容的对齐方式，等价于 flex 布局中的 `justify-content` 属性。\n\n```tsx\n<!-- 居中 -->\n<Flex justify=\"center\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 右对齐 -->\n<Flex justify=\"end\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 两端对齐 -->\n<Flex justify=\"space-between\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 每个元素的两侧间隔相等 -->\n<Flex justify=\"space-around\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n```\n\n## API\n\n### Flex Props\n\n| 参数      | 说明                                                                             | 类型                                               | 默认值   |\n| --------- | -------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |\n| gutter    | 列元素之间的间距，数组第一项为水平间距、第二项为垂直间距（单位为 px）           | _number \\| string \\| [number \\| string, number \\| string]_ | -        |\n| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse`            | _FlexDirection_                                    | `row`    |\n| wrap      | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                       | _FlexWrap_                                         | `nowrap` |\n| justify   | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between`     | _FlexJustify_                                      | `start`  |\n| align     | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` `initial`   | _FlexAlign_                                        | `start`  |\n\n### Flex.Item Props\n\n| 参数   | 说明           | 类型               | 默认值 |\n| ------ | -------------- | ------------------ | ------ |\n| span   | 列元素宽度     | _number \\| string_ | -      |\n| offset | 列元素偏移距离 | _number \\| string_ | -      |\n\n### 类型定义\n\n组件导出以下类型定义：\n\n```tsx\nimport type {\n  FlexAlign,\n  FlexDirection,\n  FlexGutter,\n  FlexGutterValue,\n  FlexItemProps,\n  FlexJustify,\n  FlexProps,\n  FlexWrap,\n} from \"@taroify/core\"\n```\n"
+        "zhCN": "# Flex 布局\n\n### 介绍\n\n`Flex` 组件是 CSS `flex` 布局的一个封装。\n\n### 引入\n\n```tsx\nimport { Flex } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`Flex` 组件提供了 `24列栅格`，通过在 `Flex.Item` 上添加 `span` 属性设置列所占的宽度百分比。此外，添加 `offset` 属性可以设置列的偏移宽度，计算方式与 span 相同。\n\n```tsx\n<Flex>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item span={4}>span: 4</Flex.Item>\n  <Flex.Item span={10} offset={4}>\n    offset: 4, span: 10\n  </Flex.Item>\n</Flex>\n\n<Flex>\n  <Flex.Item offset={12} span={12}>\n    offset: 12, span: 12\n  </Flex.Item>\n</Flex>\n```\n\n### 设置列元素间距\n\n通过 `gutter` 属性可以设置列元素之间的间距，默认间距为 0。\n\n```tsx\n<Flex gutter={20}>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n  <Flex.Item span={8}>span: 8</Flex.Item>\n</Flex>\n```\n\n### 垂直间距 <Tag tag=\"v1.0.2\" />\n\n通过数组形式设置 `[水平间距, 垂直间距]`。`Flex` 默认不换行，使用垂直间距时需要同时设置 `wrap=\"wrap\"`。\n\n```tsx\n<Flex gutter={[20, 20]} wrap=\"wrap\">\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n  <Flex.Item span={12}>span: 12</Flex.Item>\n</Flex>\n```\n\n### 对齐方式\n\n通过 `justify` 属性可以设置主轴上内容的对齐方式，等价于 flex 布局中的 `justify-content` 属性。\n\n```tsx\n<!-- 居中 -->\n<Flex justify=\"center\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 右对齐 -->\n<Flex justify=\"end\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 两端对齐 -->\n<Flex justify=\"space-between\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n\n<!-- 每个元素的两侧间隔相等 -->\n<Flex justify=\"space-around\">\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n  <Flex.Item span={6}>span: 6</Flex.Item>\n</Flex>\n```\n\n## API\n\n### Flex Props\n\n| 参数      | 说明                                                                             | 类型                                               | 默认值   |\n| --------- | -------------------------------------------------------------------------------- | -------------------------------------------------- | -------- |\n| gutter    | 列元素之间的间距，数组第一项为水平间距、第二项为垂直间距（单位为 px）           | _number \\| string \\| [number \\| string, number \\| string]_ | -        |\n| direction | 项目定位方向，可选值为 `row` `row-reverse` `column` `column-reverse`            | _FlexDirection_                                    | `row`    |\n| wrap      | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                       | _FlexWrap_                                         | `nowrap` |\n| justify   | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between`     | _FlexJustify_                                      | `start`  |\n| align     | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` `initial`   | _FlexAlign_                                        | `start`  |\n\n### Flex.Item Props\n\n| 参数   | 说明           | 类型               | 默认值 |\n| ------ | -------------- | ------------------ | ------ |\n| span   | 列元素宽度     | _number \\| string_ | -      |\n| offset | 列元素偏移距离 | _number \\| string_ | -      |\n\n### 类型定义\n\n组件导出以下类型定义：\n\n```tsx\nimport type {\n  FlexAlign,\n  FlexDirection,\n  FlexGutter,\n  FlexGutterValue,\n  FlexItemProps,\n  FlexJustify,\n  FlexProps,\n  FlexWrap,\n} from \"@taroify/core\"\n```\n"
       },
       "source": {
         "docs": "packages/core/src/flex/README.md",
@@ -2254,14 +2254,14 @@
               {
                 "name": "placement",
                 "description": "弹出位置，可选值为 top bottom right left center",
-                "type": "string",
+                "type": "PopupPlacement",
                 "defaultValue": "center",
                 "extra": []
               },
               {
                 "name": "duration",
                 "description": "动画时长，单位毫秒",
-                "type": "number | string",
+                "type": "number",
                 "defaultValue": "300",
                 "extra": []
               },
@@ -2277,6 +2277,97 @@
                 "description": "是否锁定背景滚动",
                 "type": "boolean",
                 "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "backdrop",
+                "description": "是否显示遮罩层，或传入遮罩层配置",
+                "type": "boolean | Omit<PopupBackdropProps, \"open\">",
+                "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "closeOnClickBackdrop",
+                "description": "点击遮罩层时是否关闭弹出层",
+                "type": "boolean",
+                "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "closeable",
+                "description": "是否显示关闭图标",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "closeIcon",
+                "description": "自定义关闭图标",
+                "type": "ReactNode",
+                "defaultValue": "<Cross />",
+                "extra": []
+              },
+              {
+                "name": "closeIconPlacement",
+                "description": "关闭图标位置，可选值为 top-left top-right bottom-left bottom-right",
+                "type": "PopupClosePlacement",
+                "defaultValue": "top-right",
+                "extra": []
+              },
+              {
+                "name": "beforeClose",
+                "description": "关闭前的回调函数，返回 true 时关闭",
+                "type": "(action: PopupCloseAction) => boolean | Promise<boolean>",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "destroyOnClose",
+                "description": "关闭后是否卸载弹出层内容",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "mountOnEnter",
+                "description": "首次打开时是否挂载弹出层内容",
+                "type": "boolean",
+                "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "transitionAppear",
+                "description": "首次挂载且已打开时是否执行入场动画",
+                "type": "boolean",
+                "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "transition",
+                "description": "动画名称",
+                "type": "string",
+                "defaultValue": "根据 placement 自动设置",
+                "extra": []
+              },
+              {
+                "name": "transitionTimeout",
+                "description": "动画超时时间，单位毫秒",
+                "type": "PopupTransitionTimeout",
+                "defaultValue": "duration",
+                "extra": []
+              },
+              {
+                "name": "transaction",
+                "description": "请使用 transition",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "transactionTimeout",
+                "description": "请使用 transitionTimeout",
+                "type": "PopupTransitionTimeout",
+                "defaultValue": "-",
                 "extra": []
               }
             ]
@@ -2297,7 +2388,7 @@
                 "extra": []
               },
               {
-                "name": "transactionName",
+                "name": "transition",
                 "description": "name",
                 "type": "",
                 "defaultValue": "",
@@ -2311,7 +2402,7 @@
                 "extra": []
               },
               {
-                "name": "transactionTimeout",
+                "name": "transitionTimeout",
                 "description": "timeout",
                 "type": "",
                 "defaultValue": "",
@@ -2359,28 +2450,28 @@
             "rows": [
               {
                 "name": "className",
-                "description": "背景板类名",
+                "description": "遮罩层类名",
                 "type": "string",
-                "defaultValue": "false",
+                "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "style",
-                "description": "背景板样式",
+                "description": "遮罩层样式",
                 "type": "CSSProperties",
-                "defaultValue": "false",
+                "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "open",
-                "description": "是否显示背景板",
+                "description": "是否显示遮罩层",
                 "type": "boolean",
-                "defaultValue": "false",
+                "defaultValue": "true",
                 "extra": []
               },
               {
                 "name": "closeable",
-                "description": "是否在点击遮罩层后关闭",
+                "description": "点击遮罩层后是否关闭弹出层",
                 "type": "boolean",
                 "defaultValue": "true",
                 "extra": []
@@ -2388,8 +2479,15 @@
               {
                 "name": "duration",
                 "description": "动画时长，单位毫秒",
-                "type": "number | string",
+                "type": "number",
                 "defaultValue": "300",
+                "extra": []
+              },
+              {
+                "name": "lock",
+                "description": "是否锁定背景滚动",
+                "type": "boolean",
+                "defaultValue": "true",
                 "extra": []
               }
             ]
@@ -2406,8 +2504,8 @@
             "rows": [
               {
                 "name": "placement",
-                "description": "关闭图标位置，可选值 top-left bottom-left bottom-right",
-                "type": "string",
+                "description": "关闭图标位置，可选值为 top-left top-right bottom-left bottom-right",
+                "type": "PopupClosePlacement",
                 "defaultValue": "top-right",
                 "extra": []
               },
@@ -2416,6 +2514,13 @@
                 "description": "图标内容",
                 "type": "ReactNode",
                 "defaultValue": "<Cross />",
+                "extra": []
+              },
+              {
+                "name": "onClick",
+                "description": "点击关闭图标时触发",
+                "type": "(event: ITouchEvent) => void",
+                "defaultValue": "-",
                 "extra": []
               }
             ]
@@ -2437,8 +2542,29 @@
                 "extra": []
               },
               {
+                "name": "onOpen",
+                "description": "打开弹出层且入场动画开始时触发",
+                "type": "-",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onOpened",
+                "description": "入场动画结束时触发",
+                "type": "-",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
                 "name": "onClose",
                 "description": "关闭弹出层时触发",
+                "type": "opened: boolean",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClosed",
+                "description": "离场动画结束时触发",
                 "type": "-",
                 "defaultValue": "",
                 "extra": []
@@ -2452,7 +2578,7 @@
           "id": "demo1",
           "title": "基础用法",
           "language": "tsx",
-          "code": "<Popup open>内容</Popup>"
+          "code": "const [open, setOpen] = useState(false)\n\n<Popup open={open} onClose={setOpen}>\n  内容\n</Popup>"
         },
         {
           "id": "demo2",
@@ -2464,28 +2590,52 @@
           "id": "demo3",
           "title": "关闭图标",
           "language": "tsx",
-          "code": "<Popup defaultOpen placement=\"bottom\" style={{ height: '30%' }}>\n  <Popup.Close />\n</Popup>\n\n<!-- 自定义图标 -->\n<Popup defaultOpen placement=\"bottom\" style={{ height: '30%' }}>\n  <Popup.Close>\n    <Close />\n  </Popup.Close>\n</Popup>"
+          "code": "<Popup\n  defaultOpen\n  closeable\n  closeIcon={<Close />}\n  closeIconPlacement=\"bottom-right\"\n  placement=\"bottom\"\n  style={{ height: \"30%\" }}\n/>"
         },
         {
           "id": "demo4",
-          "title": "圆角弹窗",
+          "title": "关闭图标",
           "language": "tsx",
-          "code": "<!-- 圆角弹窗（居中） -->\n<Popup\n  open\n  style={{\n    padding: \"64px\",\n  }}\n  rounded\n  lock={false}\n>\n  内容\n</Popup>\n\n<!-- 圆角弹窗（底部） -->\n<Popup open rounded placement=\"bottom\" style={{ height: '30%' }} />"
+          "code": "<Popup defaultOpen placement=\"bottom\" style={{ height: \"30%\" }}>\n  <Popup.Close>\n    <Close />\n  </Popup.Close>\n</Popup>"
         },
         {
           "id": "demo5",
+          "title": "遮罩层",
+          "language": "tsx",
+          "code": "<Popup open backdrop={false} />\n\n<Popup\n  open\n  backdrop={{\n    style: {\n      backgroundColor: \"rgba(0, 0, 0, 0.7)\",\n    },\n  }}\n  closeOnClickBackdrop={false}\n/>"
+        },
+        {
+          "id": "demo6",
+          "title": "关闭前回调",
+          "language": "tsx",
+          "code": "import type { PopupCloseAction } from \"@taroify/core\"\n\nfunction beforeClose(action: PopupCloseAction) {\n  return new Promise<boolean>((resolve) => {\n    setTimeout(() => resolve(action === \"close\"), 1000)\n  })\n}\n\n<Popup open closeable beforeClose={beforeClose} />"
+        },
+        {
+          "id": "demo7",
+          "title": "销毁内容",
+          "language": "tsx",
+          "code": "<Popup open={open} destroyOnClose>\n  <HeavyContent />\n</Popup>"
+        },
+        {
+          "id": "demo8",
+          "title": "圆角弹窗",
+          "language": "tsx",
+          "code": "<Popup open rounded style={{ padding: \"64px\" }}>\n  内容\n</Popup>\n\n<Popup open rounded placement=\"bottom\" style={{ height: \"30%\" }} />"
+        },
+        {
+          "id": "demo9",
           "title": "禁止滚动穿透",
           "language": "tsx",
           "code": "<Popup lock>\n  <View>无法滑动</View>\n</Popup>"
         },
         {
-          "id": "demo6",
+          "id": "demo10",
           "title": "禁止滚动穿透",
           "language": "tsx",
-          "code": "<Popup lock>\n  <ScrollView>可以滑动</ScrollView>\n</Popup>"
+          "code": "<Popup lock>\n  <ScrollView scrollY>可以滑动</ScrollView>\n</Popup>"
         }
       ],
-      "demoPage": "import { ScrollView } from \"@tarojs/components\"\nimport { Cell, Popup } from \"@taroify/core\"\nimport { PopupPlacement } from \"@taroify/core/popup\"\nimport { Close } from \"@taroify/icons\"\nimport { CSSProperties, useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction BasicPopup() {\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Cell clickable title=\"显示遮盖层\" isLink onClick={() => setOpen(true)} />\n      <Popup\n        open={open}\n        style={{\n          padding: \"30px 50px\",\n        }}\n        onClose={setOpen}\n      >\n        内容\n      </Popup>\n    </>\n  )\n}\n\nfunction CenterRoundPopup() {\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Cell\n        clickable\n        title=\"圆角弹窗（居中）\"\n        isLink\n        onClick={() => setOpen(true)}\n      />\n      <Popup\n        open={open}\n        style={{\n          padding: \"64px\",\n        }}\n        onClose={setOpen}\n        rounded\n      >\n        内容\n      </Popup>\n    </>\n  )\n}\n\nfunction LockPopup() {\n  const [open, setOpen] = useState(false)\n  const [data] = useState(new Array(30).fill(0))\n  return (\n    <>\n      <Cell\n        clickable\n        title=\"弹窗（禁止滚动穿透）\"\n        isLink\n        onClick={() => setOpen(true)}\n      />\n      <Popup\n        open={open}\n        style={{\n          height: \"30%\",\n        }}\n        rounded\n        lock\n        placement=\"bottom\"\n        onClose={setOpen}\n      >\n        <ScrollView className=\"popup-demo-scroll\" scrollY>\n          {data.map((_, index) => (\n            <Cell key={index}>内容-{index}</Cell>\n          ))}\n        </ScrollView>\n      </Popup>\n    </>\n  )\n}\n\ninterface OpenOptions {\n  open?: boolean\n  closeable?: boolean\n  customer?: boolean\n  style?: CSSProperties\n  placement?: PopupPlacement\n  rounded?: boolean\n}\n\nexport default function PopupDemo() {\n  const [options, setOptions] = useState<OpenOptions>({})\n\n  function handleOpen({ placement, rounded, closeable, customer }: OpenOptions) {\n    const openOptions: OpenOptions = {\n      open: true,\n      placement,\n      rounded,\n      closeable,\n      customer,\n    }\n    if (placement === \"left\" || placement === \"right\") {\n      openOptions.style = {\n        height: \"100%\",\n        width: \"40%\",\n      }\n    } else if (placement) {\n      openOptions.style = { height: \"30%\" }\n    }\n    setOptions({\n      ...options,\n      ...openOptions,\n    })\n  }\n\n  return (\n    <Page title=\"Popup 弹出层\" className=\"popup-demo\">\n      <Block variant=\"card\" title=\"基础用法\">\n        <BasicPopup />\n      </Block>\n      <Block variant=\"card\" title=\"弹出位置\">\n        <Cell\n          clickable\n          title=\"顶部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"top\" })}\n        />\n        <Cell\n          clickable\n          title=\"底部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\" })}\n        />\n        <Cell\n          clickable\n          title=\"左侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"left\" })}\n        />\n        <Cell\n          clickable\n          title=\"右侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"right\" })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"关闭按钮\">\n        <Cell\n          clickable\n          title=\"顶部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"top\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"底部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"左侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"left\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"右侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"right\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"自定义图标\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", closeable: true, customer: true })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"圆角弹窗\">\n        <CenterRoundPopup />\n        <Cell\n          clickable\n          title=\"圆角弹窗（底部）\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", rounded: true })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"禁止滚动穿透\">\n        <LockPopup />\n      </Block>\n      <Popup\n        open={options.open}\n        placement={options.placement}\n        rounded={options.rounded}\n        style={options.style}\n        onClose={() =>\n          setOptions({\n            ...options,\n            open: false,\n          })\n        }\n      >\n        <Popup.Backdrop />\n        {options.closeable && !options.customer && <Popup.Close />}\n        {options.closeable && options.customer && (\n          <Popup.Close>\n            <Close />\n          </Popup.Close>\n        )}\n      </Popup>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { ScrollView } from \"@tarojs/components\"\nimport {\n  Cell,\n  Popup,\n  type PopupCloseAction,\n  type PopupPlacement,\n} from \"@taroify/core\"\nimport { Close } from \"@taroify/icons\"\nimport { type CSSProperties, useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction BasicPopup() {\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Cell clickable title=\"显示遮盖层\" isLink onClick={() => setOpen(true)} />\n      <Popup\n        open={open}\n        style={{\n          padding: \"30px 50px\",\n        }}\n        onClose={setOpen}\n      >\n        内容\n      </Popup>\n    </>\n  )\n}\n\nfunction CenterRoundPopup() {\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Cell\n        clickable\n        title=\"圆角弹窗（居中）\"\n        isLink\n        onClick={() => setOpen(true)}\n      />\n      <Popup\n        open={open}\n        style={{\n          padding: \"64px\",\n        }}\n        onClose={setOpen}\n        rounded\n      >\n        内容\n      </Popup>\n    </>\n  )\n}\n\nfunction LockPopup() {\n  const [open, setOpen] = useState(false)\n  const [data] = useState(new Array(30).fill(0))\n  return (\n    <>\n      <Cell\n        clickable\n        title=\"弹窗（禁止滚动穿透）\"\n        isLink\n        onClick={() => setOpen(true)}\n      />\n      <Popup\n        open={open}\n        style={{\n          height: \"30%\",\n        }}\n        rounded\n        lock\n        placement=\"bottom\"\n        onClose={setOpen}\n      >\n        <ScrollView className=\"popup-demo-scroll\" scrollY>\n          {data.map((_, index) => (\n            <Cell key={index}>内容-{index}</Cell>\n          ))}\n        </ScrollView>\n      </Popup>\n    </>\n  )\n}\n\ninterface OpenOptions {\n  open?: boolean\n  closeable?: boolean\n  custom?: boolean\n  intercept?: boolean\n  style?: CSSProperties\n  placement?: PopupPlacement\n  rounded?: boolean\n}\n\nexport default function PopupDemo() {\n  const [options, setOptions] = useState<OpenOptions>({})\n\n  function handleOpen({ placement, rounded, closeable, custom, intercept }: OpenOptions) {\n    const openOptions: OpenOptions = {\n      open: true,\n      placement,\n      rounded,\n      closeable,\n      custom,\n      intercept,\n    }\n    if (placement === \"left\" || placement === \"right\") {\n      openOptions.style = {\n        height: \"100%\",\n        width: \"40%\",\n      }\n    } else if (placement) {\n      openOptions.style = { height: \"30%\" }\n    }\n    setOptions(openOptions)\n  }\n\n  function handleBeforeClose(action: PopupCloseAction) {\n    return new Promise<boolean>((resolve) => {\n      setTimeout(() => resolve(action === \"close\"), 1000)\n    })\n  }\n\n  return (\n    <Page title=\"Popup 弹出层\" className=\"popup-demo\">\n      <Block variant=\"card\" title=\"基础用法\">\n        <BasicPopup />\n      </Block>\n      <Block variant=\"card\" title=\"弹出位置\">\n        <Cell\n          clickable\n          title=\"顶部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"top\" })}\n        />\n        <Cell\n          clickable\n          title=\"底部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\" })}\n        />\n        <Cell\n          clickable\n          title=\"左侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"left\" })}\n        />\n        <Cell\n          clickable\n          title=\"右侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"right\" })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"关闭按钮\">\n        <Cell\n          clickable\n          title=\"顶部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"top\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"底部弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"左侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"left\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"右侧弹出\"\n          isLink\n          onClick={() => handleOpen({ placement: \"right\", closeable: true })}\n        />\n        <Cell\n          clickable\n          title=\"自定义图标\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", closeable: true, custom: true })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"关闭前回调\">\n        <Cell\n          clickable\n          title=\"异步关闭\"\n          isLink\n          onClick={() =>\n            handleOpen({\n              placement: \"bottom\",\n              closeable: true,\n              intercept: true,\n            })\n          }\n        />\n      </Block>\n      <Block variant=\"card\" title=\"圆角弹窗\">\n        <CenterRoundPopup />\n        <Cell\n          clickable\n          title=\"圆角弹窗（底部）\"\n          isLink\n          onClick={() => handleOpen({ placement: \"bottom\", rounded: true })}\n        />\n      </Block>\n      <Block variant=\"card\" title=\"禁止滚动穿透\">\n        <LockPopup />\n      </Block>\n      <Popup\n        open={options.open}\n        placement={options.placement}\n        rounded={options.rounded}\n        style={options.style}\n        closeable={options.closeable && !options.custom}\n        beforeClose={options.intercept ? handleBeforeClose : undefined}\n        onClose={() =>\n          setOptions({\n            ...options,\n            open: false,\n          })\n        }\n      >\n        {options.closeable && options.custom && (\n          <Popup.Close>\n            <Close />\n          </Popup.Close>\n        )}\n      </Popup>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--popup-z-index",
@@ -2543,7 +2693,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Popup 弹出层\n\n### 介绍\n\n弹出层容器，用于展示弹窗、信息提示等内容，支持多个弹出层叠加展示。\n\n### 引入\n\n```tsx\nimport { Popup } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过 `open` 控制弹出层是否展示。\n\n```tsx\n<Popup open>内容</Popup>\n```\n\n### 弹出位置\n\n通过 `placement` 属性设置弹出位置，默认居中弹出，可以设置为 `top`、`bottom`、`left`、`right`。\n\n```tsx\n<Popup defaultOpen placement=\"top\" style={{ height: \"30%\" }} />\n```\n\n### 关闭图标\n\n设置 `Popup.Close` 属性后，会在弹出层的右上角显示关闭图标，并且可以通过 `closeIcon` 属性自定义图标。\n\n```tsx\n<Popup defaultOpen placement=\"bottom\" style={{ height: '30%' }}>\n  <Popup.Close />\n</Popup>\n\n<!-- 自定义图标 -->\n<Popup defaultOpen placement=\"bottom\" style={{ height: '30%' }}>\n  <Popup.Close>\n    <Close />\n  </Popup.Close>\n</Popup>\n```\n\n### 圆角弹窗\n\n设置 `rounded` 属性后，弹窗会根据弹出位置添加不同的圆角样式。\n\n```tsx\n<!-- 圆角弹窗（居中） -->\n<Popup\n  open\n  style={{\n    padding: \"64px\",\n  }}\n  rounded\n  lock={false}\n>\n  内容\n</Popup>\n\n<!-- 圆角弹窗（底部） -->\n<Popup open rounded placement=\"bottom\" style={{ height: '30%' }} />\n```\n\n### 禁止滚动穿透\n\n```tsx\n<Popup lock>\n  <View>无法滑动</View>\n</Popup>\n```\n\n如果需要内容支持溢出滚动，则需要包裹一层 ScrollView 组件。\n\n```tsx\n<Popup lock>\n  <ScrollView>可以滑动</ScrollView>\n</Popup>\n```\n\n## API\n\n### Popup Props\n\n| 参数                  | 说明                                                      | 类型               | 默认值   |\n| --------------------- | --------------------------------------------------------- | ------------------ | -------- |\n| defaultOpen           | 默认是否显示弹出层                                        | _boolean_          | `false`  |\n| open                  | 是否显示弹出层                                            | _boolean_          | `false`  |\n| placement             | 弹出位置，可选值为 `top` `bottom` `right` `left` `center` | _string_           | `center` |\n| duration              | 动画时长，单位毫秒                                        | _number \\| string_ | `300`    |\n| rounded               | 是否显示圆角                                              | _boolean_          | `false`  |\n| lock | 是否锁定背景滚动                                          | _boolean_          | `true`   |\n\n动画相关参数继承自 `Transition` 组件，详细属性参见：[Transition 组件](/components/style/#动画)\n| Popup 参数 | Transition 对应参数 |\n| --------- | ---------------------- |\n| mountOnEnter | mountOnEnter |\n| transactionName | name |\n| transitionAppear | appear |\n| transactionTimeout | timeout |\n| onTransitionEnter | onEnter |\n| onTransitionEntered | onEntered |\n| onTransitionExit | onExit |\n| onTransitionExited | onExited |\n\n### Popup.Backdrop Props\n\n| 参数      | 说明                   | 类型               | 默认值  |\n| --------- | ---------------------- | ------------------ | ------- |\n| className | 背景板类名             | _string_           | `false` |\n| style     | 背景板样式             | _CSSProperties_    | `false` |\n| open      | 是否显示背景板         | _boolean_          | `false` |\n| closeable | 是否在点击遮罩层后关闭 | _boolean_          | `true`  |\n| duration  | 动画时长，单位毫秒     | _number \\| string_ | `300`   |\n\n### Popup.Close Props\n\n| 参数      | 说明                                                         | 类型        | 默认值      |\n| --------- | ------------------------------------------------------------ | ----------- | ----------- |\n| placement | 关闭图标位置，可选值 `top-left` `bottom-left` `bottom-right` | _string_    | `top-right` |\n| children  | 图标内容                                                     | _ReactNode_ | `<Cross />` |\n\n### Events\n\n| 事件名  | 说明             | 回调参数             |\n| ------- | ---------------- | -------------------- |\n| onClick | 点击弹出层时触发 | _event: ITouchEvent_ |\n| onClose | 关闭弹出层时触发 | -                    |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                            | 默认值                           | 描述 |\n| ------------------------------- | -------------------------------- | ---- |\n| --popup-z-index                 | _1010_                           | -    |\n| --popup-background-color        | _var(--background-color-light)_  | -    |\n| --popup-animation-duration      | _var(--animation-duration-base)_ | -    |\n| --popup-rounded-border-radius   | _16px \\* $hd_                    | -    |\n| --popup-close-icon-z-index      | _1_                              | -    |\n| --popup-close-icon-size         | _22px \\* $hd_                    | -    |\n| --popup-close-icon-color        | _var(--gray-5)_                  | -    |\n| --popup-close-icon-active-color | _var(--gray-6)_                  | -    |\n| --popup-close-icon-margin       | _16px \\* $hd_                    | -    |\n"
+        "zhCN": "# Popup 弹出层\n\n### 介绍\n\n弹出层容器，用于展示弹窗、信息提示等内容，支持多个弹出层叠加展示。\n\n### 引入\n\n```tsx\nimport { Popup } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过 `open` 控制弹出层是否展示。\n\n```tsx\nconst [open, setOpen] = useState(false)\n\n<Popup open={open} onClose={setOpen}>\n  内容\n</Popup>\n```\n\n### 弹出位置\n\n通过 `placement` 属性设置弹出位置，默认居中弹出，可以设置为 `top`、`bottom`、`left`、`right`。\n\n```tsx\n<Popup defaultOpen placement=\"top\" style={{ height: \"30%\" }} />\n```\n\n### 关闭图标 <Tag tag=\"v1.0.2\" />\n\n设置 `closeable` 属性后，会在弹出层的右上角显示关闭图标。通过 `closeIcon` 自定义图标，通过 `closeIconPlacement` 设置图标位置。\n\n```tsx\n<Popup\n  defaultOpen\n  closeable\n  closeIcon={<Close />}\n  closeIconPlacement=\"bottom-right\"\n  placement=\"bottom\"\n  style={{ height: \"30%\" }}\n/>\n```\n\n也可以使用 `Popup.Close` 自定义关闭图标。\n\n```tsx\n<Popup defaultOpen placement=\"bottom\" style={{ height: \"30%\" }}>\n  <Popup.Close>\n    <Close />\n  </Popup.Close>\n</Popup>\n```\n\n### 遮罩层 <Tag tag=\"v1.0.2\" />\n\n通过 `backdrop` 隐藏遮罩层，或传入对象配置遮罩层属性。`closeOnClickBackdrop` 用于控制点击遮罩层时是否关闭弹出层。\n\n```tsx\n<Popup open backdrop={false} />\n\n<Popup\n  open\n  backdrop={{\n    style: {\n      backgroundColor: \"rgba(0, 0, 0, 0.7)\",\n    },\n  }}\n  closeOnClickBackdrop={false}\n/>\n```\n\n### 关闭前回调 <Tag tag=\"v1.0.2\" />\n\n通过 `beforeClose` 属性可以在关闭前执行同步或异步逻辑，返回 `true` 时关闭，返回其他值或 Promise 被拒绝时保持打开。\n\n```tsx\nimport type { PopupCloseAction } from \"@taroify/core\"\n\nfunction beforeClose(action: PopupCloseAction) {\n  return new Promise<boolean>((resolve) => {\n    setTimeout(() => resolve(action === \"close\"), 1000)\n  })\n}\n\n<Popup open closeable beforeClose={beforeClose} />\n```\n\n### 销毁内容 <Tag tag=\"v1.0.2\" />\n\n默认情况下，弹出层关闭后内容仍会保留。设置 `destroyOnClose` 后，内容会在离场动画结束后卸载。\n\n```tsx\n<Popup open={open} destroyOnClose>\n  <HeavyContent />\n</Popup>\n```\n\n### 圆角弹窗\n\n设置 `rounded` 属性后，弹窗会根据弹出位置添加不同的圆角样式。\n\n```tsx\n<Popup open rounded style={{ padding: \"64px\" }}>\n  内容\n</Popup>\n\n<Popup open rounded placement=\"bottom\" style={{ height: \"30%\" }} />\n```\n\n### 禁止滚动穿透\n\n```tsx\n<Popup lock>\n  <View>无法滑动</View>\n</Popup>\n```\n\n如果需要内容支持溢出滚动，则需要包裹一层 `ScrollView` 组件。\n\n```tsx\n<Popup lock>\n  <ScrollView scrollY>可以滑动</ScrollView>\n</Popup>\n```\n\n## API\n\n### Popup Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| defaultOpen | 默认是否显示弹出层 | _boolean_ | `false` |\n| open | 是否显示弹出层 | _boolean_ | `false` |\n| placement | 弹出位置，可选值为 `top` `bottom` `right` `left` `center` | _PopupPlacement_ | `center` |\n| duration | 动画时长，单位毫秒 | _number_ | `300` |\n| rounded | 是否显示圆角 | _boolean_ | `false` |\n| lock | 是否锁定背景滚动 | _boolean_ | `true` |\n| backdrop <Tag tag=\"v1.0.2\" /> | 是否显示遮罩层，或传入遮罩层配置 | _boolean \\| Omit&lt;PopupBackdropProps, \"open\"&gt;_ | `true` |\n| closeOnClickBackdrop <Tag tag=\"v1.0.2\" /> | 点击遮罩层时是否关闭弹出层 | _boolean_ | `true` |\n| closeable <Tag tag=\"v1.0.2\" /> | 是否显示关闭图标 | _boolean_ | `false` |\n| closeIcon <Tag tag=\"v1.0.2\" /> | 自定义关闭图标 | _ReactNode_ | `<Cross />` |\n| closeIconPlacement <Tag tag=\"v1.0.2\" /> | 关闭图标位置，可选值为 `top-left` `top-right` `bottom-left` `bottom-right` | _PopupClosePlacement_ | `top-right` |\n| beforeClose <Tag tag=\"v1.0.2\" /> | 关闭前的回调函数，返回 `true` 时关闭 | _(action: PopupCloseAction) => boolean \\| Promise&lt;boolean&gt;_ | - |\n| destroyOnClose <Tag tag=\"v1.0.2\" /> | 关闭后是否卸载弹出层内容 | _boolean_ | `false` |\n| mountOnEnter | 首次打开时是否挂载弹出层内容 | _boolean_ | `true` |\n| transitionAppear | 首次挂载且已打开时是否执行入场动画 | _boolean_ | `true` |\n| transition <Tag tag=\"v1.0.2\" /> | 动画名称 | _string_ | 根据 `placement` 自动设置 |\n| transitionTimeout <Tag tag=\"v1.0.2\" /> | 动画超时时间，单位毫秒 | _PopupTransitionTimeout_ | `duration` |\n| transaction <Tag tag=\"待废弃\" /> | 请使用 `transition` | _string_ | - |\n| transactionTimeout <Tag tag=\"待废弃\" /> | 请使用 `transitionTimeout` | _PopupTransitionTimeout_ | - |\n\n动画相关参数继承自 `Transition` 组件，详细属性参见：[Transition 组件](/components/style/#动画)。\n\n| Popup 参数 | Transition 对应参数 |\n| --- | --- |\n| mountOnEnter | mountOnEnter |\n| transition | name |\n| transitionAppear | appear |\n| transitionTimeout | timeout |\n| onTransitionEnter | onEnter |\n| onTransitionEntered | onEntered |\n| onTransitionExit | onExit |\n| onTransitionExited | onExited |\n\n### Popup.Backdrop Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| className | 遮罩层类名 | _string_ | - |\n| style | 遮罩层样式 | _CSSProperties_ | - |\n| open | 是否显示遮罩层 | _boolean_ | `true` |\n| closeable | 点击遮罩层后是否关闭弹出层 | _boolean_ | `true` |\n| duration | 动画时长，单位毫秒 | _number_ | `300` |\n| lock | 是否锁定背景滚动 | _boolean_ | `true` |\n\n### Popup.Close Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| placement | 关闭图标位置，可选值为 `top-left` `top-right` `bottom-left` `bottom-right` | _PopupClosePlacement_ | `top-right` |\n| children | 图标内容 | _ReactNode_ | `<Cross />` |\n| onClick <Tag tag=\"v1.0.2\" /> | 点击关闭图标时触发 | _(event: ITouchEvent) => void_ | - |\n\n### Events\n\n| 事件名 | 说明 | 回调参数 |\n| --- | --- | --- |\n| onClick | 点击弹出层时触发 | _event: ITouchEvent_ |\n| onOpen <Tag tag=\"v1.0.2\" /> | 打开弹出层且入场动画开始时触发 | - |\n| onOpened <Tag tag=\"v1.0.2\" /> | 入场动画结束时触发 | - |\n| onClose | 关闭弹出层时触发 | _opened: boolean_ |\n| onClosed <Tag tag=\"v1.0.2\" /> | 离场动画结束时触发 | - |\n\n### 类型定义\n\n组件相关类型可从 `@taroify/core` 直接导入：\n\n```tsx\nimport type {\n  PopupBackdropProps,\n  PopupCloseAction,\n  PopupClosePlacement,\n  PopupCloseProps,\n  PopupPlacement,\n  PopupProps,\n  PopupThemeVars,\n  PopupTransitionTimeout,\n} from \"@taroify/core\"\n```\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称 | 默认值 | 描述 |\n| --- | --- | --- |\n| --popup-z-index | _1010_ | - |\n| --popup-background-color | _var(--background-color-light)_ | - |\n| --popup-animation-duration | _var(--animation-duration-base)_ | - |\n| --popup-rounded-border-radius | _16px \\* $hd_ | - |\n| --popup-close-icon-z-index | _1_ | - |\n| --popup-close-icon-size | _22px \\* $hd_ | - |\n| --popup-close-icon-color | _var(--gray-5)_ | - |\n| --popup-close-icon-active-color | _var(--gray-6)_ | - |\n| --popup-close-icon-margin | _16px \\* $hd_ | - |\n"
       },
       "source": {
         "docs": "packages/core/src/popup/README.md",

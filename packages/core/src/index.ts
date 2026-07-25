@@ -30,6 +30,16 @@ export type {
   ImageShape,
 } from "./image"
 export { default as Popup } from "./popup"
+export type {
+  PopupBackdropProps,
+  PopupCloseAction,
+  PopupClosePlacement,
+  PopupCloseProps,
+  PopupPlacement,
+  PopupProps,
+  PopupThemeVars,
+  PopupTransitionTimeout,
+} from "./popup"
 export { default as Space } from "./space"
 export { default as Toast } from "./toast"
 export { default as Transition } from "./transition"

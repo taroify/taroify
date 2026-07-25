@@ -1,4 +1,4 @@
-import { useToRef, useUncontrolled } from "@taroify/hooks"
+import { useUncontrolled } from "@taroify/hooks"
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
@@ -11,8 +11,9 @@ import {
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useCallback,
   useMemo,
-  useEffect,
+  useRef,
 } from "react"
 import type { EnterHandler, ExitHandler } from "react-transition-group/Transition"
 import Backdrop from "../backdrop"
@@ -20,12 +21,12 @@ import { prefixClassname } from "../styles"
 import Transition, { TransitionName } from "../transition"
 import { isElementOf } from "../utils/validate"
 import { useLockScrollTaro } from "../utils/dom/use-lock-scroll-taro"
-import PopupBackdrop from "./popup-backdrop"
-import PopupClose from "./popup-close"
+import PopupBackdrop, { usePopupBackdrop, type PopupBackdropProps } from "./popup-backdrop"
+import PopupClose, { type PopupClosePlacement } from "./popup-close"
 import PopupContext from "./popup.context"
-import type { PopupPlacement } from "./popup.shared"
+import type { PopupCloseAction, PopupPlacement, PopupTransitionTimeout } from "./popup.shared"
 
-function toTransactionName(placement?: PopupPlacement) {
+function toTransitionName(placement?: PopupPlacement) {
   if (placement === "top") {
     return TransitionName.SlideDown
   }
@@ -85,14 +86,30 @@ export interface PopupProps extends ViewProps {
   rounded?: boolean
   children?: ReactNode
   lock?: boolean
+  backdrop?: boolean | Omit<PopupBackdropProps, "open">
+  closeOnClickBackdrop?: boolean
+  closeable?: boolean
+  closeIcon?: ReactNode
+  closeIconPlacement?: PopupClosePlacement
+  beforeClose?(action: PopupCloseAction): boolean | Promise<boolean>
+  destroyOnClose?: boolean
 
   duration?: number
   mountOnEnter?: boolean
+  transition?: string
+  transitionTimeout?: PopupTransitionTimeout
+
+  /** @deprecated 请使用 transition。 */
   transaction?: string
-  transactionTimeout?: number | { appear?: number; enter?: number; exit?: number }
+
+  /** @deprecated 请使用 transitionTimeout。 */
+  transactionTimeout?: PopupTransitionTimeout
   transitionAppear?: boolean
 
+  onOpen?(): void
+  onOpened?(): void
   onClose?(opened: boolean): void
+  onClosed?(): void
 
   onTransitionEnter?: EnterHandler<HTMLElement>
   onTransitionEntered?: EnterHandler<HTMLElement>
@@ -110,12 +127,24 @@ const Popup = forwardRef<any, PopupProps>((props, ref) => {
     rounded = false,
     lock = true,
     children,
+    backdrop: backdropProp,
+    closeOnClickBackdrop = true,
+    closeable = false,
+    closeIcon,
+    closeIconPlacement,
+    beforeClose,
+    destroyOnClose = false,
     duration,
+    transition,
+    transitionTimeout,
     transaction,
     transactionTimeout,
     transitionAppear = true,
     mountOnEnter = true,
+    onOpen,
+    onOpened,
     onClose,
+    onClosed,
     onTransitionEnter,
     onTransitionEntered,
     onTransitionExit,
@@ -123,23 +152,43 @@ const Popup = forwardRef<any, PopupProps>((props, ref) => {
     ...restProps
   } = props
 
-  const { value: open } = useUncontrolled({ defaultValue: defaultOpen, value: openProp })
-  const onClosePropRef = useToRef(onClose)
-  const initializedRef = useToRef(open)
+  const { value: open = false, setValue: setOpen } = useUncontrolled<boolean>({
+    defaultValue: defaultOpen,
+    value: openProp,
+  })
+  const closingRef = useRef(false)
   useLockScrollTaro(!!open && lock)
 
-  useEffect(() => {
-    if (initializedRef.current) {
-      if (open === false)
-        onClosePropRef.current?.(false)
-    } else {
-      initializedRef.current = true
-    }
-  }, [open])
+  const requestClose = useCallback(
+    async (action: PopupCloseAction) => {
+      if (closingRef.current) {
+        return
+      }
+      closingRef.current = true
+      try {
+        if (beforeClose && (await beforeClose(action)) !== true) {
+          return
+        }
+        setOpen(false, onClose)
+      } catch {
+        return
+      } finally {
+        closingRef.current = false
+      }
+    },
+    [beforeClose, onClose, setOpen],
+  )
 
-  const transactionName = transaction ?? toTransactionName(placement)
-
-  const { backdrop = <PopupBackdrop lock={lock} />, close, content } = usePopupChildren(children)
+  const transitionName = transition ?? transaction ?? toTransitionName(placement)
+  const timeout = transitionTimeout ?? transactionTimeout ?? duration
+  const { backdrop: backdropChild, close, content } = usePopupChildren(children)
+  const backdrop = usePopupBackdrop(
+    backdropChild ?? <PopupBackdrop lock={lock} closeable={closeOnClickBackdrop} />,
+    backdropProp,
+  )
+  const closeElement =
+    close ??
+    (closeable ? <PopupClose placement={closeIconPlacement}>{closeIcon}</PopupClose> : undefined)
 
   const durationStyle = useMemo(
     () => (_.isNumber(duration) ? { "--animation-duration-base": `${duration as number}ms` } : {}),
@@ -152,21 +201,32 @@ const Popup = forwardRef<any, PopupProps>((props, ref) => {
         open,
         duration,
         placement,
-        onClose,
+        onRequestClose: requestClose,
       }}
     >
       <Transition
         in={open}
-        name={transactionName}
+        name={transitionName}
         appear={transitionAppear}
-        timeout={transactionTimeout || duration}
+        timeout={timeout}
         mountOnEnter={mountOnEnter}
-        onEnter={onTransitionEnter}
-        onEntered={onTransitionEntered}
+        unmountOnExit={destroyOnClose}
+        onEnter={(isAppearing) => {
+          onOpen?.()
+          onTransitionEnter?.(isAppearing)
+        }}
+        onEntered={(isAppearing) => {
+          onOpened?.()
+          onTransitionEntered?.(isAppearing)
+        }}
         onExit={onTransitionExit}
-        onExited={onTransitionExited}
+        onExited={() => {
+          onClosed?.()
+          onTransitionExited?.()
+        }}
       >
         <View
+          ref={ref}
           className={classNames(
             prefixClassname("popup"),
             {
@@ -187,7 +247,7 @@ const Popup = forwardRef<any, PopupProps>((props, ref) => {
           catchMove={lock}
           {...restProps}
         >
-          {close}
+          {closeElement}
           {content}
         </View>
       </Transition>
