@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "libraryVersion": "1.0.0",
+  "libraryVersion": "1.0.1",
   "statistics": {
     "entries": 73,
     "components": 71,
@@ -503,7 +503,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -1066,7 +1066,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -1566,7 +1566,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -1625,7 +1625,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/icons",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -1746,7 +1746,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -2056,7 +2056,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -2181,7 +2181,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -2524,7 +2524,7 @@
       ],
       "kind": "guide",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -2556,7 +2556,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -2962,7 +2962,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -3159,7 +3159,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -3225,7 +3225,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -3305,7 +3305,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -3674,7 +3674,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -4245,7 +4245,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -4646,7 +4646,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -4766,7 +4766,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -5312,7 +5312,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -5521,7 +5521,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -5684,7 +5684,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -5839,7 +5839,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -6268,7 +6268,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -6465,7 +6465,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -6815,7 +6815,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -7010,7 +7010,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -7392,7 +7392,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -7672,7 +7672,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -7840,7 +7840,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -8214,7 +8214,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -8355,7 +8355,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "form",
         "name": "表单组件"
@@ -8854,7 +8854,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -9297,7 +9297,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -9829,7 +9829,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -10154,7 +10154,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -10372,7 +10372,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -10539,7 +10539,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -10898,7 +10898,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -11063,7 +11063,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -11325,7 +11325,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -11476,7 +11476,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -11655,7 +11655,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -12017,7 +12017,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "action",
         "name": "反馈组件"
@@ -12148,7 +12148,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -12443,7 +12443,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -12644,7 +12644,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -12870,7 +12870,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -13111,7 +13111,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -13406,7 +13406,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -13589,7 +13589,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -13778,7 +13778,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -14014,7 +14014,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -14241,7 +14241,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -14419,7 +14419,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -14632,7 +14632,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -14938,7 +14938,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -15162,7 +15162,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -15285,7 +15285,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -15534,7 +15534,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -15862,7 +15862,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -16048,7 +16048,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -16345,7 +16345,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "display",
         "name": "展示组件"
@@ -16512,7 +16512,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -16750,7 +16750,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -17028,7 +17028,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -17253,7 +17253,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -17456,7 +17456,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -17706,7 +17706,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -18108,7 +18108,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -18345,7 +18345,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -18555,7 +18555,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -18727,7 +18727,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/core",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "navigation",
         "name": "导航组件"
@@ -18915,7 +18915,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/commerce",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "commerce",
         "name": "电商组件"
@@ -19188,7 +19188,7 @@
       ],
       "kind": "hook",
       "packageName": "@taroify/hooks",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "category": {
         "id": "hooks",
         "name": "Hooks"
