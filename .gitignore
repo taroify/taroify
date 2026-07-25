@@ -25,7 +25,7 @@ node_modules/
 /site/public/
 /packages/*/dist
 /packages/*/build
-/problems/*/dist
+/packages/cli/data
 
 # documentation generators
 .content/

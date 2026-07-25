@@ -198,8 +198,9 @@ async function writeNavigation(hooks) {
   const sidebar = [
     { type: "section-header", label: "开发指南" },
     ...guideSidebarItems.map((item) => customLink(item.label, item.link)),
-    { type: "section-header", label: "MCP" },
-    customLink("介绍", "/mcp/"),
+    { type: "section-header", label: "AI 工具" },
+    customLink("CLI", "/cli/"),
+    customLink("MCP", "/mcp/"),
   ]
 
   for (const group of subpackages) {

@@ -35,7 +35,7 @@
     ·
     <a href="https://taroify.github.io/taroify.com/h5/index.html"><strong>在线演示</strong></a>
     ·
-    <a href="https://taroify.github.io/taroify.com/mcp/"><strong>MCP</strong></a>
+    <a href="https://taroify.github.io/taroify.com/cli/"><strong>CLI / MCP</strong></a>
     ·
     <a href="https://github.com/taroify/taroify/discussions"><strong>讨论区</strong></a>
   </p>
@@ -100,13 +100,14 @@ export default function Index() {
 
 Taroify 采用 Monorepo 组织，各能力可以独立安装和组合：
 
-| Package                                                                | 说明                             |
-| :--------------------------------------------------------------------- | :------------------------------- |
-| [`@taroify/core`](https://www.npmjs.com/package/@taroify/core)         | 核心 UI 组件与主题系统           |
-| [`@taroify/icons`](https://www.npmjs.com/package/@taroify/icons)       | Taro React 图标组件              |
-| [`@taroify/hooks`](https://www.npmjs.com/package/@taroify/hooks)       | 面向组件与业务场景的 React Hooks |
-| [`@taroify/commerce`](https://www.npmjs.com/package/@taroify/commerce) | 电商场景扩展组件                 |
-| [`@taroify/mcp`](https://www.npmjs.com/package/@taroify/mcp)           | 面向 AI 编码助手的文档检索服务   |
+| Package                                                                | 说明                                 |
+| :--------------------------------------------------------------------- | :----------------------------------- |
+| [`@taroify/core`](https://www.npmjs.com/package/@taroify/core)         | 核心 UI 组件与主题系统               |
+| [`@taroify/icons`](https://www.npmjs.com/package/@taroify/icons)       | Taro React 图标组件                  |
+| [`@taroify/hooks`](https://www.npmjs.com/package/@taroify/hooks)       | 面向组件与业务场景的 React Hooks     |
+| [`@taroify/commerce`](https://www.npmjs.com/package/@taroify/commerce) | 电商场景扩展组件                     |
+| [`@taroify/cli`](https://www.npmjs.com/package/@taroify/cli)           | 离线组件知识 CLI、MCP 与 Agent Skill |
+| [`@taroify/mcp`](https://www.npmjs.com/package/@taroify/mcp)           | 现有独立 MCP 服务                    |
 
 ## 本地开发
 

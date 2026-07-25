@@ -54,6 +54,19 @@ function copyBundleFiles(name, filename) {
   return copyBundleFilesTask
 }
 
+function copyBundleDirectory(name, directory) {
+  const copyBundleDirectoryTask = () => {
+    return gulp
+      .src(`./packages/${name}/${directory}/**/*`, {
+        base: `./packages/${name}`,
+        allowEmpty: true,
+      })
+      .pipe(gulp.dest(`./bundles/${name}`))
+  }
+  copyBundleDirectoryTask.displayName = `copy directory(${directory}) to bundles/${name}`
+  return copyBundleDirectoryTask
+}
+
 function createBundle(name) {
   return series(
     cleanBundle(name),
@@ -65,3 +78,4 @@ function createBundle(name) {
 
 exports.cleanBundle = cleanBundle
 exports.createBundle = createBundle
+exports.copyBundleDirectory = copyBundleDirectory

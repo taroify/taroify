@@ -25,5 +25,5 @@
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["packages/*/src", "jest/jest-setup.ts", "typings.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "packages/cli"]
 }
