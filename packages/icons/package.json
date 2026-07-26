@@ -36,7 +36,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.178",
-    "@types/node": "^14.14.25",
+    "@types/node": "^20.19.9",
     "lodash": "^4.17.21"
   }
 }
