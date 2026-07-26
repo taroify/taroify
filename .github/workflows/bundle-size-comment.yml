@@ -1,0 +1,82 @@
+name: Bundle Size Comment
+
+on:
+  workflow_run:
+    workflows:
+      - Bundle Size
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  comment:
+    if: github.repository == 'taroify/taroify' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download package size report
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: bundle-size-stats
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create or update pull request comment
+        uses: actions/github-script@373c709c69115d41ff229c7e5df9f8788daa9553 # v9
+        with:
+          script: |
+            const fs = require("node:fs")
+            const marker = "<!-- bundle-size-comment -->"
+            const report = fs.readFileSync("stats.txt", "utf8").trim()
+            const body = `${marker}\n${report}\n`
+            const workflowRun = context.payload.workflow_run
+
+            let pullRequestNumber = workflowRun.pull_requests?.[0]?.number
+            if (!pullRequestNumber) {
+              const { data: pullRequests } =
+                await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  commit_sha: workflowRun.head_sha,
+                })
+              pullRequestNumber = pullRequests.find(
+                (pullRequest) => pullRequest.state === "open",
+              )?.number
+            }
+
+            if (!pullRequestNumber) {
+              core.setFailed(`Could not find an open pull request for ${workflowRun.head_sha}`)
+              return
+            }
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pullRequestNumber,
+              per_page: 100,
+            })
+            const existingComment = comments.find(
+              (comment) =>
+                comment.user?.login === "github-actions[bot]" &&
+                comment.body?.includes(marker),
+            )
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              })
+              return
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pullRequestNumber,
+              body,
+            })
