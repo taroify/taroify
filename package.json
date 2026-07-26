@@ -4,6 +4,9 @@
   "license": "MIT",
   "private": true,
   "packageManager": "yarn@1.22.22",
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=24.0.0"
+  },
   "repository": {
     "type": "https",
     "url": "https://github.com/taroify/taroify.git"
@@ -13,7 +16,7 @@
   },
   "scripts": {
     "clean:node_modules": "lerna clean --yes && rimraf node_modules && cd ./site && rimraf node_modules",
-    "install:node_modules": "yarn install && gulp createBundles && lerna bootstrap && cd ./site && yarn install",
+    "install:node_modules": "yarn install && gulp createBundles && yarn install && cd ./site && yarn install",
     "clean": "gulp clean",
     "develop": "gulp develop",
     "watch": "gulp watch",
@@ -57,7 +60,7 @@
     "jest": "^26.6.0",
     "jest-transform-css": "^6.0.0",
     "lefthook": "^2.0.0",
-    "lerna": "^3.22.1",
+    "lerna": "^9.0.7",
     "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-gfm": "^3.1.0",
     "micromark-extension-gfm": "^3.0.0",
