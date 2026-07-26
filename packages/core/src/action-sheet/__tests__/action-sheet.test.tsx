@@ -33,7 +33,7 @@ describe("<ActionSheet />", () => {
     expect(header).toHaveTextContent("请选择操作")
     expect(actions).toHaveLength(3)
     expect(actions[0]).toHaveClass("custom-action")
-    expect(actions[0]).toHaveStyle({ color: "red" })
+    expect(actions[0]).toHaveStyle({ color: "rgb(255, 0, 0)" })
     expect(actions[0]).toHaveTextContent("编辑修改当前内容")
     expect(actions[1]).toHaveClass(prefixClassname("sheet__item--disabled"))
     expect(actions[2]).toHaveClass(prefixClassname("sheet__item--loading"))

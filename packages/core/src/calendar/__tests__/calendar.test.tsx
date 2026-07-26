@@ -94,7 +94,7 @@ describe("<CalendarDay />", () => {
 
     expect(day).toHaveClass("custom-day", prefixClassname("calendar__day--active"))
     expect(day).toHaveAttribute("id", "selected-day")
-    expect(day).toHaveStyle({ color: "red" })
+    expect(day).toHaveStyle({ color: "rgb(255, 0, 0)" })
     expect(day.querySelector(`.${prefixClassname("calendar__day__top")}`)).toHaveTextContent(
       "Today",
     )
@@ -171,7 +171,7 @@ describe("<Calendar />", () => {
     const calendar = getCalendar(container)
 
     expect(calendar).toHaveClass("custom-calendar")
-    expect(calendar).toHaveStyle({ color: "blue" })
+    expect(calendar).toHaveStyle({ color: "rgb(0, 0, 255)" })
     expect(
       container.querySelector(`.${prefixClassname("calendar__header-title")}`),
     ).toHaveTextContent("Choose date")

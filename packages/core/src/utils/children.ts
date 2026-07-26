@@ -25,7 +25,9 @@ function mapChildren<T, C extends ReactNode>(
 ): C extends null | undefined ? C : Array<Exclude<T, boolean | null | undefined>> {
   const objectified = isObjectChildren(children)
   const map = objectified ? _.map : ReactChildren.map
-  return map(children, fn)
+  return map(children, fn) as C extends null | undefined
+    ? C
+    : Array<Exclude<T, boolean | null | undefined>>
 }
 
 const Children = {

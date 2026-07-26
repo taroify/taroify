@@ -111,7 +111,7 @@ function touchEnd() {
 
 describe("<List fixedHeight pullRefresh />", () => {
   beforeEach(() => {
-    jest.useFakeTimers("modern")
+    jest.useFakeTimers()
   })
 
   afterEach(() => {

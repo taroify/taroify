@@ -40,7 +40,7 @@ describe("<Avatar />", () => {
       prefixClassname("avatar--circle"),
       prefixClassname("avatar--medium"),
     )
-    expect(avatar).toHaveStyle({ backgroundColor: "red" })
+    expect(avatar).toHaveStyle({ backgroundColor: "rgb(255, 0, 0)" })
     expect(avatar).toHaveAttribute("data-testid", "avatar")
 
     fireEvent.click(getByText("AB"))
@@ -120,7 +120,7 @@ describe("<Avatar.Group />", () => {
     expect(avatars).toHaveLength(2)
     expect(avatars?.[0]).toHaveClass(prefixClassname("avatar--square"))
     expect(avatars?.[0]).not.toHaveClass(prefixClassname("avatar--circle"))
-    expect(avatars?.[0]).toHaveStyle({ backgroundColor: "red", zIndex: "0" })
+    expect(avatars?.[0]).toHaveStyle({ backgroundColor: "rgb(255, 0, 0)", zIndex: "0" })
     expect(avatars?.[1]).toHaveClass(prefixClassname("avatar--square"))
     expect(avatars?.[1]).toHaveStyle({ zIndex: "1" })
     expect(container).not.toHaveTextContent("忽略内容")
