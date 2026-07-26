@@ -34,9 +34,9 @@ describe("<Cell />", () => {
 
     expect(cell).toHaveClass(prefixClassname("cell"), "custom-cell")
     expect(cell).toHaveAttribute("id", "profile-cell")
-    expect(cell).toHaveStyle({ backgroundColor: "red" })
+    expect(cell).toHaveStyle({ backgroundColor: "rgb(255, 0, 0)" })
     expect(title).toHaveClass("custom-title")
-    expect(title).toHaveStyle({ color: "blue" })
+    expect(title).toHaveStyle({ color: "rgb(0, 0, 255)" })
     expect(title).toHaveTextContent("用户名用于登录")
     expect(brief).toHaveClass("custom-brief")
     expect(brief).toHaveTextContent("用于登录")
@@ -233,7 +233,7 @@ describe("<Cell.Group />", () => {
 
     expect(group).toHaveClass("custom-group", prefixClassname("cell-group--inset"))
     expect(group).toHaveAttribute("id", "settings-group")
-    expect(group).toHaveStyle({ backgroundColor: "red" })
+    expect(group).toHaveStyle({ backgroundColor: "rgb(255, 0, 0)" })
     expect(title).toHaveClass(prefixClassname("cell-group__title--inset"))
     expect(title).toHaveTextContent("设置")
     expect(title?.nextElementSibling).toBe(group)

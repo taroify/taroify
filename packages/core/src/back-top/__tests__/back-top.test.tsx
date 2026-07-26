@@ -49,7 +49,7 @@ describe("<BackTop />", () => {
     expect(backTop).toHaveAttribute("id", "page-back-top")
     expect(backTop).toHaveAttribute("data-testid", "back-top")
     expect(backTop).toHaveStyle({
-      color: "red",
+      color: "rgb(255, 0, 0)",
       right: "30px",
       bottom: "40px",
       zIndex: "100",

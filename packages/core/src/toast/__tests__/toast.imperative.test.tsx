@@ -11,7 +11,7 @@ const mountPortalMock = mountPortal as jest.MockedFunction<typeof mountPortal>
 
 describe("toast imperative", () => {
   beforeEach(() => {
-    jest.useFakeTimers("modern")
+    jest.useFakeTimers()
     allowMultiple(true)
   })
 

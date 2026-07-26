@@ -53,7 +53,7 @@ function touch(target: HTMLElement, type: "touchStart" | "touchMove", clientY: n
 
 describe("<PullRefresh />", () => {
   beforeEach(() => {
-    jest.useFakeTimers("modern")
+    jest.useFakeTimers()
     mockEnv = "WEB"
     mockPlatform = "ios"
   })

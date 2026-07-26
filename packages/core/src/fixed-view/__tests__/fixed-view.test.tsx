@@ -54,6 +54,6 @@ describe("<FixedView />", () => {
     const safeArea = container.querySelector(`.${prefixClassname("safe-area--bottom")}`)
 
     expect(safeArea).toHaveClass("custom-safe-area")
-    expect(safeArea).toHaveStyle({ backgroundColor: "transparent" })
+    expect(safeArea).toHaveStyle({ backgroundColor: "rgba(0, 0, 0, 0)" })
   })
 })

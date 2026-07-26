@@ -68,7 +68,7 @@ describe("<FloatingPanel />", () => {
     touchEvent(el, 0, -199)
     await sleep(0)
     expect(el.style.transform).toContain("-200px")
-    expect(onChange).toBeCalledWith(299)
+    expect(onChange).toHaveBeenCalledWith(299)
   })
 
   it("should emit drag lifecycle events with the current panel height", async () => {
@@ -153,7 +153,7 @@ describe("<FloatingPanel />", () => {
     expect(content.contains(safeArea)).toBe(false)
     expect(content.nextElementSibling).toBe(safeArea)
     expect(safeArea).toHaveClass("custom-safe-area")
-    expect(safeArea).toHaveStyle({ backgroundColor: "transparent" })
+    expect(safeArea).toHaveStyle({ backgroundColor: "rgba(0, 0, 0, 0)" })
   })
 
   it("should hide the safe area when safeAreaInsetBottom is false", () => {

@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`<FloatingPanel /> should drag adsorption effect when anchors props is [100, 200, 400] 1`] = `
 <DocumentFragment>

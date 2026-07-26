@@ -39,7 +39,7 @@
     "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^13.1.2",
     "@types/classnames": "^2.2.11",

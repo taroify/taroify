@@ -13,7 +13,7 @@ describe("<ButtonBase />", () => {
     const button = container.querySelector("taro-button-core")
 
     expect(button).toHaveClass(prefixClassname("button-base"), "custom-button")
-    expect(button).toHaveStyle({ color: "red" })
+    expect(button).toHaveStyle({ color: "rgb(255, 0, 0)" })
     expect(button).toHaveTextContent("Confirm")
   })
 

@@ -43,7 +43,7 @@ describe("<Backdrop />", () => {
     expect(backdrop).not.toHaveClass(prefixClassname("backdrop--open"))
     expect(backdrop).toHaveAttribute("id", "modal-backdrop")
     expect(backdrop).toHaveAttribute("data-testid", "backdrop")
-    expect(backdrop).toHaveStyle({ backgroundColor: "red" })
+    expect(backdrop).toHaveStyle({ backgroundColor: "rgb(255, 0, 0)" })
     expect(backdrop).toHaveTextContent("遮罩内容")
     expect(mockTransitionProps).toEqual(
       expect.objectContaining({

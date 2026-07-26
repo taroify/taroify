@@ -28,7 +28,7 @@ describe("<Button />", () => {
       prefixClassname("button--medium"),
       prefixClassname("button--default"),
     )
-    expect(button).toHaveStyle({ color: "red" })
+    expect(button).toHaveStyle({ color: "rgb(255, 0, 0)" })
     expect(button).toHaveTextContent("Confirm")
     expect(button.querySelector(`.${prefixClassname("button__text")}`)).toHaveTextContent("Confirm")
   })
@@ -407,7 +407,7 @@ describe("<Button.Group />", () => {
       prefixClassname("button-group--block"),
     )
     expect(group).toHaveAttribute("id", "button-group")
-    expect(group).toHaveStyle({ color: "blue" })
+    expect(group).toHaveStyle({ color: "rgb(0, 0, 255)" })
     expect(buttons).toHaveLength(2)
 
     for (const button of Array.from(buttons)) {

@@ -27,7 +27,7 @@ describe("<Badge />", () => {
     expect(badge).not.toHaveClass(prefixClassname("badge--fixed"))
     expect(badge).toHaveAttribute("id", "message-count")
     expect(badge).toHaveAttribute("data-testid", "badge")
-    expect(badge).toHaveStyle({ backgroundColor: "blue" })
+    expect(badge).toHaveStyle({ backgroundColor: "rgb(0, 0, 255)" })
     expect(badge).toHaveTextContent("5")
 
     fireEvent.click(badge)
@@ -115,7 +115,7 @@ describe("<Badge />", () => {
     expect(badge).toHaveClass(prefixClassname("badge--content"), prefixClassname("badge--fixed"))
     expect(badge).not.toHaveClass("custom-wrapper")
     expect(badge).toHaveAttribute("id", "badge-content")
-    expect(badge).toHaveStyle({ color: "yellow" })
+    expect(badge).toHaveStyle({ color: "rgb(255, 255, 0)" })
 
     fireEvent.click(badge)
 
