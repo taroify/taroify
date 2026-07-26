@@ -18,8 +18,8 @@
 按照下面的步骤操作，即可在本地开发 Taroify 组件。
 
 ```bash
-# 全局安装 rimraf、lerna
-npm install -g rimraf lerna
+# 全局安装 rimraf
+npm install -g rimraf
 
 # 克隆仓库
 # 默认为 main 分支，包含 Taroify 的代码

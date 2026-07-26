@@ -1,0 +1,3 @@
+# Include generated publish packages in Lerna's project graph.
+!bundles
+!bundles/**
