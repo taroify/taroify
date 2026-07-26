@@ -1,0 +1,94 @@
+name: Bundle Size
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bundle-size*.yml"
+      - "gulpfile.js"
+      - "package.json"
+      - "packages/**"
+      - "scripts/bundle-size-report.mjs"
+      - "tsconfig.json"
+      - "typings.d.ts"
+      - "yarn.lock"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bundle-size-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20.19.0"
+
+jobs:
+  measure:
+    if: github.repository == 'taroify/taroify'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pull request
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Install pull request dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Build pull request packages
+        run: |
+          yarn run build:packages
+          yarn run build:cli
+
+      - name: Measure pull request packages
+        run: node scripts/bundle-size-report.mjs --output current.json
+
+      - name: Prepare base worktree
+        run: |
+          BASE_PATH=".ci-bundle-base-${RANDOM}-${RANDOM}"
+          echo "BASE_PATH=$BASE_PATH" >> "$GITHUB_ENV"
+          git worktree add --detach "$BASE_PATH" "${{ github.event.pull_request.base.sha }}"
+
+      - name: Install base dependencies
+        run: yarn --cwd "$BASE_PATH" install --frozen-lockfile --ignore-scripts
+
+      - name: Build base packages
+        run: |
+          yarn --cwd "$BASE_PATH" run build:packages
+          yarn --cwd "$BASE_PATH" run build:cli
+
+      - name: Measure base packages
+        run: |
+          node scripts/bundle-size-report.mjs \
+            --bundles-dir "${BASE_PATH}/bundles" \
+            --output base.json
+
+      - name: Compare package sizes
+        run: |
+          node scripts/bundle-size-report.mjs \
+            --compare base.json \
+            --current current.json \
+            --output stats.txt
+
+      - name: Upload package size report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: bundle-size-stats
+          path: stats.txt
+          retention-days: 1
+
+      - name: Cleanup base worktree
+        if: always()
+        run: |
+          if [ -n "${BASE_PATH:-}" ] && [ -d "$BASE_PATH" ]; then
+            git worktree remove --force "$BASE_PATH"
+          fi
