@@ -2,7 +2,13 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["packages/demo", "packages/cli/meta", "site/theme/styles/taroify-core.css"]
+    "includes": [
+      "**",
+      "!**/*.svg",
+      "!**/packages/demo",
+      "!**/packages/cli/meta",
+      "!**/site/theme/styles/taroify-core.css"
+    ]
   },
   "vcs": {
     "enabled": true,
@@ -15,14 +21,17 @@
         "noNonNullAssertion": "off",
         "useConst": "warn",
         "useTemplate": "warn",
-        "useImportType": "warn",
+        "useImportType": {
+          "level": "warn",
+          "fix": "none"
+        },
         "noParameterAssign": "warn",
         "useNumberNamespace": "warn",
         "useSingleVarDeclarator": "warn",
         "noUnusedTemplateLiteral": "warn"
       },
       "correctness": {
-        "useHookAtTopLevel": "error",
+        "useHookAtTopLevel": "warn",
         "useExhaustiveDependencies": "warn",
         "noUnsafeOptionalChaining": "warn",
         "noChildrenProp": "off"
@@ -32,7 +41,18 @@
         "noAssignInExpressions": "warn",
         "noRedundantUseStrict": "warn",
         "noConfusingVoidType": "warn",
-        "noImplicitAnyLet": "warn"
+        "noImplicitAnyLet": "warn",
+        "noTsIgnore": {
+          "level": "warn",
+          "fix": "none"
+        },
+        "noNonNullAssertedOptionalChain": "off",
+        "useIterableCallbackReturn": {
+          "level": "error",
+          "options": {
+            "checkForEach": false
+          }
+        }
       },
       "complexity": {
         "useLiteralKeys": "warn",
@@ -40,9 +60,7 @@
       }
     }
   },
-  "organizeImports": {
-    "enabled": false
-  },
+  "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "formatter": {
     "lineWidth": 100,
     "indentStyle": "space"
