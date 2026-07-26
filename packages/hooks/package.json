@@ -4,7 +4,15 @@
   "version": "1.0.1",
   "license": "MIT",
   "private": "true",
-  "keywords": ["ui", "taro", "react", "mobile", "frontend", "component", "components"],
+  "keywords": [
+    "ui",
+    "taro",
+    "react",
+    "mobile",
+    "frontend",
+    "component",
+    "components"
+  ],
   "repository": {
     "type": "https",
     "url": "https://github.com/taroify/taroify.git"

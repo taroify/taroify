@@ -42,10 +42,15 @@
     "prepare": "lefthook install",
     "commit": "git add -A && git commit --no-edit"
   },
-  "workspaces": ["packages/*", "bundles/*"],
-  "browserslist": ["last 3 versions"],
+  "workspaces": [
+    "packages/*",
+    "bundles/*"
+  ],
+  "browserslist": [
+    "last 3 versions"
+  ],
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.5.5",
     "@taroify/babel-preset": "^1.0.0",
     "@taroify/gulp": "^1.0.0",
     "@taroify/stylelint-config": "^1.0.0",

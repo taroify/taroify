@@ -5,7 +5,14 @@
   "type": "module",
   "license": "MIT",
   "private": "true",
-  "keywords": ["taroify", "taro", "cli", "mcp", "ai-coding", "react-components"],
+  "keywords": [
+    "taroify",
+    "taro",
+    "cli",
+    "mcp",
+    "ai-coding",
+    "react-components"
+  ],
   "homepage": "https://taroify.github.io/taroify.com/cli/",
   "repository": {
     "type": "git",
@@ -24,7 +31,12 @@
       "import": "./dist/mcp.js"
     }
   },
-  "files": ["dist", "data", "skills", "README.md"],
+  "files": [
+    "dist",
+    "data",
+    "skills",
+    "README.md"
+  ],
   "engines": {
     "node": ">=18.18.0"
   },
