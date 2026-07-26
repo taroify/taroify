@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 204,
-    "demos": 460,
+    "demos": 461,
     "componentTokens": 797,
     "globalTokens": 60
   },
@@ -3170,36 +3170,36 @@
             "rows": [
               {
                 "name": "direction",
-                "description": "垂直排列方式 可选值 horizontal vertical",
-                "type": "string",
+                "description": "排列方向，可选值为 horizontal vertical",
+                "type": "SpaceDirection",
                 "defaultValue": "horizontal",
                 "extra": []
               },
               {
                 "name": "size",
-                "description": "间距，可选值为 mini small medium large，或者自定义间距",
-                "type": "string | number | [number, number?]",
+                "description": "间距大小，数组依次表示水平和垂直间距",
+                "type": "SpaceSize",
                 "defaultValue": "small",
                 "extra": []
               },
               {
                 "name": "wrap",
                 "description": "子元素的换行方式，可选值为 nowrap wrap wrap-reverse",
-                "type": "boolean",
+                "type": "SpaceWrap",
                 "defaultValue": "wrap",
                 "extra": []
               },
               {
                 "name": "justify",
                 "description": "主轴对齐方式，可选值为 start end center space-around space-between",
-                "type": "string",
+                "type": "SpaceJustify",
                 "defaultValue": "start",
                 "extra": []
               },
               {
                 "name": "align",
                 "description": "交叉轴对齐方式，可选值为 start center end baseline stretch",
-                "type": "string",
+                "type": "SpaceAlign",
                 "defaultValue": "start",
                 "extra": []
               },
@@ -3208,6 +3208,13 @@
                 "description": "是否填充整个父元素",
                 "type": "boolean",
                 "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "separator",
+                "description": "相邻子元素之间的分隔内容",
+                "type": "ReactNode",
+                "defaultValue": "-",
                 "extra": []
               }
             ]
@@ -3237,22 +3244,28 @@
           "id": "demo4",
           "title": "自定义间距",
           "language": "tsx",
-          "code": "<Space size={16}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16, 32]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>"
+          "code": "<Space size={16}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size=\"32px\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size=\"var(--space-gap)\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16, \"32px\"]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>"
         },
         {
           "id": "demo5",
+          "title": "分隔符",
+          "language": "tsx",
+          "code": "<Space separator=\"|\">\n  <Button variant=\"text\" color=\"primary\">编辑</Button>\n  <Button variant=\"text\" color=\"primary\">删除</Button>\n  <Button variant=\"text\" color=\"primary\">更多</Button>\n</Space>"
+        },
+        {
+          "id": "demo6",
           "title": "居中",
           "language": "tsx",
           "code": "<Space justify=\"center\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>"
         },
         {
-          "id": "demo6",
+          "id": "demo7",
           "title": "不换行",
           "language": "tsx",
           "code": "<Space wrap=\"nowrap\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>"
         }
       ],
-      "demoPage": "import { Button, Space } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function SpaceDemo() {\n  return (\n    <Page title=\"Space 间距\" className=\"space-demo\">\n      <Block title=\"基础用法\">\n        <Space>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"垂直\">\n        <Space direction=\"vertical\" fill>\n          <Button color=\"primary\" block>主要按钮</Button>\n          <Button color=\"primary\" block>主要按钮</Button>\n          <Button color=\"primary\" block>主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"间距\">\n        <Space size=\"mini\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"small\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"medium\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"large\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"自定义间隔\">\n        <Space size={16}>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size={[16, 32]}>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size={[16]}>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"靠右\">\n        <Space justify=\"space-around\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"居中\">\n        <Space justify=\"center\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"环绕\">\n        <Space justify=\"space-around\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"两端对齐\">\n        <Space justify=\"space-between\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"不换行\">\n        <Space wrap=\"nowrap\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Button, Space } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function SpaceDemo() {\n  return (\n    <Page title=\"Space 间距\" className=\"space-demo\">\n      <Block title=\"基础用法\">\n        <Space>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"垂直\">\n        <Space direction=\"vertical\" fill>\n          <Button color=\"primary\" block>主要按钮</Button>\n          <Button color=\"primary\" block>主要按钮</Button>\n          <Button color=\"primary\" block>主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"间距\">\n        <Space size=\"mini\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"small\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"medium\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"large\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"自定义间隔\">\n        <Space size={16}>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"32px\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size=\"var(--space-demo-gap)\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n        <Space size={[16, \"32px\"]}>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"分隔符\">\n        <Space separator=\"|\">\n          <Button variant=\"text\" color=\"primary\">编辑</Button>\n          <Button variant=\"text\" color=\"primary\">删除</Button>\n          <Button variant=\"text\" color=\"primary\">更多</Button>\n        </Space>\n      </Block>\n      <Block title=\"靠右\">\n        <Space justify=\"space-around\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"居中\">\n        <Space justify=\"center\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"环绕\">\n        <Space justify=\"space-around\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"两端对齐\">\n        <Space justify=\"space-between\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n      <Block title=\"不换行\">\n        <Space wrap=\"nowrap\">\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n          <Button color=\"primary\">主要按钮</Button>\n        </Space>\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--space-item-gap-mini",
@@ -3328,7 +3341,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Space 间距\n\n### 介绍\n\n设置组件之间的间距。\n\n### 引入\n\n```tsx\nimport { Button, Space } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n```tsx\n<Space>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 垂直\n\n```tsx\n<Block title=\"垂直\">\n  <Space direction=\"vertical\" fill>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n  </Space>\n</Block>\n```\n\n### 间距\n\n```tsx\n<Space size=\"large\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 自定义间距\n\n```tsx\n<Space size={16}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16, 32]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 居中\n\n```tsx\n<Space justify=\"center\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 不换行\n\n```tsx\n<Space wrap=\"nowrap\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n## API\n\n### Props\n\n| 参数                  | 说明                                                                         | 类型                                    | 默认值       |\n| --------------------- | ---------------------------------------------------------------------------- | --------------------------------------- | ------------ |\n| direction             | 垂直排列方式 可选值 `horizontal` `vertical`                                  | _string_                                | `horizontal` |\n| size                  | 间距，可选值为 `mini` `small` `medium` `large`，或者自定义间距               | _string \\| number \\| [number, number?]_ | `small`      |\n| wrap                  | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                    | _boolean_                               | `wrap`       |\n| justify               | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _string_                                | `start`      |\n| align                 | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch`         | _string_                                | `start`      |\n| fill | 是否填充整个父元素                                                           | _boolean_                               | `false`      |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                               | 默认值                         | 描述 |\n| ---------------------------------- | ------------------------------ | ---- |\n| --space-item-gap-mini              | _var(--padding-xs)_            | -    |\n| --space-item-gap-small             | _var(--padding-sm)_            | -    |\n| --space-item-gap-medium            | _var(--padding-md)_            | -    |\n| --space-item-gap-large             | _var(--padding-lg)_            | -    |\n| --space-item-vertical-gap-mini     | _var(--space-item-gap-mini)_   | -    |\n| --space-item-vertical-gap-small    | _var(--space-item-gap-small)_  | -    |\n| --space-item-vertical-gap-medium   | _var(--space-item-gap-medium)_ | -    |\n| --space-item-vertical-gap-large    | _var(--space-item-gap-large)_  | -    |\n| --space-item-horizontal-gap-mini   | _var(--space-item-gap-mini)_   | -    |\n| --space-item-horizontal-gap-small  | _var(--space-item-gap-small)_  | -    |\n| --space-item-horizontal-gap-medium | _var(--space-item-gap-medium)_ | -    |\n| --space-item-horizontal-gap-large  | _var(--space-item-gap-large)_  | -    |\n"
+        "zhCN": "# Space 间距\n\n### 介绍\n\n设置组件之间的间距。\n\n### 引入\n\n```tsx\nimport { Button, Space } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n```tsx\n<Space>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 垂直\n\n```tsx\n<Block title=\"垂直\">\n  <Space direction=\"vertical\" fill>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n    <Button color=\"primary\" block>\n      主要按钮\n    </Button>\n  </Space>\n</Block>\n```\n\n### 间距\n\n```tsx\n<Space size=\"large\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 自定义间距\n\n通过 `size` 设置间距。传入数字时会通过 Taro 的尺寸转换处理；也可以传入带单位的字符串、CSS 变量，或者使用数组分别设置 `[水平间距, 垂直间距]`。\n\n```tsx\n<Space size={16}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size=\"32px\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size=\"var(--space-gap)\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n<Space size={[16, \"32px\"]}>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 分隔符 <Tag tag=\"v1.0.2\" />\n\n通过 `separator` 在相邻子元素之间设置分隔内容。\n\n```tsx\n<Space separator=\"|\">\n  <Button variant=\"text\" color=\"primary\">编辑</Button>\n  <Button variant=\"text\" color=\"primary\">删除</Button>\n  <Button variant=\"text\" color=\"primary\">更多</Button>\n</Space>\n```\n\n### 居中\n\n```tsx\n<Space justify=\"center\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n### 不换行\n\n```tsx\n<Space wrap=\"nowrap\">\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n  <Button color=\"primary\">主要按钮</Button>\n</Space>\n```\n\n## API\n\n### Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| direction | 排列方向，可选值为 `horizontal` `vertical` | _SpaceDirection_ | `horizontal` |\n| size | 间距大小，数组依次表示水平和垂直间距 | _SpaceSize_ | `small` |\n| wrap | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse` | _SpaceWrap_ | `wrap` |\n| justify | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _SpaceJustify_ | `start` |\n| align | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` | _SpaceAlign_ | `start` |\n| fill | 是否填充整个父元素 | _boolean_ | `false` |\n| separator <Tag tag=\"v1.0.2\" /> | 相邻子元素之间的分隔内容 | _ReactNode_ | - |\n\n### 类型定义\n\n组件导出以下类型定义：\n\n```ts\nimport type {\n  SpaceAlign,\n  SpaceDirection,\n  SpaceJustify,\n  SpaceProps,\n  SpaceSize,\n  SpaceSizePreset,\n  SpaceSizeValue,\n  SpaceThemeVars,\n  SpaceWrap,\n} from \"@taroify/core\"\n```\n\n`SpaceSize` 支持预设尺寸、数字、带单位的字符串、CSS 变量，以及由这些值组成的数组：\n\n```ts\ntype SpaceSize =\n  | \"mini\"\n  | \"small\"\n  | \"medium\"\n  | \"large\"\n  | number\n  | string\n  | [number | string, (number | string)?]\n```\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                               | 默认值                         | 描述 |\n| ---------------------------------- | ------------------------------ | ---- |\n| --space-item-gap-mini              | _var(--padding-xs)_            | -    |\n| --space-item-gap-small             | _var(--padding-sm)_            | -    |\n| --space-item-gap-medium            | _var(--padding-md)_            | -    |\n| --space-item-gap-large             | _var(--padding-lg)_            | -    |\n| --space-item-vertical-gap-mini     | _var(--space-item-gap-mini)_   | -    |\n| --space-item-vertical-gap-small    | _var(--space-item-gap-small)_  | -    |\n| --space-item-vertical-gap-medium   | _var(--space-item-gap-medium)_ | -    |\n| --space-item-vertical-gap-large    | _var(--space-item-gap-large)_  | -    |\n| --space-item-horizontal-gap-mini   | _var(--space-item-gap-mini)_   | -    |\n| --space-item-horizontal-gap-small  | _var(--space-item-gap-small)_  | -    |\n| --space-item-horizontal-gap-medium | _var(--space-item-gap-medium)_ | -    |\n| --space-item-horizontal-gap-large  | _var(--space-item-gap-large)_  | -    |\n"
       },
       "source": {
         "docs": "packages/core/src/space/README.md",

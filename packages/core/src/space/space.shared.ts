@@ -1,6 +1,10 @@
 export type SpaceDirection = "horizontal" | "vertical"
 
-export type SpaceSize = "mini" | "small" | "medium" | "large" | number | [number, number?]
+export type SpaceSizePreset = "mini" | "small" | "medium" | "large"
+
+export type SpaceSizeValue = SpaceSizePreset | number | (string & {})
+
+export type SpaceSize = SpaceSizeValue | [SpaceSizeValue, SpaceSizeValue?]
 
 export type SpaceJustify = "start" | "center" | "end" | "space-around" | "space-between"
 

@@ -48,15 +48,27 @@ export default function SpaceDemo() {
           <Button color="primary">主要按钮</Button>
           <Button color="primary">主要按钮</Button>
         </Space>
-        <Space size={[16, 32]}>
+        <Space size="32px">
           <Button color="primary">主要按钮</Button>
           <Button color="primary">主要按钮</Button>
           <Button color="primary">主要按钮</Button>
         </Space>
-        <Space size={[16]}>
+        <Space size="var(--space-demo-gap)">
           <Button color="primary">主要按钮</Button>
           <Button color="primary">主要按钮</Button>
           <Button color="primary">主要按钮</Button>
+        </Space>
+        <Space size={[16, "32px"]}>
+          <Button color="primary">主要按钮</Button>
+          <Button color="primary">主要按钮</Button>
+          <Button color="primary">主要按钮</Button>
+        </Space>
+      </Block>
+      <Block title="分隔符">
+        <Space separator="|">
+          <Button variant="text" color="primary">编辑</Button>
+          <Button variant="text" color="primary">删除</Button>
+          <Button variant="text" color="primary">更多</Button>
         </Space>
       </Block>
       <Block title="靠右">

@@ -52,21 +52,40 @@ import { Button, Space } from "@taroify/core"
 
 ### 自定义间距
 
+通过 `size` 设置间距。传入数字时会通过 Taro 的尺寸转换处理；也可以传入带单位的字符串、CSS 变量，或者使用数组分别设置 `[水平间距, 垂直间距]`。
+
 ```tsx
 <Space size={16}>
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
 </Space>
-<Space size={[16, 32]}>
+<Space size="32px">
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
 </Space>
-<Space size={[16]}>
+<Space size="var(--space-gap)">
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
   <Button color="primary">主要按钮</Button>
+</Space>
+<Space size={[16, "32px"]}>
+  <Button color="primary">主要按钮</Button>
+  <Button color="primary">主要按钮</Button>
+  <Button color="primary">主要按钮</Button>
+</Space>
+```
+
+### 分隔符 <Tag tag="v1.0.2" />
+
+通过 `separator` 在相邻子元素之间设置分隔内容。
+
+```tsx
+<Space separator="|">
+  <Button variant="text" color="primary">编辑</Button>
+  <Button variant="text" color="primary">删除</Button>
+  <Button variant="text" color="primary">更多</Button>
 </Space>
 ```
 
@@ -94,14 +113,46 @@ import { Button, Space } from "@taroify/core"
 
 ### Props
 
-| 参数                  | 说明                                                                         | 类型                                    | 默认值       |
-| --------------------- | ---------------------------------------------------------------------------- | --------------------------------------- | ------------ |
-| direction             | 垂直排列方式 可选值 `horizontal` `vertical`                                  | _string_                                | `horizontal` |
-| size                  | 间距，可选值为 `mini` `small` `medium` `large`，或者自定义间距               | _string \| number \| [number, number?]_ | `small`      |
-| wrap                  | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse`                    | _boolean_                               | `wrap`       |
-| justify               | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _string_                                | `start`      |
-| align                 | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch`         | _string_                                | `start`      |
-| fill | 是否填充整个父元素                                                           | _boolean_                               | `false`      |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| direction | 排列方向，可选值为 `horizontal` `vertical` | _SpaceDirection_ | `horizontal` |
+| size | 间距大小，数组依次表示水平和垂直间距 | _SpaceSize_ | `small` |
+| wrap | 子元素的换行方式，可选值为 `nowrap` `wrap` `wrap-reverse` | _SpaceWrap_ | `wrap` |
+| justify | 主轴对齐方式，可选值为 `start` `end` `center` `space-around` `space-between` | _SpaceJustify_ | `start` |
+| align | 交叉轴对齐方式，可选值为 `start` `center` `end` `baseline` `stretch` | _SpaceAlign_ | `start` |
+| fill | 是否填充整个父元素 | _boolean_ | `false` |
+| separator <Tag tag="v1.0.2" /> | 相邻子元素之间的分隔内容 | _ReactNode_ | - |
+
+### 类型定义
+
+组件导出以下类型定义：
+
+```ts
+import type {
+  SpaceAlign,
+  SpaceDirection,
+  SpaceJustify,
+  SpaceProps,
+  SpaceSize,
+  SpaceSizePreset,
+  SpaceSizeValue,
+  SpaceThemeVars,
+  SpaceWrap,
+} from "@taroify/core"
+```
+
+`SpaceSize` 支持预设尺寸、数字、带单位的字符串、CSS 变量，以及由这些值组成的数组：
+
+```ts
+type SpaceSize =
+  | "mini"
+  | "small"
+  | "medium"
+  | "large"
+  | number
+  | string
+  | [number | string, (number | string)?]
+```
 
 ## 主题定制
 

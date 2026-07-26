@@ -41,6 +41,17 @@ export type {
   PopupTransitionTimeout,
 } from "./popup"
 export { default as Space } from "./space"
+export type {
+  SpaceAlign,
+  SpaceDirection,
+  SpaceJustify,
+  SpaceProps,
+  SpaceSize,
+  SpaceSizePreset,
+  SpaceSizeValue,
+  SpaceThemeVars,
+  SpaceWrap,
+} from "./space"
 export { default as Toast } from "./toast"
 export { default as Transition } from "./transition"
 export { default as WhiteSpace } from "./white-space"
