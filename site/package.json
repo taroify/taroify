@@ -1,10 +1,14 @@
 {
   "name": "@taroify/site",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
   "author": "Taroify",
-  "keywords": ["rspress", "taro", "components"],
+  "keywords": [
+    "rspress",
+    "taro",
+    "components"
+  ],
   "scripts": {
     "generate:changelog": "node scripts/generate-changelog.mjs content/changelog/index.md",
     "prepare:docs": "node scripts/prepare-docs.mjs",
