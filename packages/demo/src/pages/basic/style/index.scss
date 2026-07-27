@@ -2,6 +2,7 @@
 @import "~@taroify/core/styles/variables";
 
 .style-demo {
+  background-color: var(--background-color, #f7f8fa);
 
   .animate-block {
     position: fixed;

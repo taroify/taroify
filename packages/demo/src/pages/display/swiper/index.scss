@@ -3,6 +3,8 @@
 @import "../../../styles/prefix";
 
 .swiper-demo {
+  background-color: var(--background-color, #f7f8fa);
+
   .#{$taroify-prefix}swiper-item {
     &:nth-child(even) {
       background-color: #39a9ed;

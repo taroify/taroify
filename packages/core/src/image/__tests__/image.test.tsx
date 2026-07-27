@@ -108,6 +108,15 @@ describe("<Image />", () => {
     expect(image).toHaveStyle({ borderRadius: "12px" })
   })
 
+  it("applies a zero radius to square images", () => {
+    const { container } = render(React.createElement(Image, { src: "image.png", shape: "square" }))
+    const wrapper = container.firstElementChild
+    const image = container.querySelector("img")
+
+    expect(wrapper).toHaveStyle({ borderRadius: 0, overflow: "hidden" })
+    expect(image).toHaveStyle({ borderRadius: 0 })
+  })
+
   it("forwards native image props and merges alt into imgProps", () => {
     const { container } = render(
       <Image
