@@ -1,5 +1,4 @@
 @font-face {
-  font-display: block;
   font-family: 'taroify-number-keyboard';
   font-style: normal;
   font-weight: normal;
@@ -8,6 +7,7 @@
   url('./fonts/number-keyboard.ttf?o8m3qv') format('truetype'),
   url('./fonts/number-keyboard.woff?o8m3qv') format('woff'),
   url('./fonts/number-keyboard.svg?o8m3qv') format('svg');
+  font-display: block;
 }
 
 [class^="taroify-backspace"], [class*=" taroify-backspace"],
