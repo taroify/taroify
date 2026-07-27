@@ -1681,10 +1681,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@hono/node-server@^1.19.9":
-  version "1.19.15"
-  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.19.15.tgz#22a1b119cd35fbbd9e54e16ea479589472f19db0"
-  integrity sha512-Za2ai6TLdKjUvnur+eenO6nuYYipVAEhyCAdaV8IRvmU9kK8crOZUSYvIXn72E4f8fJqyAbpcJuTsYYmZp9Deg==
+"@hono/node-server@^1.19.9 || ^2.0.5":
+  version "2.0.12"
+  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-2.0.12.tgz#23876c8640ec7b9cc77dd457758464b1206a11cd"
+  integrity sha512-eWpQYr67tqJLeaSUl0Q+TquuYfUdTibpOJlUMV2FfUP7+KqCC5TufnwnlXL6mobZBJbGAYRd7ZvEBDCbLInjhg==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.14"
@@ -2214,11 +2214,11 @@
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
 "@modelcontextprotocol/sdk@^1.29.0":
-  version "1.29.0"
-  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/sdk/-/sdk-1.29.0.tgz#79786d8b525e269de850ac82b1f1f757f3915f44"
-  integrity sha512-zo37mZA9hJWpULgkRpowewez1y6ML5GsXJPY8FI0tBBCd77HEvza4jDqRKOXgHNn867PVGCyTdzqpz0izu5ZjQ==
+  version "1.30.0"
+  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/sdk/-/sdk-1.30.0.tgz#dfa8a48347ec2d2c0d47917d7dc57f754e37f5ff"
+  integrity sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==
   dependencies:
-    "@hono/node-server" "^1.19.9"
+    "@hono/node-server" "^1.19.9 || ^2.0.5"
     ajv "^8.17.1"
     ajv-formats "^3.0.1"
     content-type "^1.0.5"
@@ -3168,6 +3168,46 @@
   integrity sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==
   dependencies:
     defer-to-connect "^1.0.1"
+
+"@taroify/commerce@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@taroify/commerce/-/commerce-1.0.2.tgz#8ca74e27bc5712e67842c0cf1cdf20dff087fb52"
+  integrity sha512-VEezdyyrjG7O/zvZoZvIOXpZQtAdJI6Cq/poXEWhQSppm7UHYhnyFiQ8t7mNX4xrz3e2vu4OdR4NlvqAMdKOZw==
+  dependencies:
+    "@taroify/core" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/core@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@taroify/core/-/core-1.0.2.tgz#efa0b1ffe15c3d8a857c8016d0ed9cf24cc758a5"
+  integrity sha512-J9HbYq8DSx/p1ut+5Yav+PGi/X0L6u6BmEMzMMjr8WYxSkd04Bg3fgumrCjAhhRxEsIO4lNllavzNCWOVRgPtQ==
+  dependencies:
+    "@taroify/hooks" "^1.0.1"
+    "@taroify/icons" "^1.0.1"
+    classnames "^2.2.6"
+    lodash "^4.17.21"
+    promise "^8.1.0"
+    raf "^3.4.1"
+    react-is "^18.2.0"
+    react-transition-group "^4.4.1"
+
+"@taroify/hooks@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@taroify/hooks/-/hooks-1.0.2.tgz#aa07b4a9730af6310f3b9f39207e2ef8328da7f4"
+  integrity sha512-nbC44vw6Hl/mnAvQ6eWe/q6wRMh/VTkftW2JjG5TeqTgGGc41Gf8i5vPcIF7A1GNBmYqi0JfIBjCjXD7syb2Gw==
+  dependencies:
+    "@vant/area-data" "^1.2.1"
+
+"@taroify/icons@^1.0.1":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@taroify/icons/-/icons-1.0.2.tgz#04ef42836f1cf0fe93182a184adb057a2f63b4b6"
+  integrity sha512-QlBU/OrxAVgpAF4HCxqBu3B2lywODMWpVnnsKh/A1gKgoFPj8bqT+osT209DpmCjK0gxxA7ToFZHTbEYBbfkwg==
+  dependencies:
+    classnames "^2.2.6"
 
 "@tarojs/api@3.6.23":
   version "3.6.23"
