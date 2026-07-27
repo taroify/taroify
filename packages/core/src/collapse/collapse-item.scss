@@ -11,7 +11,7 @@
   }
 
   &__title {
-    .#{$component-prefix}cell__right-icon > *::before {
+    .#{$component-prefix}cell__right-icon {
       transition: transform $collapse-item-transition-duration;
       // using translateZ to fix safari rendering issues
       // see: https://github.com/youzan/vant/issues/8608
@@ -24,7 +24,7 @@
     }
 
     &--expanded {
-      .#{$component-prefix}cell__right-icon > *::before {
+      .#{$component-prefix}cell__right-icon {
         transform: rotate(-90deg);
       }
 
