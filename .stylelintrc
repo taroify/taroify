@@ -1,5 +1,8 @@
 {
   "extends": [
     "@taroify/stylelint-config"
-  ]
+  ],
+  "rules": {
+    "order/properties-alphabetical-order": null
+  }
 }
