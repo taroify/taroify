@@ -1,4 +1,4 @@
-@import "~@taroify/core/styles/variables";
+@use "@taroify/core/styles/variables" as *;
 
 .tour-demo {
   &__target {

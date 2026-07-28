@@ -1,6 +1,6 @@
-@import "~@taroify/core/styles/prefix";
-@import "~@taroify/core/styles/variables";
-@import "../../../styles/prefix";
+@use "@taroify/core/styles/prefix" as *;
+@use "@taroify/core/styles/variables" as *;
+@use "../../../styles/prefix" as *;
 
 .badge-demo {
   background: $background-color-2;

@@ -1,4 +1,4 @@
-@import "../../../styles/prefix";
+@use "../../../styles/prefix" as *;
 
 .safe-area-demo {
   .#{$demo-prefix}page__content {

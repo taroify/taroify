@@ -1,5 +1,5 @@
-@import "~@taroify/core/styles/hairline";
-@import "~@taroify/core/styles/variables";
+@use "@taroify/core/styles/hairline" as *;
+@use "@taroify/core/styles/variables" as *;
 
 .style-demo {
   background-color: var(--background-color, #f7f8fa);

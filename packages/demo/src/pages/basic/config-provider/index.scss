@@ -1,4 +1,4 @@
-@import "../../../styles/prefix";
+@use "../../../styles/prefix" as *;
 
 .config-provider-demo {
   .#{$demo-prefix}block__content {
