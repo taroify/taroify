@@ -14,7 +14,12 @@ pre-commit:
     typescript:
       priority: 3
       glob: "*.{ts,tsx}"
+      exclude: "site/**"
       run: npx tsc jest/jest-setup.ts {staged_files} --noEmit --jsx react-jsx --target esnext --module esnext --moduleResolution node --allowSyntheticDefaultImports --lib esnext,dom --downlevelIteration --skipLibCheck --esModuleInterop
+    typescript-site:
+      priority: 3
+      glob: "site/**/*.{ts,tsx}"
+      run: npx tsc -p site/tsconfig.json
     biome:
       priority: 4
       glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
