@@ -3,7 +3,22 @@ import { animate, cleanInlineStyles, createScope, type Scope } from "animejs"
 import { useEffect, useRef, useState } from "react"
 import { ComponentShowcase } from "../components/ComponentShowcase"
 
-export function HomeLayout(_props: HomeLayoutProps) {
+function HomeLayoutMarkdown() {
+  return (
+    <>
+      {`# Taroify
+
+> 轻量、可靠的小程序端 Taro React UI 组件库
+
+面向多端应用的高质量组件与工具，提供完整类型提示、主题定制和一致的交互体验。
+
+\`yarn add @taroify/core\`
+`}
+    </>
+  )
+}
+
+function HomeLayoutInteractive(_props: HomeLayoutProps) {
   const [copied, setCopied] = useState(false)
   const root = useRef<HTMLElement>(null)
   const motionScope = useRef<Scope | null>(null)
@@ -88,4 +103,12 @@ export function HomeLayout(_props: HomeLayoutProps) {
       </section>
     </main>
   )
+}
+
+export function HomeLayout(props: HomeLayoutProps) {
+  if (import.meta.env.SSG_MD) {
+    return <HomeLayoutMarkdown />
+  }
+
+  return <HomeLayoutInteractive {...props} />
 }

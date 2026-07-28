@@ -26,6 +26,16 @@ export const authoredPages = [
     description: "查看 Taroify 各版本的新特性、问题修复与变更记录。",
   },
   {
+    source: "agents/index.md",
+    title: "For Agents",
+    description: "让 AI Agent 通过 Skill、CLI、MCP 和 LLMs.txt 准确使用 Taroify。",
+  },
+  {
+    source: "llms/index.md",
+    title: "LLMs.txt",
+    description: "通过 LLMs.txt 和单页 Markdown 为 AI 工具提供 Taroify 官网文档。",
+  },
+  {
     source: "cli/index.md",
     title: "CLI",
     description: "使用 Taroify CLI 离线查询组件、API、示例与主题变量。",
@@ -59,9 +69,9 @@ export const primaryNavigation = [
     activeMatch: "^/hooks/",
   },
   {
-    text: "AI 工具",
-    link: "/cli/",
-    activeMatch: "^/(cli|mcp)/",
+    text: "AI",
+    link: "/agents/",
+    activeMatch: "^/(agents|llms|cli|mcp)/",
   },
   {
     text: "React Vant",
