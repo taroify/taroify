@@ -1,4 +1,4 @@
-@import "~@taroify/core/styles/prefix";
+@use "@taroify/core/styles/prefix" as *;
 
 .flex-demo {
   background-color: var(--background-color, #f7f8fa);

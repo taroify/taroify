@@ -1,5 +1,5 @@
-@import "~@taroify/core/styles/variables";
-@import "../../../styles/prefix";
+@use "@taroify/core/styles/variables" as *;
+@use "../../../styles/prefix" as *;
 
 .back-top-demo {
   --tab-font-size: 22px;

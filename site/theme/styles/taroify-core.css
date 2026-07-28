@@ -1386,25 +1386,25 @@
 /* stylelint-disable selector-pseudo-element-colon-notation */
 /* stylelint-disable font-family-no-missing-generic-family-keyword */
 @font-face {
-  font-weight: normal;
-  font-style: normal;
-  font-display: auto;
   font-family: "vant-icon";
+  font-style: normal;
+  font-weight: normal;
   src: url("//at.alicdn.com/t/c/font_2553510_ciljc7axaw7.woff2?t=1705587463221") format("woff2"), url("//at.alicdn.com/t/c/font_2553510_ciljc7axaw7.woff?t=1705587463221") format("woff");
+  font-display: auto;
 }
 .van-icon {
   position: relative;
   display: inline-block;
+  font-family: "vant-icon", serif;
+  font-size: inherit;
   font-style: normal;
+  font-weight: normal;
   font-variant-ligatures: normal;
   font-variant-caps: normal;
   font-variant-numeric: normal;
   font-variant-east-asian: normal;
-  font-weight: normal;
   font-stretch: normal;
-  font-size: inherit;
   line-height: 1;
-  font-family: "vant-icon", serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: auto;
 }

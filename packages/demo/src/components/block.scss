@@ -1,5 +1,5 @@
-@import "../styles/prefix";
-@import "~@taroify/core/styles/variables";
+@use "../styles/prefix" as *;
+@use "@taroify/core/styles/variables" as *;
 
 .#{$demo-prefix}block {
   margin: 0;

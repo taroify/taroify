@@ -1,3 +1,9 @@
+const path = require("node:path")
+
+const workspaceSourceDirs = ["commerce", "core", "hooks", "icons"].map((name) =>
+  path.resolve(__dirname, `../../${name}/src`),
+)
+
 const config = {
   compiler: "webpack5",
   projectName: "@taroify/demo",
@@ -18,6 +24,9 @@ const config = {
   },
   framework: "react",
   mini: {
+    compile: {
+      include: workspaceSourceDirs,
+    },
     postcss: {
       pxtransform: {
         enable: true,
@@ -39,6 +48,9 @@ const config = {
     },
   },
   h5: {
+    compile: {
+      include: workspaceSourceDirs,
+    },
     esnextModules: ["@taroify"],
     publicPath: process.env.NODE_ENV === "development" ? "/" : "/taroify.com/h5",
     staticDirectory: "static",

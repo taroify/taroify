@@ -1,4 +1,4 @@
-@import "../../../styles/prefix";
+@use "../../../styles/prefix" as *;
 
 .tag-demo {
   :global {
