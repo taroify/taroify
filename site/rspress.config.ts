@@ -14,6 +14,7 @@ export default defineConfig({
   lang: "zh",
   base,
   siteOrigin: "https://taroify.github.io",
+  llms: true,
   icon: "/favicon.svg",
   logo: "/logo.svg",
   logoText: "Taroify",
