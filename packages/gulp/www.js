@@ -25,7 +25,8 @@ exports.copyGitIgnore = () => {
 }
 
 exports.copySite = () => {
-  const copySiteTask = () => gulp.src("./site/doc_build/**").pipe(gulp.dest("./bundles/www"))
+  const copySiteTask = () =>
+    gulp.src("./site/doc_build/**", { dot: true }).pipe(gulp.dest("./bundles/www"))
   copySiteTask.displayName = "copy Rspress output to bundles/www from site"
   return copySiteTask
 }
