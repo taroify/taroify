@@ -85,6 +85,17 @@ jobs:
       - name: Build base packages
         run: |
           if [ -f "$BASE_PATH/pnpm-lock.yaml" ]; then
+            if ! pnpm --dir "$BASE_PATH" exec gulp --version >/dev/null 2>&1; then
+              export PATH="$BASE_PATH/packages/gulp/node_modules/.bin:$PATH"
+              export NODE_PATH="$BASE_PATH/node_modules/.pnpm/node_modules${NODE_PATH:+:$NODE_PATH}"
+            fi
+
+            BASE_ICONS_LINK="$BASE_PATH/packages/commerce/node_modules/@taroify/icons"
+            if [ ! -e "$BASE_ICONS_LINK" ]; then
+              mkdir -p "$BASE_PATH/packages/commerce/node_modules/@taroify"
+              ln -s "../../../../bundles/icons" "$BASE_ICONS_LINK"
+            fi
+
             pnpm --dir "$BASE_PATH" run build:packages
             pnpm --dir "$BASE_PATH" run build:cli
           else

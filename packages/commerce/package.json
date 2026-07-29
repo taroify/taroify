@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@taroify/core": "workspace:^",
+    "@taroify/icons": "workspace:^",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "raf": "^3.4.1",

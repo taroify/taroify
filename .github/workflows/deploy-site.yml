@@ -50,6 +50,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build Packages
+        run: pnpm run build:packages
+
       - name: Run Build Site
         run: pnpm run build:www
         env:
