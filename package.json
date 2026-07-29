@@ -66,6 +66,7 @@
     "babel-jest": "^30.4.1",
     "cross-env": "^10.1.0",
     "git-cz": "^4.9.0",
+    "gulp": "^4.0.2",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "jest-transform-css": "^6.0.0",
