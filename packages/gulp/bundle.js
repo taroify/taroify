@@ -13,7 +13,7 @@ function cleanBundle(name) {
     const files = fs.readdirSync(bundlePath)
     if (files) {
       for (const file of files) {
-        if (file !== "package.json") {
+        if (file !== "package.json" && file !== "node_modules") {
           rimraf.sync(`${bundlePath}/${file}`)
         }
       }

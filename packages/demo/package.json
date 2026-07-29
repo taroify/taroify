@@ -56,6 +56,7 @@
     "@tarojs/service": "4.2.1",
     "@tarojs/shared": "4.2.1",
     "@tarojs/taro": "4.2.1",
+    "@vant/area-data": "^1.2.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "lorem-ipsum": "^2.0.4",
