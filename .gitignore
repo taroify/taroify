@@ -47,9 +47,9 @@ npm-debug.log*
 npm-error.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 lerna-debug.log*
 lerna-error.log*
-!/site/yarn.lock
 
 # IntelliJ IDEA
 .idea

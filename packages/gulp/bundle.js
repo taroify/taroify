@@ -1,4 +1,4 @@
-// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
+// biome-ignore lint/style/useNodejsImportProtocol: legacy CommonJS build script
 const fs = require("fs")
 const rimraf = require("rimraf")
 const gulp = require("gulp")
@@ -29,13 +29,16 @@ function initBundle(name) {
     const packageFile = fs.readFileSync(`./packages/${name}/package.json`, "utf8")
     const packageJson = JSON.parse(packageFile)
     if (packageJson.private) {
-      // biome-ignore lint/performance/noDelete: <explanation>
       delete packageJson.private
     }
     if (packageJson.name) {
       packageJson.name = packageJson.name.replace("/~", "/")
     }
-    fs.writeFileSync(`./bundles/${name}/package.json`, JSON.stringify(packageJson, null, 2), "utf8")
+    fs.writeFileSync(
+      `./bundles/${name}/package.json`,
+      `${JSON.stringify(packageJson, null, 2)}\n`,
+      "utf8",
+    )
     cb()
   }
   initPackageTask.displayName = `init package.json to bundles/${name}`

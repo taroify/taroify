@@ -29,8 +29,8 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@taroify/hooks": "^1.0.1",
-    "@taroify/icons": "^1.0.1",
+    "@taroify/hooks": "workspace:^",
+    "@taroify/icons": "workspace:^",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "promise": "^8.1.0",
@@ -39,6 +39,11 @@
     "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
+    "@tarojs/components": "3.6.23",
+    "@tarojs/helper": "3.6.23",
+    "@tarojs/runtime": "3.6.23",
+    "@tarojs/shared": "3.6.23",
+    "@tarojs/taro": "3.6.23",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^13.1.2",
@@ -46,7 +51,10 @@
     "@types/lodash": "^4.14.178",
     "@types/node": "^20.19.9",
     "@types/raf": "^3.4.0",
+    "@types/react": "18.2.0",
     "@types/react-is": "^18.2.0",
-    "@types/react-transition-group": "^4.4.1"
+    "@types/react-transition-group": "^4.4.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }

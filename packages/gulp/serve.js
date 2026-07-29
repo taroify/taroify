@@ -29,7 +29,7 @@ exports.serveDemo = () => {
 
 exports.serveSite = () => {
   exec(
-    `cross-env PUBLIC_DEMO_PORT=${portTool.getAvailablePort()} npm run site:develop -- --host 0.0.0.0`,
+    `cross-env PUBLIC_DEMO_PORT=${portTool.getAvailablePort()} pnpm run site:develop -- --host 0.0.0.0`,
     {
       cwd: "site",
       stdio: "inherit",

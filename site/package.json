@@ -13,12 +13,12 @@
     "generate:changelog": "node scripts/generate-changelog.mjs content/changelog/index.md",
     "prepare:docs": "node scripts/prepare-docs.mjs",
     "prepare:theme": "node scripts/build-theme-css.mjs",
-    "prepare:site": "npm run prepare:docs && npm run prepare:theme",
-    "site:develop": "npm run prepare:site && rspress dev",
-    "site:start": "npm run site:develop",
-    "site:build": "npm run prepare:site && rspress build",
+    "prepare:site": "pnpm run prepare:docs && pnpm run prepare:theme",
+    "site:develop": "pnpm run prepare:site && rspress dev",
+    "site:start": "pnpm run site:develop",
+    "site:build": "pnpm run prepare:site && rspress build",
     "site:preview": "rspress preview",
-    "site:serve": "npm run site:preview",
+    "site:serve": "pnpm run site:preview",
     "site:clean": "node scripts/clean.mjs"
   },
   "dependencies": {

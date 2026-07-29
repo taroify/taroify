@@ -12,7 +12,7 @@ function HomeLayoutMarkdown() {
 
 面向多端应用的高质量组件与工具，提供完整类型提示、主题定制和一致的交互体验。
 
-\`yarn add @taroify/core\`
+\`pnpm add @taroify/core\`
 `}
     </>
   )
@@ -55,7 +55,7 @@ function HomeLayoutInteractive(_props: HomeLayoutProps) {
 
   const copyInstallCommand = async () => {
     try {
-      await navigator.clipboard.writeText("yarn add @taroify/core")
+      await navigator.clipboard.writeText("pnpm add @taroify/core")
     } catch {
       // Clipboard access can be unavailable in non-secure preview environments.
     }
@@ -87,7 +87,7 @@ function HomeLayoutInteractive(_props: HomeLayoutProps) {
 
           <div className="tf-install-command tf-home-copy-line">
             <span aria-hidden="true">$</span>
-            <code>yarn add @taroify/core</code>
+            <code>pnpm add @taroify/core</code>
             <button type="button" onClick={copyInstallCommand} aria-label="复制安装命令">
               {copied ? (
                 <output className="tf-install-command__copied">已复制</output>

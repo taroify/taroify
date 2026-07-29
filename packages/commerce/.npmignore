@@ -2,5 +2,5 @@ src
 __tests__
 *.log
 tsconfig.json
-yarn.lock
+pnpm-lock.yaml
 package-lock.json
