@@ -1,0 +1,22 @@
+packages:
+  - "packages/*"
+  - "bundles/*"
+  - "site"
+
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+autoInstallPeers: false
+
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - "@swc/core"
+  - "@tarojs/binding"
+  - "@tarojs/cli"
+  - esbuild
+  - lefthook
+  - nx
+  - unrs-resolver
+
+overrides:
+  "@types/minimatch": "3.0.5"
+  enhanced-resolve: "5.22.2"

@@ -103,18 +103,18 @@ Skill 会要求 Agent 在编写代码前查询真实 API、示例和主题变量
 ## 本地开发
 
 ```bash
-yarn generate:catalog
-yarn workspace @taroify/~cli typecheck
-yarn test:cli
-yarn build:cli
+pnpm generate:catalog
+pnpm --filter @taroify/~cli typecheck
+pnpm test:cli
+pnpm build:cli
 ```
 
 源码按职责分层：`src/commands/` 只负责 CLI 参数适配，`src/queries.ts` 提供 CLI 与 MCP
 共用查询，`src/data.ts` 读取离线文件，`src/resolver.ts` 负责条目和 Demo 解析，
 `src/mcp/` 提供 MCP tools、resources 与 prompts。
 
-`packages/cli` 是 private 源码包；`yarn build:cli` 会通过 Gulp 生成公开发布包
+`packages/cli` 是 private 源码包；`pnpm build:cli` 会通过 Gulp 生成公开发布包
 `bundles/cli`，并复制 `dist/`、`data/` 与 `skills/`。Catalog 来源包括主仓库组件导航、
 README、Demo 页面与主题变量定义，并保存为 `meta/catalog.json`。构建和发布前会重新生成
 `data/meta.json`、`data/docs/` 与 `data/demos/` 离线快照；CI 使用
-`yarn check:catalog` 检查已提交的源 Catalog 是否与源码一致。
+`pnpm check:catalog` 检查已提交的源 Catalog 是否与源码一致。

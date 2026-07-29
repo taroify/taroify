@@ -1,7 +1,13 @@
+// eslint-disable-next-line import/no-commonjs
 const path = require("node:path")
 
 const workspaceSourceDirs = ["commerce", "core", "hooks", "icons"].map((name) =>
   path.resolve(__dirname, `../../${name}/src`),
+)
+
+const taroRouterPath = path.resolve(
+  __dirname,
+  "../node_modules/@tarojs/router/dist/index.esm.js",
 )
 
 const config = {
@@ -48,6 +54,9 @@ const config = {
     },
   },
   h5: {
+    webpackChain(chain) {
+      chain.resolve.alias.set("@tarojs/router$", taroRouterPath)
+    },
     compile: {
       include: workspaceSourceDirs,
     },

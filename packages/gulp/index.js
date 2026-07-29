@@ -60,7 +60,7 @@ exports.symlinkBundles = symlinkBundles
 
 exports.clean = series(
   createBundles,
-  task("npm run site:clean", {
+  task("pnpm run site:clean", {
     cwd: "site",
     stdio: "inherit",
   }),
@@ -90,7 +90,7 @@ exports.buildPackages = series(
 
 exports.buildCli = series(
   createBundle("cli"),
-  task("npm run build", {
+  task("pnpm run build", {
     cwd: "packages/cli",
     stdio: "inherit",
   }),

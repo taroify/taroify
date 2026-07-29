@@ -17,6 +17,7 @@ permissions:
 
 env:
   NODE_VERSION: "20.19.0"
+  PNPM_VERSION: "10.34.5"
 
 jobs:
   build-and-deploy:
@@ -31,23 +32,26 @@ jobs:
           persist-credentials: false
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Setup Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@1.22.22 --activate
+      - name: Prepare bundle workspaces
+        run: pnpm run prepare:workspaces
 
       - name: Install Dependencies
-        run: |
-          yarn install --frozen-lockfile
-          yarn --cwd site install --frozen-lockfile --ignore-scripts
+        run: pnpm install --frozen-lockfile
 
       - name: Run Build Site
-        run: yarn run build:www
+        run: pnpm run build:www
         env:
           CHANGELOG_STRICT: "true"
           GITHUB_TOKEN: ${{ github.token }}

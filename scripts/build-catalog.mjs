@@ -399,13 +399,13 @@ const serialized = `${JSON.stringify(catalog, null, 2)}\n`
 
 if (checkOnly) {
   if (!existsSync(outputPath)) {
-    console.error("packages/cli/meta/catalog.json does not exist. Run yarn generate:catalog.")
+    console.error("packages/cli/meta/catalog.json does not exist. Run pnpm generate:catalog.")
     process.exit(1)
   }
   const current = await readFile(outputPath, "utf8")
   if (current !== serialized) {
     console.error(
-      "packages/cli/meta/catalog.json is stale. Run yarn generate:catalog and commit the result.",
+      "packages/cli/meta/catalog.json is stale. Run pnpm generate:catalog and commit the result.",
     )
     process.exit(1)
   }

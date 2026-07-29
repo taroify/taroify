@@ -94,10 +94,10 @@ git clone https://github.com/taroify/taroify.git
 cd taroify
 
 # 安装根目录、工作区和官网依赖
-yarn run install:node_modules
+pnpm run install:node_modules
 
 # 启动 H5 组件示例与文档站点
-yarn develop
+pnpm develop
 ```
 
 更多仓库结构、组件开发与提交规范，请阅读

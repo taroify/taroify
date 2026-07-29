@@ -15,24 +15,24 @@ pre-commit:
       priority: 3
       glob: "*.{ts,tsx}"
       exclude: "site/**"
-      run: npx tsc jest/jest-setup.ts {staged_files} --noEmit --jsx react-jsx --target esnext --module esnext --moduleResolution node --allowSyntheticDefaultImports --lib esnext,dom --downlevelIteration --skipLibCheck --esModuleInterop
+      run: pnpm exec tsc jest/jest-setup.ts {staged_files} --noEmit --jsx react-jsx --target esnext --module esnext --moduleResolution node --allowSyntheticDefaultImports --lib esnext,dom --downlevelIteration --skipLibCheck --esModuleInterop
     typescript-site:
       priority: 3
       glob: "site/**/*.{ts,tsx}"
-      run: npx tsc -p site/tsconfig.json
+      run: pnpm exec tsc -p site/tsconfig.json
     biome:
       priority: 4
       glob: "*.{ts,tsx,js,jsx,json,jsonc,css}"
-      run: npx biome check --fix {staged_files} --reporter summary --no-errors-on-unmatched
+      run: pnpm exec biome check --fix {staged_files} --reporter summary --no-errors-on-unmatched
       stage_fixed: true
     prettier: # Biome 尚不支持 markdown 文件
       priority: 6
       glob: "*.{md,mdx,html,htm,yaml,yml,scss}"
-      run: npx prettier --write {staged_files}
+      run: pnpm exec prettier --write {staged_files}
     stylelint: # Biome 尚不支持 scss 文件
       priority: 7
       glob: "*.{scss}"
-      run: npx stylelint --fix {staged_files}
+      run: pnpm exec stylelint --fix {staged_files}
     catalog:
       priority: 8
       run: node scripts/build-catalog.mjs
@@ -48,6 +48,6 @@ prepare-commit-msg:
           exit 0
         fi
 
-        npx git-cz --hook
+        pnpm exec git-cz --hook
       env:
         LEFTHOOK: "0"

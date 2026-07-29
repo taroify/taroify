@@ -34,9 +34,16 @@
     "classnames": "^2.2.6"
   },
   "devDependencies": {
+    "@tarojs/components": "3.6.23",
+    "@tarojs/helper": "3.6.23",
+    "@tarojs/runtime": "3.6.23",
+    "@tarojs/shared": "3.6.23",
+    "@tarojs/taro": "3.6.23",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.178",
     "@types/node": "^20.19.9",
-    "lodash": "^4.17.21"
+    "@types/react": "18.2.0",
+    "lodash": "^4.17.21",
+    "react": "18.2.0"
   }
 }

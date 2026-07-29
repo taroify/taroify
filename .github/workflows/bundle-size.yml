@@ -10,9 +10,11 @@ on:
       - "package.json"
       - "packages/**"
       - "scripts/bundle-size-report.mjs"
+      - "scripts/prepare-bundle-workspaces.mjs"
       - "tsconfig.json"
       - "typings.d.ts"
-      - "yarn.lock"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
 
 permissions:
   contents: read
@@ -23,6 +25,7 @@ concurrency:
 
 env:
   NODE_VERSION: "20.19.0"
+  PNPM_VERSION: "10.34.5"
 
 jobs:
   measure:
@@ -35,19 +38,28 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
       - name: Setup Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Prepare pull request bundle workspaces
+        run: pnpm run prepare:workspaces
 
       - name: Install pull request dependencies
-        run: yarn install --frozen-lockfile --ignore-scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Build pull request packages
         run: |
-          yarn run build:packages
-          yarn run build:cli
+          pnpm run build:packages
+          pnpm run build:cli
 
       - name: Measure pull request packages
         run: node scripts/bundle-size-report.mjs --output current.json
@@ -59,12 +71,29 @@ jobs:
           git worktree add --detach "$BASE_PATH" "${{ github.event.pull_request.base.sha }}"
 
       - name: Install base dependencies
-        run: yarn --cwd "$BASE_PATH" install --frozen-lockfile --ignore-scripts
+        run: |
+          if [ -f "$BASE_PATH/pnpm-lock.yaml" ]; then
+            pnpm --dir "$BASE_PATH" run prepare:workspaces
+            pnpm --dir "$BASE_PATH" install --frozen-lockfile --ignore-scripts
+          else
+            (
+              cd "$BASE_PATH"
+              corepack yarn install --frozen-lockfile --ignore-scripts
+            )
+          fi
 
       - name: Build base packages
         run: |
-          yarn --cwd "$BASE_PATH" run build:packages
-          yarn --cwd "$BASE_PATH" run build:cli
+          if [ -f "$BASE_PATH/pnpm-lock.yaml" ]; then
+            pnpm --dir "$BASE_PATH" run build:packages
+            pnpm --dir "$BASE_PATH" run build:cli
+          else
+            (
+              cd "$BASE_PATH"
+              corepack yarn run build:packages
+              corepack yarn run build:cli
+            )
+          fi
 
       - name: Measure base packages
         run: |

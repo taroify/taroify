@@ -6,7 +6,7 @@ exports.buildH5 = task("taro build --type h5", {
   stdio: "inherit",
 })
 
-exports.buildSite = task("npm run site:build", {
+exports.buildSite = task("pnpm run site:build", {
   cwd: "site",
   stdio: "inherit",
 })

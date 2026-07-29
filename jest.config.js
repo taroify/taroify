@@ -31,7 +31,8 @@ module.exports = {
     "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
   },
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!@taro|lodash-es|nanoid)",
+    "<rootDir>/node_modules/.pnpm/(?!(?:@taro[^@]*|lodash-es|nanoid)@)",
+    "<rootDir>/node_modules/(?!\\.pnpm|@taro|lodash-es|nanoid)",
     "^.+\\.(css|sass|scss|less)$",
   ],
 }
