@@ -68,6 +68,9 @@ importers:
       git-cz:
         specifier: ^4.9.0
         version: 4.9.0
+      gulp:
+        specifier: ^4.0.2
+        version: 4.0.2
       jest:
         specifier: ^30.4.2
         version: 30.4.2(@types/node@20.19.43)
