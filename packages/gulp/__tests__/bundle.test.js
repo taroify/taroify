@@ -6,7 +6,9 @@ jest.mock("gulp", () => ({
 jest.mock("node:fs", () => ({
   existsSync: jest.fn(),
   mkdirSync: jest.fn(),
+  readFileSync: jest.fn(),
   readdirSync: jest.fn(),
+  writeFileSync: jest.fn(),
 }))
 jest.mock("rimraf", () => ({
   sync: jest.fn(),
@@ -28,6 +30,30 @@ describe("gulp bundle", () => {
 
     expect(rimraf.sync).toHaveBeenCalledTimes(1)
     expect(rimraf.sync).toHaveBeenCalledWith("./bundles/core/index.js")
+    expect(callback).toHaveBeenCalledTimes(1)
+  })
+
+  it("initializes a public bundle package manifest", () => {
+    fs.readFileSync.mockReturnValue(
+      JSON.stringify({
+        name: "@taroify/~cli",
+        version: "1.0.2",
+        private: true,
+      }),
+    )
+    const callback = jest.fn()
+
+    bundle.createBundle("cli")
+    const initPackageTask = gulp.series.mock.calls[0][1]
+    initPackageTask(callback)
+
+    expect(initPackageTask.displayName).toBe("init package.json to bundles/cli")
+    expect(fs.readFileSync).toHaveBeenCalledWith("./packages/cli/package.json", "utf8")
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
+      "./bundles/cli/package.json",
+      `${JSON.stringify({ name: "@taroify/cli", version: "1.0.2" }, null, 2)}\n`,
+      "utf8",
+    )
     expect(callback).toHaveBeenCalledTimes(1)
   })
 
