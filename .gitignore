@@ -15,9 +15,6 @@ node_modules/
 # eslint
 .eslintcache
 
-# bundles
-/bundles
-
 # production
 /build
 /dist
@@ -25,6 +22,7 @@ node_modules/
 /site/public/
 /packages/*/dist
 /packages/*/build
+/packages/*/publish
 /packages/cli/data
 
 # documentation generators

@@ -1,9 +1,8 @@
 {
-  "name": "@taroify/~hooks",
+  "name": "@taroify/hooks",
   "description": "Taroify hooks",
   "version": "1.0.2",
   "license": "MIT",
-  "private": "true",
   "keywords": [
     "ui",
     "taro",

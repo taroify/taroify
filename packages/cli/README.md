@@ -104,7 +104,7 @@ Skill 会要求 Agent 在编写代码前查询真实 API、示例和主题变量
 
 ```bash
 pnpm generate:catalog
-pnpm --filter @taroify/~cli typecheck
+pnpm --filter @taroify/cli typecheck
 pnpm test:cli
 pnpm build:cli
 ```
@@ -113,8 +113,9 @@ pnpm build:cli
 共用查询，`src/data.ts` 读取离线文件，`src/resolver.ts` 负责条目和 Demo 解析，
 `src/mcp/` 提供 MCP tools、resources 与 prompts。
 
-`packages/cli` 是 private 源码包；`pnpm build:cli` 会通过 Gulp 生成公开发布包
-`bundles/cli`，并复制 `dist/`、`data/` 与 `skills/`。Catalog 来源包括主仓库组件导航、
+`packages/cli` 是 `@taroify/cli` 的唯一 workspace 包；`pnpm build:cli` 会通过 Gulp
+在非 workspace 的 `packages/cli/publish` 中准备发布内容，并复制 `dist/`、`data/`
+与 `skills/`。Catalog 来源包括主仓库组件导航、
 README、Demo 页面与主题变量定义，并保存为 `meta/catalog.json`。构建和发布前会重新生成
 `data/meta.json`、`data/docs/` 与 `data/demos/` 离线快照；CI 使用
 `pnpm check:catalog` 检查已提交的源 Catalog 是否与源码一致。

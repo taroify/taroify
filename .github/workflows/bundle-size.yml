@@ -10,7 +10,6 @@ on:
       - "package.json"
       - "packages/**"
       - "scripts/bundle-size-report.mjs"
-      - "scripts/prepare-bundle-workspaces.mjs"
       - "tsconfig.json"
       - "typings.d.ts"
       - "pnpm-lock.yaml"
@@ -50,9 +49,6 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Prepare pull request bundle workspaces
-        run: pnpm run prepare:workspaces
-
       - name: Install pull request dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
@@ -73,7 +69,9 @@ jobs:
       - name: Install base dependencies
         run: |
           if [ -f "$BASE_PATH/pnpm-lock.yaml" ]; then
-            pnpm --dir "$BASE_PATH" run prepare:workspaces
+            if node -e 'const pkg = require(`./${process.argv[1]}/package.json`); process.exit(pkg.scripts?.["prepare:workspaces"] ? 0 : 1)' "$BASE_PATH"; then
+              pnpm --dir "$BASE_PATH" run prepare:workspaces
+            fi
             pnpm --dir "$BASE_PATH" install --frozen-lockfile --ignore-scripts
           else
             (
@@ -90,10 +88,12 @@ jobs:
               export NODE_PATH="$BASE_PATH/node_modules/.pnpm/node_modules${NODE_PATH:+:$NODE_PATH}"
             fi
 
-            BASE_ICONS_LINK="$BASE_PATH/packages/commerce/node_modules/@taroify/icons"
-            if [ ! -e "$BASE_ICONS_LINK" ]; then
-              mkdir -p "$BASE_PATH/packages/commerce/node_modules/@taroify"
-              ln -s "../../../../bundles/icons" "$BASE_ICONS_LINK"
+            if node -e 'const pkg = require(`./${process.argv[1]}/package.json`); process.exit(pkg.scripts?.["prepare:workspaces"] ? 0 : 1)' "$BASE_PATH"; then
+              BASE_ICONS_LINK="$BASE_PATH/packages/commerce/node_modules/@taroify/icons"
+              if [ ! -e "$BASE_ICONS_LINK" ]; then
+                mkdir -p "$BASE_PATH/packages/commerce/node_modules/@taroify"
+                ln -s "../../../../bundles/icons" "$BASE_ICONS_LINK"
+              fi
             fi
 
             pnpm --dir "$BASE_PATH" run build:packages
@@ -108,9 +108,15 @@ jobs:
 
       - name: Measure base packages
         run: |
-          node scripts/bundle-size-report.mjs \
-            --bundles-dir "${BASE_PATH}/bundles" \
-            --output base.json
+          if [ -d "$BASE_PATH/packages/core/publish" ]; then
+            node scripts/bundle-size-report.mjs \
+              --packages-dir "${BASE_PATH}/packages" \
+              --output base.json
+          else
+            node scripts/bundle-size-report.mjs \
+              --bundles-dir "${BASE_PATH}/bundles" \
+              --output base.json
+          fi
 
       - name: Compare package sizes
         run: |

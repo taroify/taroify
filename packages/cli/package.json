@@ -1,10 +1,9 @@
 {
-  "name": "@taroify/~cli",
+  "name": "@taroify/cli",
   "version": "1.0.2",
   "description": "Taroify 面向 AI Coding 的离线组件知识 CLI 与 MCP Server",
   "type": "module",
   "license": "MIT",
-  "private": "true",
   "keywords": [
     "taroify",
     "taro",

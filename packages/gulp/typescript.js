@@ -1,7 +1,5 @@
-// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
-const { Transform } = require("stream")
-// biome-ignore lint/style/useNodejsImportProtocol: <explanation>
-const path = require("path")
+const { Transform } = require("node:stream")
+const path = require("node:path")
 const gulp = require("gulp")
 const fs = require("fs-extra")
 const { series, watch } = require("gulp")
@@ -9,46 +7,33 @@ const ts = require("gulp-typescript")
 const { treeShakingLodash } = require("./treeshaking-lodash")
 const ignore = ["node_modules", "**/__tests__", "**/?(*.)+(spec|test).[tj]s?(x)"]
 
-function copyTypescriptFiles(bundle, dist) {
+function getPublishDirectory(bundle) {
+  return `./packages/${bundle}/publish`
+}
+
+function copyTypescriptFiles(bundle) {
   const copyTypescriptFilesTask = () =>
     gulp
       .src([`./packages/${bundle}/src/**/*.[jt]s?(x)`], {
         ignore,
       })
-      .pipe(gulp.dest(`./bundles/${dist ?? bundle}`))
-  copyTypescriptFilesTask.displayName = `copy typescript files to bundles/${
-    dist ?? bundle
-  } from packages/${bundle}`
+      .pipe(gulp.dest(getPublishDirectory(bundle)))
+  copyTypescriptFilesTask.displayName = `copy typescript files to packages/${bundle}/publish`
   return copyTypescriptFilesTask
 }
 
-function copyDeclarationFiles(bundle, dist) {
+function copyDeclarationFiles(bundle) {
   const copyDeclarationFilesTask = () =>
     gulp
       .src([`./packages/${bundle}/src/**/*.d.ts`], {
         ignore,
       })
-      .pipe(gulp.dest(`./bundles/${dist ?? bundle}`))
-  copyDeclarationFilesTask.displayName = `copy typescript declaration files to bundles/${
-    dist ?? bundle
-  } from packages/${bundle}`
+      .pipe(gulp.dest(getPublishDirectory(bundle)))
+  copyDeclarationFilesTask.displayName = `copy typescript declaration files to packages/${bundle}/publish`
   return copyDeclarationFilesTask
 }
 
-function symlinkTypescriptFiles(bundle, dist) {
-  const symlinkTypescriptFilesTask = () =>
-    gulp
-      .src([`./packages/${bundle}/src/**/*.[jt]s?(x)`], {
-        ignore,
-      })
-      .pipe(gulp.symlink(`./bundles/${dist ?? bundle}`))
-  symlinkTypescriptFilesTask.displayName = `symlink typescript files to bundles/${
-    dist ?? bundle
-  } from packages/${bundle}`
-  return symlinkTypescriptFilesTask
-}
-
-function compileTypescript(bundle, dist) {
+function compileTypescript(bundle) {
   const tsProject = ts.createProject("tsconfig.json", {
     noImplicitAny: false,
     declaration: false,
@@ -61,14 +46,12 @@ function compileTypescript(bundle, dist) {
         ignore,
       })
       .pipe(tsProject())
-      .pipe(gulp.dest(`./bundles/${dist ?? bundle}`))
-  compileTypescriptTask.displayName = `compile typescript files to bundles/${
-    dist ?? bundle
-  } from packages/${bundle}`
+      .pipe(gulp.dest(getPublishDirectory(bundle)))
+  compileTypescriptTask.displayName = `compile typescript files to packages/${bundle}/publish`
   return compileTypescriptTask
 }
 
-function generateDeclarationFiles(bundle, dist) {
+function generateDeclarationFiles(bundle) {
   const dtsProject = ts.createProject("tsconfig.d.json")
   const generateTypescriptDeclarationTask = () =>
     gulp
@@ -76,28 +59,26 @@ function generateDeclarationFiles(bundle, dist) {
         ignore,
       })
       .pipe(dtsProject())
-      .pipe(gulp.dest(`./bundles/${dist ?? bundle}`))
-  generateTypescriptDeclarationTask.displayName = `generate typescript declaration files to bundles/${
-    dist ?? bundle
-  } from packages/${bundle}`
+      .pipe(gulp.dest(getPublishDirectory(bundle)))
+  generateTypescriptDeclarationTask.displayName = `generate typescript declaration files to packages/${bundle}/publish`
   return generateTypescriptDeclarationTask
 }
 
-function addJsExt(bundle, dist) {
+function addJsExt(bundle) {
   const addJsExtTask = () =>
     gulp
-      .src([`./bundles/${dist ?? bundle}/**/*.js`])
+      .src([`${getPublishDirectory(bundle)}/**/*.js`])
       .pipe(new AddExtTransform())
       .pipe(new LodashTransform())
-      .pipe(gulp.dest(`./bundles/${dist ?? bundle}`))
-  addJsExtTask.displayName = `add js ext to bundles/${dist ?? bundle}`
+      .pipe(gulp.dest(getPublishDirectory(bundle)))
+  addJsExtTask.displayName = `add js ext to packages/${bundle}/publish`
   return addJsExtTask
 }
 
 class AddExtTransform extends Transform {
   constructor() {
     super({ objectMode: true })
-    this.bundlesPath = path.resolve(process.cwd(), "./bundles")
+    this.packagesPath = path.resolve(process.cwd(), "./packages")
   }
 
   _transform(file, encoding, callback) {
@@ -106,12 +87,17 @@ class AddExtTransform extends Transform {
       let newContent = content
       const importPathRegex = /(?:import|export)[\s|\S]+?"((?:@taroify|\.)\S+)";/g
 
-      let match
-      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-      while ((match = importPathRegex.exec(content)) !== null) {
-        const dirname = match[1].startsWith("@taroify") ? this.bundlesPath : file.dirname
-        const matchPath = match[1].startsWith("@taroify")
-          ? match[1].replace("@taroify", ".")
+      let match = importPathRegex.exec(content)
+      while (match !== null) {
+        const isTaroifyPackage = match[1].startsWith("@taroify/")
+        const [, packageName, ...subpath] = isTaroifyPackage ? match[1].split("/") : []
+        const dirname = isTaroifyPackage
+          ? path.join(this.packagesPath, packageName, "publish")
+          : file.dirname
+        const matchPath = isTaroifyPackage
+          ? subpath.length > 0
+            ? `./${subpath.join("/")}`
+            : "."
           : match[1]
 
         if (fs.existsSync(path.resolve(dirname, `${matchPath}.js`))) {
@@ -119,6 +105,7 @@ class AddExtTransform extends Transform {
         } else if (fs.existsSync(path.resolve(dirname, `${matchPath}/index.js`))) {
           newContent = newContent.replace(`"${match[1]}"`, `"${match[1]}/index.js"`)
         }
+        match = importPathRegex.exec(content)
       }
       file.contents = Buffer.from(newContent)
     }
@@ -141,18 +128,18 @@ class LodashTransform extends Transform {
   }
 }
 
-function buildTypescript(module, dist) {
+function buildTypescript(module) {
   return series(
     //
     // copyTypescriptFiles(module, dist), //
-    copyDeclarationFiles(module, dist), //
-    compileTypescript(module, dist), //
-    addJsExt(module, dist),
-    generateDeclarationFiles(module, dist), //
+    copyDeclarationFiles(module), //
+    compileTypescript(module), //
+    addJsExt(module),
+    generateDeclarationFiles(module), //
   )
 }
 
-function watchTypescript(module, dist) {
+function watchTypescript(module) {
   watch(
     [`./packages/${module}/src/**/*.[jt]s?(x)`],
     {
@@ -161,25 +148,12 @@ function watchTypescript(module, dist) {
     },
     series(
       //
-      copyTypescriptFiles(module, dist), //
-      compileTypescript(module, dist), //
-      generateDeclarationFiles(module, dist),
+      copyTypescriptFiles(module), //
+      compileTypescript(module), //
+      generateDeclarationFiles(module),
     ), //
-  )
-}
-
-function watchTypescriptSymlink(module, dist) {
-  watch(
-    [`./packages/${module}/src/**/*.[jt]s?(x)`],
-    {
-      events: ["add", "addDir", "unlink", "unlinkDir"],
-      ignoreInitial: true,
-    },
-    series(symlinkTypescriptFiles(module, dist)),
   )
 }
 
 exports.buildTypescript = buildTypescript
 exports.watchTypescript = watchTypescript
-exports.symlinkTypescriptFiles = symlinkTypescriptFiles
-exports.watchTypescriptSymlink = watchTypescriptSymlink

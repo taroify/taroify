@@ -22,7 +22,17 @@
     "types": ["jest", "node"],
     "rootDir": ".",
     "jsx": "react",
-    "typeRoots": ["node_modules/@types"]
+    "typeRoots": ["node_modules/@types"],
+    "paths": {
+      "@taroify/commerce": ["packages/commerce/src/index.ts"],
+      "@taroify/commerce/*": ["packages/commerce/src/*"],
+      "@taroify/core": ["packages/core/src/index.ts"],
+      "@taroify/core/*": ["packages/core/src/*"],
+      "@taroify/hooks": ["packages/hooks/src/index.ts"],
+      "@taroify/hooks/*": ["packages/hooks/src/*"],
+      "@taroify/icons": ["packages/icons/src/index.ts"],
+      "@taroify/icons/*": ["packages/icons/src/*"]
+    }
   },
   "include": ["packages/*/src", "jest/jest-setup.ts", "typings.d.ts"],
   "exclude": ["node_modules", "packages/cli"]

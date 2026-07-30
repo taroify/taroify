@@ -49,6 +49,18 @@ function discoverBundles(bundlesDirectory) {
     .sort()
 }
 
+function discoverPublishDirectories(packagesDirectory) {
+  if (!existsSync(packagesDirectory)) {
+    throw new Error(`Packages directory does not exist: ${packagesDirectory}`)
+  }
+
+  return readdirSync(packagesDirectory, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(packagesDirectory, entry.name, "publish"))
+    .filter((directory) => existsSync(path.join(directory, "package.json")))
+    .sort()
+}
+
 function measureBundle(bundleDirectory) {
   const output = execFileSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], {
     cwd: bundleDirectory,
@@ -74,10 +86,10 @@ function measureBundle(bundleDirectory) {
   }
 }
 
-function measure(bundlesDirectory) {
+function measure(packageDirectories, sourceDirectory) {
   const bundles = {}
 
-  for (const bundleDirectory of discoverBundles(bundlesDirectory)) {
+  for (const bundleDirectory of packageDirectories) {
     const result = measureBundle(bundleDirectory)
     bundles[result.name] = result
     console.log(
@@ -86,7 +98,7 @@ function measure(bundlesDirectory) {
   }
 
   if (Object.keys(bundles).length === 0) {
-    throw new Error(`No publishable bundles found in ${bundlesDirectory}`)
+    throw new Error(`No publishable packages found in ${sourceDirectory}`)
   }
 
   return {
@@ -221,8 +233,13 @@ function main() {
     return
   }
 
-  const bundlesDirectory = path.resolve(args["bundles-dir"] || path.join(repositoryRoot, "bundles"))
-  const report = measure(bundlesDirectory)
+  const sourceDirectory = path.resolve(
+    args["bundles-dir"] || args["packages-dir"] || path.join(repositoryRoot, "packages"),
+  )
+  const packageDirectories = args["bundles-dir"]
+    ? discoverBundles(sourceDirectory)
+    : discoverPublishDirectories(sourceDirectory)
+  const report = measure(packageDirectories, sourceDirectory)
   writeJson(outputPath, report)
   console.log(`Measured ${Object.keys(report.bundles).length} packages → ${outputPath}`)
 }

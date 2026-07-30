@@ -6,22 +6,23 @@ import test from "node:test"
 import { fileURLToPath } from "node:url"
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..")
-const bundleRoot = resolve(packageRoot, "..", "..", "bundles", "cli")
+const publishRoot = resolve(packageRoot, "publish")
 
-test("source package is private and generated bundle is public", () => {
+test("source package is canonical and generated manifest is publishable", () => {
   const sourcePackageJson = JSON.parse(readFileSync(resolve(packageRoot, "package.json"), "utf8"))
-  const bundlePackageJson = JSON.parse(readFileSync(resolve(bundleRoot, "package.json"), "utf8"))
-  assert.equal(sourcePackageJson.name, "@taroify/~cli")
-  assert.equal(sourcePackageJson.private, "true")
-  assert.equal(bundlePackageJson.name, "@taroify/cli")
-  assert.equal(bundlePackageJson.private, undefined)
-  assert.equal(bundlePackageJson.bin.taroify, "dist/cli.js")
-  assert.equal(bundlePackageJson.publishConfig.access, "public")
+  const publishPackageJson = JSON.parse(readFileSync(resolve(publishRoot, "package.json"), "utf8"))
+  assert.equal(sourcePackageJson.name, "@taroify/cli")
+  assert.equal(sourcePackageJson.private, undefined)
+  assert.equal(publishPackageJson.name, "@taroify/cli")
+  assert.equal(publishPackageJson.private, undefined)
+  assert.equal(publishPackageJson.bin.taroify, "dist/cli.js")
+  assert.equal(publishPackageJson.publishConfig.directory, undefined)
+  assert.equal(publishPackageJson.publishConfig.access, "public")
 })
 
-test("published bundle contains runtime, split docs and demos, skill, and no source tree", () => {
+test("published package contains runtime, split docs and demos, skill, and no source tree", () => {
   const result = spawnSync("npm", ["pack", "--dry-run", "--json", "--ignore-scripts"], {
-    cwd: bundleRoot,
+    cwd: publishRoot,
     encoding: "utf8",
   })
   assert.equal(result.status, 0, result.stderr)

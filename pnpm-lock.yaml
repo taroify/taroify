@@ -120,7 +120,34 @@ importers:
         specifier: ^5.9.2
         version: 5.9.3
 
-  bundles/cli:
+  packages/babel-preset:
+    dependencies:
+      "@babel/cli":
+        specifier: ^7.15.0
+        version: 7.29.7(@babel/core@7.29.7)
+      "@babel/core":
+        specifier: ^7.15.0
+        version: 7.29.7
+      "@babel/plugin-proposal-decorators":
+        specifier: ^7.15.0
+        version: 7.29.7(@babel/core@7.29.7)
+      "@babel/polyfill":
+        specifier: ^7.12.1
+        version: 7.12.1
+      "@babel/preset-env":
+        specifier: ^7.15.0
+        version: 7.29.7(@babel/core@7.29.7)
+      "@babel/preset-react":
+        specifier: ^7.14.5
+        version: 7.29.7(@babel/core@7.29.7)
+      "@babel/preset-typescript":
+        specifier: ^7.12.0
+        version: 7.29.7(@babel/core@7.29.7)
+      babel-plugin-lodash:
+        specifier: ^3.3.4
+        version: 3.3.4
+
+  packages/cli:
     dependencies:
       "@modelcontextprotocol/sdk":
         specifier: ^1.29.0
@@ -142,7 +169,7 @@ importers:
         specifier: ^5.9.2
         version: 5.9.3
 
-  bundles/commerce:
+  packages/commerce:
     dependencies:
       "@taroify/core":
         specifier: workspace:^
@@ -218,7 +245,7 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
-  bundles/core:
+  packages/core:
     dependencies:
       "@taroify/hooks":
         specifier: workspace:^
@@ -297,287 +324,6 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
 
-  bundles/hooks:
-    dependencies:
-      "@vant/area-data":
-        specifier: ^1.2.1
-        version: 1.5.2
-    devDependencies:
-      "@tarojs/components":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@tarojs/shared@3.6.23)(@types/react@18.2.0)(postcss@8.5.24)(react@18.2.0)
-      "@tarojs/helper":
-        specifier: 3.6.23
-        version: 3.6.23(@swc/helpers@0.5.23)
-      "@tarojs/runtime":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/shared@3.6.23)
-      "@tarojs/shared":
-        specifier: 3.6.23
-        version: 3.6.23
-      "@tarojs/taro":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@types/react@18.2.0)(postcss@8.5.24)
-      "@types/lodash":
-        specifier: ^4.14.178
-        version: 4.17.24
-      "@types/react":
-        specifier: 18.2.0
-        version: 18.2.0
-      lodash:
-        specifier: ^4.17.21
-        version: 4.18.1
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-
-  bundles/icons:
-    dependencies:
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
-    devDependencies:
-      "@tarojs/components":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@tarojs/shared@3.6.23)(@types/react@18.2.0)(postcss@8.5.24)(react@18.2.0)
-      "@tarojs/helper":
-        specifier: 3.6.23
-        version: 3.6.23(@swc/helpers@0.5.23)
-      "@tarojs/runtime":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/shared@3.6.23)
-      "@tarojs/shared":
-        specifier: 3.6.23
-        version: 3.6.23
-      "@tarojs/taro":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@types/react@18.2.0)(postcss@8.5.24)
-      "@types/classnames":
-        specifier: ^2.2.11
-        version: 2.3.4
-      "@types/lodash":
-        specifier: ^4.14.178
-        version: 4.17.24
-      "@types/node":
-        specifier: ^20.19.9
-        version: 20.19.43
-      "@types/react":
-        specifier: 18.2.0
-        version: 18.2.0
-      lodash:
-        specifier: ^4.17.21
-        version: 4.18.1
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-
-  packages/babel-preset:
-    dependencies:
-      "@babel/cli":
-        specifier: ^7.15.0
-        version: 7.29.7(@babel/core@7.29.7)
-      "@babel/core":
-        specifier: ^7.15.0
-        version: 7.29.7
-      "@babel/plugin-proposal-decorators":
-        specifier: ^7.15.0
-        version: 7.29.7(@babel/core@7.29.7)
-      "@babel/polyfill":
-        specifier: ^7.12.1
-        version: 7.12.1
-      "@babel/preset-env":
-        specifier: ^7.15.0
-        version: 7.29.7(@babel/core@7.29.7)
-      "@babel/preset-react":
-        specifier: ^7.14.5
-        version: 7.29.7(@babel/core@7.29.7)
-      "@babel/preset-typescript":
-        specifier: ^7.12.0
-        version: 7.29.7(@babel/core@7.29.7)
-      babel-plugin-lodash:
-        specifier: ^3.3.4
-        version: 3.3.4
-
-  packages/cli:
-    dependencies:
-      "@modelcontextprotocol/sdk":
-        specifier: ^1.29.0
-        version: 1.30.0(zod@4.4.3)
-      commander:
-        specifier: ^7.2.0
-        version: 7.2.0
-      zod:
-        specifier: ^4.4.3
-        version: 4.4.3
-    devDependencies:
-      "@types/node":
-        specifier: ^20.19.9
-        version: 20.19.43
-      tsup:
-        specifier: ^8.5.1
-        version: 8.5.1(@swc/core@1.3.96(@swc/helpers@0.5.23))(jiti@2.7.0)(postcss@8.5.24)(typescript@5.9.3)(yaml@2.9.0)
-      typescript:
-        specifier: ^5.9.2
-        version: 5.9.3
-
-  packages/commerce:
-    dependencies:
-      "@taroify/core":
-        specifier: workspace:^
-        version: link:../../bundles/core
-      "@taroify/icons":
-        specifier: workspace:^
-        version: link:../../bundles/icons
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.18.1
-      raf:
-        specifier: ^3.4.1
-        version: 3.4.1
-      react-is:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-transition-group:
-        specifier: ^4.4.1
-        version: 4.4.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-    devDependencies:
-      "@tarojs/components":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@tarojs/shared@3.6.23)(@types/react@18.2.0)(postcss@8.5.24)(react@18.2.0)
-      "@tarojs/helper":
-        specifier: 3.6.23
-        version: 3.6.23(@swc/helpers@0.5.23)
-      "@tarojs/runtime":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/shared@3.6.23)
-      "@tarojs/shared":
-        specifier: 3.6.23
-        version: 3.6.23
-      "@tarojs/taro":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@types/react@18.2.0)(postcss@8.5.24)
-      "@testing-library/jest-dom":
-        specifier: 6.9.1
-        version: 6.9.1
-      "@testing-library/react":
-        specifier: ^14.0.0
-        version: 14.3.1(@types/react@18.2.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      "@testing-library/user-event":
-        specifier: ^13.1.2
-        version: 13.5.0(@testing-library/dom@9.3.4)
-      "@types/classnames":
-        specifier: ^2.2.11
-        version: 2.3.4
-      "@types/lodash":
-        specifier: ^4.14.178
-        version: 4.17.24
-      "@types/node":
-        specifier: ^20.19.9
-        version: 20.19.43
-      "@types/raf":
-        specifier: ^3.4.0
-        version: 3.4.3
-      "@types/react":
-        specifier: 18.2.0
-        version: 18.2.0
-      "@types/react-is":
-        specifier: ^18.2.0
-        version: 18.3.1
-      "@types/react-transition-group":
-        specifier: ^4.4.1
-        version: 4.4.12(@types/react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-
-  packages/core:
-    dependencies:
-      "@taroify/hooks":
-        specifier: workspace:^
-        version: link:../../bundles/hooks
-      "@taroify/icons":
-        specifier: workspace:^
-        version: link:../../bundles/icons
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.18.1
-      promise:
-        specifier: ^8.1.0
-        version: 8.3.0
-      raf:
-        specifier: ^3.4.1
-        version: 3.4.1
-      react-is:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-transition-group:
-        specifier: ^4.4.1
-        version: 4.4.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-    devDependencies:
-      "@tarojs/components":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@tarojs/shared@3.6.23)(@types/react@18.2.0)(postcss@8.5.24)(react@18.2.0)
-      "@tarojs/helper":
-        specifier: 3.6.23
-        version: 3.6.23(@swc/helpers@0.5.23)
-      "@tarojs/runtime":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/shared@3.6.23)
-      "@tarojs/shared":
-        specifier: 3.6.23
-        version: 3.6.23
-      "@tarojs/taro":
-        specifier: 3.6.23
-        version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@types/react@18.2.0)(postcss@8.5.24)
-      "@testing-library/jest-dom":
-        specifier: 6.9.1
-        version: 6.9.1
-      "@testing-library/react":
-        specifier: ^14.0.0
-        version: 14.3.1(@types/react@18.2.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      "@testing-library/user-event":
-        specifier: ^13.1.2
-        version: 13.5.0(@testing-library/dom@9.3.4)
-      "@types/classnames":
-        specifier: ^2.2.11
-        version: 2.3.4
-      "@types/lodash":
-        specifier: ^4.14.178
-        version: 4.17.24
-      "@types/node":
-        specifier: ^20.19.9
-        version: 20.19.43
-      "@types/raf":
-        specifier: ^3.4.0
-        version: 3.4.3
-      "@types/react":
-        specifier: 18.2.0
-        version: 18.2.0
-      "@types/react-is":
-        specifier: ^18.2.0
-        version: 18.3.1
-      "@types/react-transition-group":
-        specifier: ^4.4.1
-        version: 4.4.12(@types/react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-
   packages/demo:
     dependencies:
       "@babel/runtime":
@@ -585,16 +331,16 @@ importers:
         version: 7.29.7
       "@taroify/commerce":
         specifier: workspace:^
-        version: link:../../bundles/commerce
+        version: link:../commerce
       "@taroify/core":
         specifier: workspace:^
-        version: link:../../bundles/core
+        version: link:../core
       "@taroify/hooks":
         specifier: workspace:^
-        version: link:../../bundles/hooks
+        version: link:../hooks
       "@taroify/icons":
         specifier: workspace:^
-        version: link:../../bundles/icons
+        version: link:../icons
       "@tarojs/components":
         specifier: 4.2.1
         version: 4.2.1(@tarojs/helper@4.2.1(@swc/helpers@0.5.23))(@types/react@18.2.0)(html-webpack-plugin@5.6.8(@rspack/core@2.1.6(@swc/helpers@0.5.23))(webpack@5.91.0(postcss@8.5.24)))(postcss@8.5.24)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(postcss@8.5.24)))(webpack@5.91.0(postcss@8.5.24))
