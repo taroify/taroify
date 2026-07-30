@@ -18,4 +18,4 @@ onlyBuiltDependencies:
 
 overrides:
   "@types/minimatch": "3.0.5"
-  enhanced-resolve: "5.22.2"
+  enhanced-resolve: "5.24.5"
