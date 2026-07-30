@@ -1,6 +1,5 @@
 packages:
   - "packages/*"
-  - "bundles/*"
   - "site"
 
 linkWorkspacePackages: true

@@ -18,9 +18,12 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: "coverage",
   moduleNameMapper: {
+    "^@taroify/(commerce|core|hooks|icons)$": "<rootDir>/packages/$1/src/index.ts",
+    "^@taroify/(commerce|core|hooks|icons)/(.*)$": "<rootDir>/packages/$1/src/$2",
     "@tarojs/taro": "@tarojs/taro-h5",
     "@tarojs/components": "@tarojs/components/lib/react",
   },
+  modulePathIgnorePatterns: ["<rootDir>/bundles/", "<rootDir>/packages/[^/]+/publish/"],
   setupFilesAfterEnv: ["<rootDir>/jest/jest-setup.ts"],
   testEnvironment: "jest-environment-jsdom",
   testMatch: [

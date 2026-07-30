@@ -49,9 +49,6 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Prepare bundle workspaces
-        run: pnpm run prepare:workspaces
-
       - name: Install
         run: pnpm install --frozen-lockfile --ignore-scripts
 
@@ -79,9 +76,6 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
-      - name: Prepare bundle workspaces
-        run: pnpm run prepare:workspaces
-
       - name: Install
         run: pnpm install --frozen-lockfile
 
@@ -105,9 +99,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-
-      - name: Prepare bundle workspaces
-        run: pnpm run prepare:workspaces
 
       - name: Install
         run: pnpm install --frozen-lockfile
@@ -141,9 +132,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
-
-      - name: Prepare bundle workspaces
-        run: pnpm run prepare:workspaces
 
       - name: Install
         run: pnpm install --frozen-lockfile --ignore-scripts

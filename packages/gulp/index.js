@@ -1,17 +1,12 @@
 const { series, parallel } = require("gulp")
 const { task } = require("gulp-execa")
-const {
-  buildTypescript,
-  symlinkTypescriptFiles,
-  watchTypescript,
-  watchTypescriptSymlink,
-} = require("./typescript")
+const { buildTypescript, watchTypescript } = require("./typescript")
 const { watchRspressDocs } = require("./readme")
-const { buildScss, symlinkScssFiles, watchScss, watchScssSymlink } = require("./scss")
-const { createBundle, cleanBundle, copyBundleDirectory } = require("./bundle")
+const { buildScss, watchScss } = require("./scss")
+const { createPublish, cleanPublish, copyPublishDirectory } = require("./publish")
 const { detectPort, serveDemo, serveSite } = require("./serve")
-const { copyFontFiles, symlinkFontFiles, watchFontFilesSymlink } = require("./font")
-const { buildH5, buildSite, copyH5, copySite, copyGitIgnore } = require("./www")
+const { copyFontFiles } = require("./font")
+const { buildH5, buildSite, copyH5 } = require("./www")
 
 function watch() {
   watchScss("icons")
@@ -23,60 +18,38 @@ function watch() {
   watchRspressDocs()
 }
 
-function watchSymlink() {
-  watchScssSymlink("icons")
-  watchScssSymlink("core")
-  watchTypescriptSymlink("icons")
-  watchTypescriptSymlink("hooks")
-  watchTypescriptSymlink("core")
-  watchTypescriptSymlink("commerce")
-  watchFontFilesSymlink("core")
-  watchFontFilesSymlink("commerce")
-  watchRspressDocs()
-}
-
-const createBundles = parallel(
-  createBundle("icons"),
-  createBundle("hooks"),
-  createBundle("core"),
-  createBundle("commerce"),
-  createBundle("cli"),
+const createPublishes = parallel(
+  createPublish("icons"),
+  createPublish("hooks"),
+  createPublish("core"),
+  createPublish("commerce"),
+  createPublish("cli"),
 )
 
-exports.createBundles = createBundles
+exports.createPublishes = createPublishes
 
-const symlinkBundles = parallel(
-  symlinkScssFiles("icons"),
-  symlinkScssFiles("core"),
-  symlinkTypescriptFiles("icons"),
-  symlinkTypescriptFiles("hooks"),
-  symlinkTypescriptFiles("core"),
-  symlinkTypescriptFiles("commerce"),
-  symlinkFontFiles("core"),
-  symlinkFontFiles("commerce"),
+const cleanPublishes = parallel(
+  cleanPublish("icons"),
+  cleanPublish("hooks"),
+  cleanPublish("core"),
+  cleanPublish("commerce"),
+  cleanPublish("cli"),
 )
-
-exports.symlinkBundles = symlinkBundles
 
 exports.clean = series(
-  createBundles,
+  cleanPublishes,
   task("pnpm run site:clean", {
     cwd: "site",
     stdio: "inherit",
   }),
 )
 
-exports.develop = series(
-  detectPort,
-  createBundles,
-  symlinkBundles,
-  parallel(watchSymlink, serveDemo, serveSite),
-)
+exports.develop = series(detectPort, createPublishes, parallel(watch, serveDemo, serveSite))
 
 exports.watch = watch
 
 exports.buildPackages = series(
-  createBundles, //
+  createPublishes, //
   copyFontFiles("core"),
   copyFontFiles("commerce"),
   buildScss("icons"),
@@ -89,25 +62,18 @@ exports.buildPackages = series(
 )
 
 exports.buildCli = series(
-  createBundle("cli"),
+  createPublish("cli"),
   task("pnpm run build", {
     cwd: "packages/cli",
     stdio: "inherit",
   }),
   parallel(
-    copyBundleDirectory("cli", "dist"),
-    copyBundleDirectory("cli", "data"),
-    copyBundleDirectory("cli", "skills"),
+    copyPublishDirectory("cli", "dist"),
+    copyPublishDirectory("cli", "data"),
+    copyPublishDirectory("cli", "skills"),
   ),
 )
 
-exports.buildWww = series(
-  cleanBundle("www"),
-  buildH5,
-  buildSite,
-  copyGitIgnore(),
-  copyH5(),
-  copySite(),
-)
+exports.buildWww = series(buildSite, buildH5, copyH5())
 
 exports.serve = parallel(serveDemo, serveSite)
