@@ -1,9 +1,25 @@
 import { fireEvent, render } from "@testing-library/react"
+// biome-ignore lint/correctness/noUnusedImports: The classic JSX transform requires React in scope.
 import * as React from "react"
 import { prefixClassname } from "../../styles"
 import Checkbox from "../index"
 
 describe("<Checkbox />", () => {
+  it("renders a custom-sized disabled checkbox with a label", () => {
+    const { container } = render(
+      <Checkbox size={24} disabled>
+        复选框
+      </Checkbox>,
+    )
+
+    expect(container.querySelector(`.${prefixClassname("checkbox__icon")}`)).toHaveStyle({
+      fontSize: "24px",
+    })
+    expect(container.querySelector(`.${prefixClassname("checkbox__label")}`)).toHaveClass(
+      prefixClassname("checkbox__label--disabled"),
+    )
+  })
+
   it("renders button shape without the checkbox icon", () => {
     const { container } = render(
       <Checkbox shape="button" defaultChecked>

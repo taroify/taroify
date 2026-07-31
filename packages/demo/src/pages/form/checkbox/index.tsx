@@ -1,5 +1,7 @@
-import { Cell, Checkbox, Image, Space } from "@taroify/core"
-import { useState } from "react"
+import { Button, Cell, Checkbox, Image, Space } from "@taroify/core"
+import type { CheckboxGroupInstance, CheckboxInstance } from "@taroify/core"
+import { View } from "@tarojs/components"
+import { useRef, useState } from "react"
 import Block from "../../../components/block"
 import Page from "../../../components/page"
 import "./index.scss"
@@ -23,6 +25,61 @@ function CheckboxWithCustomIcon() {
     >
       自定义图标
     </Checkbox>
+  )
+}
+
+function CheckboxToggleAll() {
+  const groupRef = useRef<CheckboxGroupInstance>(null)
+
+  return (
+    <>
+      <Checkbox.Group ref={groupRef}>
+        <Checkbox name="a">复选框 a</Checkbox>
+        <Checkbox name="b">复选框 b</Checkbox>
+        <Checkbox name="c" disabled>
+          复选框 c
+        </Checkbox>
+      </Checkbox.Group>
+      <Space className="checkbox-toggle-buttons">
+        <Button size="small" color="primary" onClick={() => groupRef.current?.toggleAll(true)}>
+          全选
+        </Button>
+        <Button size="small" onClick={() => groupRef.current?.toggleAll(false)}>
+          取消全选
+        </Button>
+        <Button size="small" onClick={() => groupRef.current?.toggleAll()}>
+          反选
+        </Button>
+      </Space>
+    </>
+  )
+}
+
+function CheckboxWithCell() {
+  const checkboxRefs = useRef<Array<CheckboxInstance | null>>([])
+  const options = ["a", "b"]
+
+  return (
+    <Checkbox.Group max={2}>
+      <Cell.Group clickable>
+        {options.map((name, index) => (
+          <Cell
+            key={name}
+            title={`复选框 ${name}`}
+            onClick={() => checkboxRefs.current[index]?.toggle()}
+          >
+            <View onClick={(event) => event.stopPropagation()}>
+              <Checkbox
+                ref={(instance) => {
+                  checkboxRefs.current[index] = instance
+                }}
+                name={name}
+              />
+            </View>
+          </Cell>
+        ))}
+      </Cell.Group>
+    </Checkbox.Group>
   )
 }
 
@@ -90,17 +147,11 @@ export default function CheckboxDemo() {
           <Checkbox name="g">复选框 g</Checkbox>
         </Checkbox.Group>
       </Block>
+      <Block title="全选与反选">
+        <CheckboxToggleAll />
+      </Block>
       <Block title="搭配单元格组件使用" className="checkbox-cell-group">
-        <Checkbox.Group max={2}>
-          <Cell.Group clickable>
-            <Cell title="复选框 a">
-              <Checkbox name="a" />
-            </Cell>
-            <Cell title="复选框 b">
-              <Checkbox name="b" />
-            </Cell>
-          </Cell.Group>
-        </Checkbox.Group>
+        <CheckboxWithCell />
       </Block>
     </Page>
   )

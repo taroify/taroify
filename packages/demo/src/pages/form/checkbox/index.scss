@@ -9,6 +9,10 @@
     --checkbox-checked-icon-background-color: #ee0a24;
   }
 
+  .checkbox-toggle-buttons {
+    margin-top: var(--padding-md, $padding-md);
+  }
+
   .checkbox-cell-group {
     .#{$demo-prefix}block__content {
       padding: 0;

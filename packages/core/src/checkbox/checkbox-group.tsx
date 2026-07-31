@@ -2,11 +2,31 @@ import { useUncontrolled } from "@taroify/hooks"
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: The classic JSX transform requires React in scope.
 import * as React from "react"
-import type { ReactNode } from "react"
+import {
+  forwardRef,
+  type ReactElement,
+  type ReactNode,
+  type RefAttributes,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+} from "react"
 import { prefixClassname } from "../styles"
-import CheckboxGroupContext from "./checkbox-group.context"
+import CheckboxGroupContext, { type CheckboxGroupItem } from "./checkbox-group.context"
 import type { CheckboxGroupDirection } from "./checkbox-group.shared"
+
+export interface CheckboxGroupToggleAllOptions {
+  checked?: boolean
+  skipDisabled?: boolean
+}
+
+export type CheckboxGroupToggleAll = boolean | CheckboxGroupToggleAllOptions
+
+export interface CheckboxGroupInstance {
+  toggleAll(options?: CheckboxGroupToggleAll): void
+}
 
 export interface CheckboxGroupProps<T = any> extends ViewProps {
   defaultValue?: T[]
@@ -19,7 +39,11 @@ export interface CheckboxGroupProps<T = any> extends ViewProps {
   onChange?(value: T[]): void
 }
 
-function CheckboxGroup<T = any>(props: CheckboxGroupProps<T>) {
+type CheckboxGroupComponent = <T = any>(
+  props: CheckboxGroupProps<T> & RefAttributes<CheckboxGroupInstance>,
+) => ReactElement | null
+
+const CheckboxGroup = forwardRef<CheckboxGroupInstance, CheckboxGroupProps<any>>((props, ref) => {
   const {
     defaultValue,
     value: valueProp,
@@ -31,11 +55,41 @@ function CheckboxGroup<T = any>(props: CheckboxGroupProps<T>) {
     ...restProps
   } = props
 
-  const { value, setValue } = useUncontrolled({
+  const { value, getValue, setValue } = useUncontrolled({
     value: valueProp,
     defaultValue,
     onChange: onChangeProp,
   })
+
+  const itemsRef = useRef(new Set<CheckboxGroupItem>())
+
+  const register = useCallback((item: CheckboxGroupItem) => {
+    itemsRef.current.add(item)
+    return () => {
+      itemsRef.current.delete(item)
+    }
+  }, [])
+
+  const toggleAll = useCallback(
+    (options: CheckboxGroupToggleAll = {}) => {
+      const { checked, skipDisabled } =
+        typeof options === "boolean" ? { checked: options } : options
+      const currentValue = getValue() ?? []
+      const newValue = Array.from(itemsRef.current)
+        .filter((item) => {
+          if (item.disabled && skipDisabled) {
+            return currentValue.includes(item.name)
+          }
+          return checked ?? !currentValue.includes(item.name)
+        })
+        .map((item) => item.name)
+
+      setValue(newValue)
+    },
+    [getValue, setValue],
+  )
+
+  useImperativeHandle(ref, () => ({ toggleAll }), [toggleAll])
 
   return (
     <CheckboxGroupContext.Provider
@@ -45,6 +99,7 @@ function CheckboxGroup<T = any>(props: CheckboxGroupProps<T>) {
         disabled,
         direction,
         onChange: setValue,
+        register,
       }}
     >
       <View
@@ -57,6 +112,6 @@ function CheckboxGroup<T = any>(props: CheckboxGroupProps<T>) {
       />
     </CheckboxGroupContext.Provider>
   )
-}
+}) as CheckboxGroupComponent
 
 export default CheckboxGroup
