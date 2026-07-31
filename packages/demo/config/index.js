@@ -146,7 +146,7 @@ const config = {
       include: workspaceSourceDirs,
     },
     esnextModules: ["@taroify"],
-    publicPath: process.env.NODE_ENV === "development" ? "/" : "/taroify.com/h5",
+    publicPath: process.env.NODE_ENV === "development" ? "/" : "/h5",
     staticDirectory: "static",
     postcss: {
       autoprefixer: {

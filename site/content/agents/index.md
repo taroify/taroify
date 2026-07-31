@@ -10,7 +10,7 @@ MCP 和 LLMs.txt 获取准确的 Taroify 组件知识。
 ```text
 你正在为 Taro React 项目使用 Taroify。你训练数据中的组件 API、事件、子组件和主题变量
 可能与当前版本不同。在编写或修改代码前，请先阅读
-https://taroify.github.io/taroify.com/agents/index.md
+https://taroify.com/agents/index.md
 以及
 https://raw.githubusercontent.com/mallfoundry/taroify/main/packages/cli/skills/taroify/SKILL.md，
 查询真实 API 和示例，不要猜测组件用法。
@@ -74,9 +74,9 @@ Resources 和任务 Prompts。支持 MCP 的 Agent 可以自动查询所需内�
 
 | 文件 | 说明 |
 | --- | --- |
-| [llms.txt](https://taroify.github.io/taroify.com/llms.txt) | 官网文档索引，适合先定位相关页面 |
-| [llms-full.txt](https://taroify.github.io/taroify.com/llms-full.txt) | 完整官网文档，适合离线索引或全局分析 |
-| [Button 文档](https://taroify.github.io/taroify.com/components/button/index.md) | 单个组件的介绍、示例、API 和主题变量 |
+| [llms.txt](https://taroify.com/llms.txt) | 官网文档索引，适合先定位相关页面 |
+| [llms-full.txt](https://taroify.com/llms-full.txt) | 完整官网文档，适合离线索引或全局分析 |
+| [Button 文档](https://taroify.com/components/button/index.md) | 单个组件的介绍、示例、API 和主题变量 |
 
 更多读取方式请参考 [LLMs.txt 文档](/llms/)。
 

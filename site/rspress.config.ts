@@ -3,8 +3,7 @@ import { defineConfig } from "@rspress/core"
 import { pluginAlgolia } from "@rspress/plugin-algolia"
 import { pluginSitemap } from "@rspress/plugin-sitemap"
 
-const production = process.env.NODE_ENV === "production"
-const base = process.env.TAROIFY_SITE_BASE || (production ? "/taroify.com/" : "/")
+const base = process.env.TAROIFY_SITE_BASE || "/"
 
 export default defineConfig({
   root: path.join(__dirname, ".generated/docs"),
@@ -13,7 +12,7 @@ export default defineConfig({
   description: "轻量、可靠的小程序端 Taro React UI 组件库",
   lang: "zh",
   base,
-  siteOrigin: "https://taroify.github.io",
+  siteOrigin: "https://taroify.com",
   llms: true,
   icon: "/favicon.svg",
   logo: "/logo.svg",
