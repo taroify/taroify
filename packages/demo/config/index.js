@@ -15,6 +15,20 @@ const workspaceAliases = Object.fromEntries(
   ]),
 )
 
+const taroPackageNames = ["components", "runtime", "shared", "taro"]
+
+const taroPackageAliases = Object.fromEntries(
+  taroPackageNames.map((name) => {
+    const packageName = `@tarojs/${name}`
+    const packageRoot = path.dirname(
+      require.resolve(`${packageName}/package.json`, {
+        paths: [path.resolve(__dirname, "..")],
+      }),
+    )
+    return [packageName, packageRoot]
+  }),
+)
+
 function resolveWorkspaceScss(url) {
   const match = url.match(/^~?@taroify\/([^/]+)\/(.+)$/)
   if (!match || !workspacePackageNames.includes(match[1])) return null
@@ -64,6 +78,9 @@ function configureWorkspaceModules(chain) {
   for (const [packageName, sourceDirectory] of Object.entries(workspaceAliases)) {
     chain.resolve.alias.set(packageName, sourceDirectory)
   }
+  for (const [packageName, packageRoot] of Object.entries(taroPackageAliases)) {
+    chain.resolve.alias.set(packageName, packageRoot)
+  }
   configureWorkspaceScss(chain, "sass")
   configureWorkspaceScss(chain, "scss")
 }
@@ -86,7 +103,7 @@ const config = {
   sourceRoot: "src",
   outputRoot: `dist/${process.env.TARO_ENV}`,
   alias: workspaceAliases,
-  plugins: [],
+  plugins: [path.resolve(__dirname, "./include-mini-components")],
   defineConstants: {},
   copy: {
     patterns: [],

@@ -3,9 +3,63 @@
 @use "../../../styles/prefix" as *;
 
 .cascader-demo {
+  background-color: var(--background-color, #f7f8fa);
 
   .custom-color {
-    --tabs-active-color: red;
-    --cascader-active-color: red;
+    --tabs-active-color: #ee0a24;
+    --cascader-active-color: #ee0a24;
+  }
+
+  .level-tip,
+  .options-footer {
+    box-sizing: border-box;
+    padding: 8px * $hd var(--padding-md, $padding-md);
+    font-size: var(--font-size-sm, $font-size-sm);
+    line-height: var(--line-height-sm, $line-height-sm);
+    color: var(--gray-6, $gray-6);
+    background: var(--gray-1, $gray-1);
+  }
+
+  .options-footer {
+    padding-bottom: 16px * $hd;
+    background: transparent;
+  }
+
+  .custom-option {
+    flex: 1;
+    min-width: 0;
+
+    &__title {
+      display: flex;
+      align-items: center;
+
+      .#{$component-prefix}tag {
+        flex: none;
+        margin-left: 6px * $hd;
+      }
+    }
+
+    &__brief {
+      margin-top: 2px * $hd;
+      overflow: hidden;
+      font-size: var(--font-size-sm, $font-size-sm);
+      font-weight: var(--font-weight-normal, 400);
+      line-height: var(--line-height-sm, $line-height-sm);
+      color: var(--gray-6, $gray-6);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &--active {
+      .custom-option__brief {
+        color: var(--cascader-active-color, $primary-color);
+      }
+    }
+
+    &--disabled {
+      .custom-option__brief {
+        color: inherit;
+      }
+    }
   }
 }

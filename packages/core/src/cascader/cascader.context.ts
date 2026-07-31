@@ -1,7 +1,7 @@
 import type { ITouchEvent } from "@tarojs/components"
 import { type ReactNode, createContext } from "react"
 
-interface CascaderContextValue {
+export interface CascaderContextValue {
   title?: ReactNode
   closeable?: boolean
   closeIcon?: ReactNode

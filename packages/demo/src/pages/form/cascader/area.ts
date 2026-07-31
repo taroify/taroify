@@ -330,6 +330,50 @@ export const customArea = [
   },
 ]
 
+export const customRenderOptions = [
+  {
+    label: "研发中心",
+    value: "research",
+    brief: "核心产品与技术团队",
+    badge: "推荐",
+    children: [
+      {
+        label: "平台研发",
+        value: "platform",
+        brief: "基础架构与研发效能",
+      },
+      {
+        label: "业务研发",
+        value: "business",
+        brief: "面向业务场景交付产品",
+      },
+    ],
+  },
+  {
+    label: "客户中心",
+    value: "customer",
+    brief: "服务客户与一线团队",
+    children: [
+      {
+        label: "客户成功",
+        value: "success",
+        brief: "客户接入与持续运营",
+      },
+      {
+        label: "技术支持",
+        value: "support",
+        brief: "问题定位与解决方案",
+      },
+    ],
+  },
+  {
+    label: "战略中心",
+    value: "strategy",
+    brief: "暂未开放选择",
+    disabled: true,
+  },
+]
+
 export const dynamic = [
   {
     label: "产品",

@@ -14,7 +14,7 @@ export interface CascaderEventOption {
 export type CascaderOptionObject = CascaderEventOption & ViewProps
 export interface CascaderTabObject {
   className?: string
-  options?: CascaderOptionObject[]
+  options: CascaderOptionObject[]
 }
 
 export interface CascaderDataOption {
@@ -23,6 +23,17 @@ export interface CascaderDataOption {
   label?: ReactNode
   disabled?: boolean
   children?: CascaderDataOption[]
+}
+
+export interface CascaderOptionRenderProps {
+  option: CascaderDataOption
+  selected: boolean
+  tabIndex: number
+}
+
+export interface CascaderOptionsRenderProps {
+  options: CascaderDataOption[]
+  tabIndex: number
 }
 
 export interface CascaderFieldNames {
@@ -38,6 +49,8 @@ export type CascaderThemeVars = {
   cascaderHeaderFontSize?: string
   cascaderHeaderFontWeight?: string
   cascaderHeaderLineHeight?: string
+  cascaderCloseIconSize?: string
+  cascaderCloseIconColor?: string
   cascaderTabsHeight?: string
   cascaderTabFontWeight?: string
   cascaderTabColor?: string

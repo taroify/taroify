@@ -8,6 +8,8 @@ export type {
   CascaderDataOption,
   CascaderEventOption,
   CascaderFieldNames,
+  CascaderOptionRenderProps,
+  CascaderOptionsRenderProps,
 } from "./cascader.shared"
 
 interface CascaderInterface {

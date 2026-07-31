@@ -1,21 +1,27 @@
+import { Cross } from "@taroify/icons"
 import { useUncontrolled, useCascader } from "@taroify/hooks"
-import { View, ScrollView } from "@tarojs/components"
+import { type ITouchEvent, View, ScrollView } from "@tarojs/components"
 import { nextTick } from "@tarojs/taro"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: The classic JSX transform requires React in scope.
 import * as React from "react"
 import {
   Children,
   isValidElement,
   type ReactElement,
   type ReactNode,
+  useEffect,
+  useId,
   useReducer,
   useMemo,
+  useRef,
   useState,
 } from "react"
 import { prefixClassname } from "../styles"
 import Tabs from "../tabs"
 import { useMemoizedFn } from "../hooks"
+import { inBrowser } from "../utils/base"
 import CascaderHeader from "./cascader-header"
 import CascaderOption from "./cascader-option"
 import CascaderOptionBase from "./cascader-option-base"
@@ -27,7 +33,10 @@ import {
   isActiveOption,
   type CascaderDataOption,
   type CascaderFieldNames,
+  type CascaderOptionRenderProps,
+  type CascaderOptionsRenderProps,
 } from "./cascader.shared"
+import CascaderContext from "./cascader.context"
 
 function getCascaderOptions(children: ReactNode, tabIndex: number): CascaderOptionObject[] {
   const options: CascaderOptionObject[] = []
@@ -54,6 +63,46 @@ function getCascaderOptions(children: ReactNode, tabIndex: number): CascaderOpti
 interface CascaderChildren {
   header?: ReactNode
   tabs: CascaderTabObject[]
+}
+
+interface CascaderOptionsProps {
+  scrollTarget?: string
+  children?: ReactNode
+}
+
+function CascaderOptions(props: CascaderOptionsProps) {
+  const { scrollTarget, children } = props
+  const rootRef = useRef<HTMLElement>(null)
+  const [scrollIntoView, setScrollIntoView] = useState<string>()
+
+  // Lazy tab panes need one committed render before Taro can resolve the target element.
+  useEffect(() => {
+    const root = rootRef.current!
+
+    nextTick(() => {
+      if (!inBrowser) {
+        setScrollIntoView(scrollTarget)
+        return
+      }
+
+      const target = scrollTarget && root.querySelector<HTMLElement>(`#${scrollTarget}`)
+      if (target) {
+        const offsetTop =
+          target.getBoundingClientRect().top - root.getBoundingClientRect().top + root.scrollTop
+        root.scrollTop = offsetTop
+      }
+    })
+  }, [scrollTarget])
+
+  return (
+    <ScrollView
+      ref={rootRef}
+      scrollY
+      scrollIntoView={scrollIntoView}
+      className={prefixClassname("cascader__options")}
+      children={children}
+    />
+  )
 }
 
 function useCascaderChildren(children?: ReactNode): CascaderChildren {
@@ -87,6 +136,9 @@ export interface CascaderProps {
   defaultValue?: string[]
   value?: string[]
   title?: ReactNode
+  showHeader?: boolean
+  closeable?: boolean
+  closeIcon?: ReactNode
   swipeable?: boolean
   animated?: boolean
   placeholder?: ReactNode
@@ -95,12 +147,21 @@ export interface CascaderProps {
   children?: ReactNode
   ellipsis?: boolean
   options?: CascaderDataOption[]
+  autoScrollToSelected?: boolean
+
+  renderOption?(props: CascaderOptionRenderProps): ReactNode
+
+  renderOptionsTop?(props: CascaderOptionsRenderProps): ReactNode
+
+  renderOptionsBottom?(props: CascaderOptionsRenderProps): ReactNode
 
   onChange?(values: string[], options: CascaderEventOption[]): void
 
   onSelect?(values: string[], options: CascaderEventOption[]): void
 
   onTabClick?(event: Tabs.TabEvent): void
+
+  onClose?(event: ITouchEvent): void
 }
 
 const defaultFieldNames: CascaderFieldNames = {
@@ -116,6 +177,9 @@ function Cascader(props: CascaderProps) {
     value: valueProp,
     placeholder = "请选择",
     title,
+    showHeader,
+    closeable = false,
+    closeIcon = <Cross />,
     loadData,
     fieldNames: _fieldNames,
     animated = true,
@@ -123,10 +187,16 @@ function Cascader(props: CascaderProps) {
     ellipsis = true,
     children: childrenProp,
     options,
+    autoScrollToSelected = false,
+    renderOption,
+    renderOptionsTop,
+    renderOptionsBottom,
     onChange,
     onSelect,
     onTabClick,
+    onClose,
   } = props
+  const optionIdPrefix = `${prefixClassname("cascader-option")}-${useId().replace(/:/g, "")}`
   const [colRefreshKey, refreshKey] = useReducer((state) => state + 1, 0)
   const { value: values = [], setValue: setValues } = useUncontrolled({
     defaultValue,
@@ -138,7 +208,6 @@ function Cascader(props: CascaderProps) {
     }
     return defaultFieldNames
   }, [_fieldNames])
-  // @ts-ignore
   const { columns } = useCascader({
     options: options,
     value: values,
@@ -150,28 +219,33 @@ function Cascader(props: CascaderProps) {
     () => (title ? <CascaderHeader>{title}</CascaderHeader> : _header),
     [title, _header],
   )
-  const [tabs, tabsMap] = useMemo(() => {
+  const [tabs, tabsMap, dataOptionsMap] = useMemo(() => {
     let ret: CascaderTabObject[]
     const cache = new Map<string, CascaderOptionObject>()
+    const dataCache = new Map<CascaderOptionObject, CascaderDataOption>()
     if (columns.length > 0) {
       ret = columns.map((column, idx) => ({
-        options: column.map(
-          (item) =>
-            ({
-              children: item[fieldNames.label!],
-              key: item[fieldNames.value!],
-              value: item[fieldNames.value!],
-              disabled: item.disabled,
-              tabIndex: idx,
-            }) as CascaderOptionObject,
-        ),
+        options: column.map((item) => {
+          const option = {
+            children: item[fieldNames.label!],
+            key: item[fieldNames.value!],
+            value: item[fieldNames.value!],
+            disabled: item.disabled,
+            tabIndex: idx,
+          } as CascaderOptionObject
+          dataCache.set(option, item)
+          return option
+        }),
       }))
     } else {
       ret = _tab
     }
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    ret.forEach((r) => r.options?.forEach((rr) => cache.set(rr.value, rr)))
-    return [ret, cache] as const
+    for (const tab of ret) {
+      for (const option of tab.options) {
+        cache.set(option.value, option)
+      }
+    }
+    return [ret, cache, dataCache] as const
   }, [columns, _tab, fieldNames])
   const [activeTab, setActiveTab] = useState(0)
 
@@ -184,10 +258,8 @@ function Cascader(props: CascaderProps) {
     onSelect?.(newValues, newActiveOptions)
     if (!_.isEqual(newValues, valueProp)) {
       if (columns.length > 0) {
-        // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-        let children
+        let children: any[] | undefined
         if (loadData) {
-          // @ts-ignore
           children = await loadData(newValues.slice(), newActiveOptions.slice())
           const level = newValues.length - 1
           const selected = columns[level].find(
@@ -235,58 +307,105 @@ function Cascader(props: CascaderProps) {
 
   const panes = useMemo(
     () =>
-      _.map(renderedTabs, (tab, index) => (
-        <Tabs.TabPane
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          key={index}
-          value={index}
-          title={_.get(renderedOptions, index)?.children ?? placeholder}
-          classNames={{
-            title: classNames(prefixClassname("cascader__tab"), {
-              [prefixClassname("cascader__tab--inactive")]: _.isEmpty(
-                _.get(renderedOptions, index)?.children,
-              ),
-            }),
-          }}
-        >
-          <ScrollView scrollY className={prefixClassname("cascader__options")}>
-            {
-              //
-              _.map(tab.options, (option) => {
+      _.map(renderedTabs, (tab, index) => {
+        const dataOptions = _.compact(_.map(tab.options, (option) => dataOptionsMap.get(option)))
+        const selectedOptionIndex = autoScrollToSelected
+          ? _.findIndex(tab.options, (option) => isActiveOption(option, values))
+          : -1
+        const scrollIntoView =
+          activeTab === index && selectedOptionIndex >= 0
+            ? `${optionIdPrefix}-${index}-${selectedOptionIndex}`
+            : undefined
+
+        return (
+          <Tabs.TabPane
+            key={index}
+            value={index}
+            title={_.get(renderedOptions, index)?.children ?? placeholder}
+            classNames={{
+              title: classNames(prefixClassname("cascader__tab"), {
+                [prefixClassname("cascader__tab--inactive")]: _.isEmpty(
+                  _.get(renderedOptions, index)?.children,
+                ),
+              }),
+            }}
+          >
+            <CascaderOptions scrollTarget={scrollIntoView}>
+              {renderOptionsTop?.({ options: dataOptions, tabIndex: index })}
+              {_.map(tab.options, (option, optionIndex) => {
                 const { onClick, value, children, ...restProps } = option
+                const selected = isActiveOption(option, values)
+                const dataOption = dataOptionsMap.get(option)
+                const content =
+                  dataOption && renderOption
+                    ? renderOption({ option: dataOption, selected, tabIndex: index })
+                    : (children ?? value)
                 return (
                   <CascaderOptionBase
                     {...restProps}
-                    children={children ?? value}
+                    {...(autoScrollToSelected
+                      ? { id: `${optionIdPrefix}-${index}-${optionIndex}` }
+                      : {})}
+                    children={content}
                     onClick={(event) => {
                       onClick?.(event)
                       handleSelect(option)
                     }}
-                    active={isActiveOption(option, values)}
+                    active={selected}
                   />
                 )
-              })
-            }
-          </ScrollView>
-        </Tabs.TabPane>
-      )),
-    [renderedOptions, renderedTabs, handleSelect, placeholder, values],
+              })}
+              {renderOptionsBottom?.({ options: dataOptions, tabIndex: index })}
+            </CascaderOptions>
+          </Tabs.TabPane>
+        )
+      }),
+    [
+      activeTab,
+      autoScrollToSelected,
+      dataOptionsMap,
+      handleSelect,
+      optionIdPrefix,
+      placeholder,
+      renderedOptions,
+      renderedTabs,
+      renderOption,
+      renderOptionsBottom,
+      renderOptionsTop,
+      values,
+    ],
   )
 
+  const renderedHeader = showHeader === false ? undefined : header
+  const shouldRenderHeader =
+    showHeader !== false && (showHeader === true || closeable || renderedHeader !== undefined)
+
   return (
-    <View className={classNames(prefixClassname("cascader"), className)}>
-      {header}
-      <Tabs
-        className={prefixClassname("cascader__tabs")}
-        value={activeTab}
-        animated={animated}
-        swipeable={swipeable}
-        onChange={(value) => setActiveTab(value)}
-        onTabClick={onTabClick}
-        children={panes}
-        ellipsis={ellipsis}
-      />
-    </View>
+    <CascaderContext.Provider value={{ title, closeable, closeIcon, onClose }}>
+      <View
+        className={classNames(
+          prefixClassname("cascader"),
+          {
+            [prefixClassname("cascader--h5")]: inBrowser,
+            [prefixClassname("cascader--headerless")]:
+              showHeader === false || (inBrowser && !shouldRenderHeader),
+          },
+          className,
+        )}
+      >
+        {shouldRenderHeader && (renderedHeader ?? <CascaderHeader />)}
+        <Tabs
+          className={prefixClassname("cascader__tabs")}
+          value={activeTab}
+          animated={animated}
+          swipeable={swipeable}
+          onChange={(value) => setActiveTab(value)}
+          onTabClick={onTabClick}
+          children={panes}
+          ellipsis={ellipsis}
+        />
+      </View>
+    </CascaderContext.Provider>
   )
 }
 
