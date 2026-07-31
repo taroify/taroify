@@ -13,6 +13,6 @@
   }
 
   .#{$component-prefix}cell__value {
-    flex: 0;
+    flex: 0 0 auto;
   }
 }
