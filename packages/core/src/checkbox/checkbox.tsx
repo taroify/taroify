@@ -4,12 +4,25 @@ import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: The classic JSX transform requires React in scope.
 import * as React from "react"
-import { type ReactNode, useContext } from "react"
+import {
+  forwardRef,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react"
 import { prefixClassname } from "../styles"
 import { addUnitPx } from "../utils/format/unit"
-import CheckboxGroupContext from "./checkbox-group.context"
+import CheckboxGroupContext, { type CheckboxGroupItem } from "./checkbox-group.context"
 import type { CheckboxShape } from "./checkbox.shared"
+
+export interface CheckboxInstance {
+  toggle(checked?: boolean): void
+}
 
 export interface CheckboxProps extends ViewProps {
   name?: any
@@ -24,7 +37,7 @@ export interface CheckboxProps extends ViewProps {
   onChange?(checked: boolean): void
 }
 
-export default function Checkbox(props: CheckboxProps) {
+const Checkbox = forwardRef<CheckboxInstance, CheckboxProps>((props, ref) => {
   const {
     className,
     name,
@@ -45,9 +58,14 @@ export default function Checkbox(props: CheckboxProps) {
     direction,
     onChange: onNamesChange,
     disabled: disabledGroup,
+    register,
   } = useContext(CheckboxGroupContext)
 
-  const { value: checked, setValue } = useUncontrolled({
+  const {
+    value: checked,
+    getValue,
+    setValue,
+  } = useUncontrolled({
     value: checkedProp ?? names?.includes(name),
     defaultValue: defaultChecked,
     onChange: onChangeProp,
@@ -55,20 +73,37 @@ export default function Checkbox(props: CheckboxProps) {
 
   const disabled = disabledProp ?? disabledGroup
 
+  const groupItemRef = useRef<CheckboxGroupItem>({ name, disabled })
+  groupItemRef.current.name = name
+  groupItemRef.current.disabled = disabled
+
+  useEffect(() => register?.(groupItemRef.current), [register])
+
+  const toggle = useCallback(
+    (newChecked = !getValue()) => {
+      setValue(newChecked)
+
+      if (name) {
+        if (newChecked && !names?.includes(name)) {
+          if (namesMax === 0 || _.size(names) < namesMax) {
+            onNamesChange?.([..._.toArray(names), name])
+          }
+        } else if (!newChecked && names?.includes(name)) {
+          onNamesChange?.(names.filter((aName) => aName !== name))
+        }
+      }
+    },
+    [getValue, name, names, namesMax, onNamesChange, setValue],
+  )
+
+  useImperativeHandle(ref, () => ({ toggle }), [toggle])
+
   function onClick() {
     if (disabled) {
       return
     }
 
-    setValue(!checked)
-
-    if (name) {
-      if (names?.includes(name)) {
-        onNamesChange?.(names.filter((aName) => aName !== name))
-      } else if (namesMax === 0 || _.size(names) < namesMax) {
-        onNamesChange?.([..._.toArray(names), name])
-      }
-    }
+    toggle()
   }
 
   return (
@@ -119,4 +154,6 @@ export default function Checkbox(props: CheckboxProps) {
       )}
     </View>
   )
-}
+})
+
+export default Checkbox

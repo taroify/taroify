@@ -1,14 +1,17 @@
-import { type CheckboxProps, default as CheckboxComponent } from "./checkbox"
+import { default as CheckboxComponent } from "./checkbox"
 import CheckboxGroup from "./checkbox-group"
 
-export type { CheckboxProps } from "./checkbox"
-export type { CheckboxGroupProps } from "./checkbox-group"
+export type { CheckboxInstance, CheckboxProps } from "./checkbox"
+export type {
+  CheckboxGroupInstance,
+  CheckboxGroupProps,
+  CheckboxGroupToggleAll,
+  CheckboxGroupToggleAllOptions,
+} from "./checkbox-group"
 
 export type { CheckboxShape, CheckboxThemeVars } from "./checkbox.shared"
 
-interface CheckboxInterface {
-  (props: CheckboxProps): JSX.Element
-
+type CheckboxInterface = typeof CheckboxComponent & {
   Group: typeof CheckboxGroup
 }
 

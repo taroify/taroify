@@ -135,21 +135,63 @@ function CheckboxWithCustomIcon() {
 </Checkbox.Group>
 ```
 
-### 搭配单元格组件使用
+### 全选与反选 <Tag tag="v1.0.3" />
 
-此时你需要再引入 `Cell` 和 `Cell.Group` 组件，并通过 `Checkbox` 实例上的 toggle 方法触发切换。
+通过 `Checkbox.Group` 实例上的 `toggleAll` 方法可以实现全选、取消全选和反选。
 
 ```tsx
-<Checkbox.Group max={2}>
-  <Cell.Group clickable>
-    <Cell title="复选框 a">
-      <Checkbox name="a" />
-    </Cell>
-    <Cell title="复选框 b">
-      <Checkbox name="b" />
-    </Cell>
-  </Cell.Group>
-</Checkbox.Group>
+function CheckboxToggleAll() {
+  const groupRef = useRef<CheckboxGroupInstance>(null)
+
+  return (
+    <>
+      <Checkbox.Group ref={groupRef}>
+        <Checkbox name="a">复选框 a</Checkbox>
+        <Checkbox name="b">复选框 b</Checkbox>
+        <Checkbox name="c" disabled>复选框 c</Checkbox>
+      </Checkbox.Group>
+      <Space>
+        <Button onClick={() => groupRef.current?.toggleAll(true)}>全选</Button>
+        <Button onClick={() => groupRef.current?.toggleAll(false)}>取消全选</Button>
+        <Button onClick={() => groupRef.current?.toggleAll()}>反选</Button>
+      </Space>
+    </>
+  )
+}
+```
+
+### 搭配单元格组件使用
+
+此时你需要再引入 `Cell` 和 `Cell.Group` 组件，并通过 `Checkbox` 实例上的 `toggle` 方法触发切换。Checkbox 外层通过 `View` 阻止事件冒泡，避免点击 Checkbox 时被 Cell 再次切换。
+
+```tsx
+function CheckboxWithCell() {
+  const checkboxRefs = useRef<Array<CheckboxInstance | null>>([])
+  const options = ["a", "b"]
+
+  return (
+    <Checkbox.Group max={2}>
+      <Cell.Group clickable>
+        {options.map((name, index) => (
+          <Cell
+            key={name}
+            title={`复选框 ${name}`}
+            onClick={() => checkboxRefs.current[index]?.toggle()}
+          >
+            <View onClick={(event) => event.stopPropagation()}>
+              <Checkbox
+                ref={(instance) => {
+                  checkboxRefs.current[index] = instance
+                }}
+                name={name}
+              />
+            </View>
+          </Cell>
+        ))}
+      </Cell.Group>
+    </Checkbox.Group>
+  )
+}
 ```
 
 ## API
@@ -187,6 +229,54 @@ function CheckboxWithCustomIcon() {
 | 事件名 | 说明                     | 回调参数       |
 | ------ | ------------------------ | -------------- |
 | onChange | 当绑定值变化时触发的事件 | _names: any[]_ |
+
+### Checkbox 方法 <Tag tag="v1.0.3" />
+
+通过 ref 可以获取 Checkbox 实例并调用实例方法。
+
+| 方法名 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| toggle <Tag tag="v1.0.3" /> | 切换选中状态，传 `true` 为选中，`false` 为取消选中，不传参数时取反 | _checked?: boolean_ | - |
+
+### CheckboxGroup 方法 <Tag tag="v1.0.3" />
+
+通过 ref 可以获取 CheckboxGroup 实例并调用实例方法。
+
+| 方法名 | 说明 | 参数 | 返回值 |
+| --- | --- | --- | --- |
+| toggleAll <Tag tag="v1.0.3" /> | 切换所有复选框，支持跳过禁用的复选框 | _boolean \| CheckboxGroupToggleAllOptions_ | - |
+
+```tsx
+interface CheckboxGroupToggleAllOptions {
+  checked?: boolean
+  skipDisabled?: boolean
+}
+```
+
+```tsx
+const checkboxRef = useRef<CheckboxInstance>(null)
+const checkboxGroupRef = useRef<CheckboxGroupInstance>(null)
+
+checkboxRef.current?.toggle()
+checkboxRef.current?.toggle(true)
+
+checkboxGroupRef.current?.toggleAll()
+checkboxGroupRef.current?.toggleAll(true)
+checkboxGroupRef.current?.toggleAll({ checked: true, skipDisabled: true })
+```
+
+### 类型定义 <Tag tag="v1.0.3" />
+
+组件导出以下实例类型：
+
+```tsx
+import type {
+  CheckboxInstance,
+  CheckboxGroupInstance,
+  CheckboxGroupToggleAll,
+  CheckboxGroupToggleAllOptions,
+} from "@taroify/core"
+```
 
 ## 主题定制
 
