@@ -2,6 +2,33 @@
 
 .#{$component-prefix}cascader {
   min-height: calc($cascader-header-height + $cascader-tabs-height + $cascader-options-height);
+
+  &--h5 {
+    min-height: min(
+      calc($cascader-header-height + $cascader-tabs-height + $cascader-options-height),
+      100vh
+    );
+
+    .#{$component-prefix}cascader__options {
+      height: min(
+        $cascader-options-height,
+        calc(100vh - $cascader-header-height - $cascader-tabs-height)
+      );
+    }
+  }
+
+  &--headerless {
+    min-height: calc($cascader-tabs-height + $cascader-options-height);
+
+    &.#{$component-prefix}cascader--h5 {
+      min-height: min(calc($cascader-tabs-height + $cascader-options-height), 100vh);
+
+      .#{$component-prefix}cascader__options {
+        height: min($cascader-options-height, calc(100vh - $cascader-tabs-height));
+      }
+    }
+  }
+
   &__header {
     display: flex;
     align-items: center;
@@ -11,6 +38,13 @@
     font-size: $cascader-header-font-size;
     font-weight: $cascader-header-font-weight;
     line-height: $cascader-header-line-height;
+  }
+
+  &__close-icon {
+    flex: none;
+    font-size: $cascader-close-icon-size;
+    color: $cascader-close-icon-color;
+    cursor: pointer;
   }
 
   &__tabs {

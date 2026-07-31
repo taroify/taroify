@@ -9,6 +9,8 @@ $cascader-header-padding: var(--cascader-header-padding, 0 var(--padding-md, $pa
 $cascader-header-font-size: var(--cascader-header-font-size, var(--font-size-lg, $font-size-lg));
 $cascader-header-font-weight: var(--cascader-header-font-weight, var(--font-weight-bold, $font-weight-bold));
 $cascader-header-line-height: var(--cascader-header-line-height, 20px * $hd);
+$cascader-close-icon-size: var(--cascader-close-icon-size, 22px * $hd);
+$cascader-close-icon-color: var(--cascader-close-icon-color, var(--gray-5, $gray-5));
 //
 $cascader-tabs-height: var(--cascader-tabs-height, 48px * $hd);
 //
