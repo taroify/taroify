@@ -16,6 +16,6 @@ yarn add @taroify/commerce
 
 ## Document
 
-- [Usage in Taro](https://taroify.github.io/taroify.com/introduce/)
+- [Usage in Taro](https://taroify.com/introduce/)
 - [Usage in Vue](https://vant-contrib.gitee.io/vant/#/zh-CN/)
 - [Usage in Weapp](https://vant-contrib.gitee.io/vant-weapp/#/home)

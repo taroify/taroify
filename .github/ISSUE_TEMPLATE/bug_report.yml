@@ -9,7 +9,7 @@ body:
         ## 感谢您的反馈！
         在提交问题之前，请确保您使用的是所有最新版本 @taroify/* 包，或者优先使用以下方式寻找解决方案：
 
-        - 查看组件文档 [@taroify/core](https://taroify.github.io/taroify.com/introduce)
+        - 查看组件文档 [@taroify/core](https://taroify.com/introduce)
         - 在 [Issue](https://github.com/taroify/taroify/issues?q=is%3Aissue) 列表中查找解决方案
 
   - type: dropdown

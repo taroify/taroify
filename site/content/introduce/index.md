@@ -11,13 +11,13 @@
   </p>
   <p>
     <span>
-      <a href="https://taroify.github.io/taroify.com/"><strong>官网</strong></a>
+      <a href="https://taroify.com/"><strong>官网</strong></a>
       {" · "}
-      <a href="https://taroify.github.io/taroify.com/quickstart/"><strong>快速上手</strong></a>
+      <a href="https://taroify.com/quickstart/"><strong>快速上手</strong></a>
       {" · "}
-      <a href="https://taroify.github.io/taroify.com/h5/index.html"><strong>在线演示</strong></a>
+      <a href="https://taroify.com/h5/index.html"><strong>在线演示</strong></a>
       {" · "}
-      <a href="https://taroify.github.io/taroify.com/cli/"><strong>CLI / MCP</strong></a>
+      <a href="https://taroify.com/cli/"><strong>CLI / MCP</strong></a>
       {" · "}
       <a href="https://github.com/taroify/taroify/discussions"><strong>讨论区</strong></a>
     </span>
@@ -71,7 +71,7 @@ export default function Index() {
 ```
 
 推荐配置自动按需引入，以获得更简洁的源码和更小的构建产物。完整配置请查看
-[快速上手](https://taroify.github.io/taroify.com/quickstart/)。
+[快速上手](https://taroify.com/quickstart/)。
 
 ## Packages
 
@@ -101,7 +101,7 @@ pnpm develop
 ```
 
 更多仓库结构、组件开发与提交规范，请阅读
-[贡献指南](https://taroify.github.io/taroify.com/contribution/)。
+[贡献指南](https://taroify.com/contribution/)。
 
 ## 社区
 
@@ -110,7 +110,7 @@ pnpm develop
 - [提交 Issue](https://github.com/mataroifyllfoundry/taroify/issues)
 - [发起 Pull Request](https://github.com/taroify/taroify/pulls)
 - [参与 Discussions](https://github.com/taroify/taroify/discussions)
-- [查看更新日志](https://taroify.github.io/taroify.com/changelog/)
+- [查看更新日志](https://taroify.com/changelog/)
 
 <details>
   <summary><strong>加入微信交流群</strong></summary>
