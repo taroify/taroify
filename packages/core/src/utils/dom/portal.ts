@@ -4,9 +4,14 @@ import type { ReactElement } from "react"
 import { createRoot, type Root } from "react-dom/client"
 
 export function getPagePath() {
-  const currentPages = getCurrentPages()
+  const currentPages = typeof getCurrentPages === "function" ? getCurrentPages() : []
   const currentPage = currentPages[currentPages.length - 1]
-  return currentPage?.$taroPath || currentPage?.route || getCurrentInstance()?.router?.path || ""
+  return (
+    currentPage?.$taroPath ||
+    currentPage?.route ||
+    (typeof getCurrentInstance === "function" ? getCurrentInstance()?.router?.path : "") ||
+    ""
+  )
 }
 
 const portalViewMap: Map<string, TaroNode> = new Map()

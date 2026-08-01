@@ -1,5 +1,6 @@
 import type { ITouchEvent } from "@tarojs/components"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import { useContext, useMemo, type ReactNode } from "react"
 import Button, { type ButtonProps } from "../button"
@@ -67,10 +68,6 @@ function CalendarButton(props: CalendarButtonProps) {
       {content}
     </Button>
   )
-}
-
-CalendarButton.defaultProps = {
-  type: "confirm",
 }
 
 export default CalendarButton

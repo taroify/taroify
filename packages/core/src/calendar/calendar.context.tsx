@@ -18,6 +18,8 @@ interface CalendarContextValue {
 
   onDayClick?(day: CalendarDayObject): void
 
+  onClickDisabledDate?(day: CalendarDayObject): void
+
   notifyConfirm?(confirm: boolean): void
 
   onConfirm?(): void

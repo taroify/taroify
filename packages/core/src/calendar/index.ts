@@ -1,13 +1,27 @@
+import type { ForwardRefExoticComponent, PropsWithoutRef, RefAttributes } from "react"
 import CalendarComponent, { type CalendarProps } from "./calendar"
 import CalendarButton from "./calendar-button"
 import CalendarFooter from "./calendar-footer"
-import type { CalendarDayObject } from "./calendar.shared"
+import type { CalendarDayObject, CalendarInstance } from "./calendar.shared"
 
-export type { CalendarType, CalendarDayType, CalendarThemeVars } from "./calendar.shared"
+export type { CalendarProps } from "./calendar"
+export type {
+  CalendarDayType,
+  CalendarInstance,
+  CalendarMonthTitle,
+  CalendarMonthShowEvent,
+  CalendarPanelChangeEvent,
+  CalendarSubtitle,
+  CalendarSwitchMode,
+  CalendarThemeVars,
+  CalendarType,
+  CalendarValueType,
+} from "./calendar.shared"
 
-interface CalendarInterface {
-  (props: CalendarProps): JSX.Element
-
+interface CalendarInterface
+  extends ForwardRefExoticComponent<
+    PropsWithoutRef<CalendarProps> & RefAttributes<CalendarInstance>
+  > {
   Footer: typeof CalendarFooter
   Button: typeof CalendarButton
 }

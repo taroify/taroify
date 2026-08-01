@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import {
   Children,
@@ -33,7 +34,7 @@ function CalendarFooter(props: CalendarFooterProps) {
         const { type: elementType, props } = element
         if (elementType === CalendarButton) {
           const button = props as CalendarButtonProps
-          if (button.type === "confirm") {
+          if ((button.type ?? "confirm") === "confirm") {
             hasConfirm = true
           }
         }

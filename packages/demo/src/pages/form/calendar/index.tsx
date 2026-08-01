@@ -1,9 +1,13 @@
 import { Calendar, Cell } from "@taroify/core"
-import { useState } from "react"
+import type { CalendarInstance } from "@taroify/core/calendar"
+import { useRef, useState } from "react"
 import Block from "../../../components/block"
 import CustomWrapper from "../../../components/custom-wrapper"
 import Page from "../../../components/page"
 import "./index.scss"
+
+const longRangeMin = new Date(2020, 0, 1)
+const longRangeMax = new Date(2030, 11, 31)
 
 const formatDate = (date: Date) => {
   if (date) {
@@ -145,6 +149,58 @@ function RangeCalendar() {
         }}
       >
       </Calendar>
+    </>
+  )
+}
+
+function SwitchModeCalendar() {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState<Date>()
+  const [formatValue, setFormatValue] = useState<string>()
+
+  return (
+    <>
+      <Cell title="年月切换" isLink children={formatValue} onClick={() => setOpen(true)} />
+      <Calendar
+        min={longRangeMin}
+        max={longRangeMax}
+        switchMode="year-month"
+        value={value}
+        onChange={setValue}
+        poppable
+        showPopup={open}
+        onClose={setOpen}
+        onConfirm={(newValue) => {
+          setFormatValue(formatFullDate(newValue))
+          setOpen(false)
+        }}
+      />
+    </>
+  )
+}
+
+function LimitedRangeCalendar() {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState<Date[]>()
+  const [formatValue, setFormatValue] = useState<string>()
+
+  return (
+    <>
+      <Cell title="最多选择 5 天" isLink children={formatValue} onClick={() => setOpen(true)} />
+      <Calendar
+        type="range"
+        maxRange={5}
+        allowSameDay={false}
+        value={value}
+        onChange={setValue}
+        poppable
+        showPopup={open}
+        onClose={setOpen}
+        onConfirm={(newValue) => {
+          setFormatValue(formatRange(newValue))
+          setOpen(false)
+        }}
+      />
     </>
   )
 }
@@ -442,6 +498,34 @@ function TiledCalendar() {
   )
 }
 
+function LazyRenderCalendar() {
+  const calendarRef = useRef<CalendarInstance>(null)
+  const [value, setValue] = useState(new Date(2025, 0, 1))
+
+  return (
+    <>
+      <Cell.Group clickable>
+        <Cell
+          title="滚动到 2028 年 6 月"
+          isLink
+          onClick={() => calendarRef.current?.scrollToDate(new Date(2028, 5, 1))}
+        />
+        <Cell title="重置日期" isLink onClick={() => calendarRef.current?.reset()} />
+      </Cell.Group>
+      <Calendar
+        ref={calendarRef}
+        style={{ height: "500px" }}
+        min={longRangeMin}
+        max={longRangeMax}
+        defaultValue={new Date(2025, 0, 1)}
+        value={value}
+        onChange={setValue}
+        lazyRender
+      />
+    </>
+  )
+}
+
 export default function CalendarDemo() {
   return (
     <Page title="Calendar 日历" className="calendar-demo">
@@ -455,6 +539,12 @@ export default function CalendarDemo() {
           </CustomWrapper>
           <CustomWrapper>
             <RangeCalendar />
+          </CustomWrapper>
+          <CustomWrapper>
+            <SwitchModeCalendar />
+          </CustomWrapper>
+          <CustomWrapper>
+            <LimitedRangeCalendar />
           </CustomWrapper>
         </Cell.Group>
       </Block>
@@ -495,6 +585,9 @@ export default function CalendarDemo() {
       </Block>
       <Block variant="card" title="隐藏标题">
         <CustomWithoutTitleCalendar />
+      </Block>
+      <Block variant="card" title="惰性渲染与实例方法">
+        <LazyRenderCalendar />
       </Block>
     </Page>
   )
