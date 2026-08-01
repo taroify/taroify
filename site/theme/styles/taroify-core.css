@@ -541,6 +541,27 @@
 .taroify-calendar__header-subtitle {
   font-size: var(--calendar-header-subtitle-font-size, var(--font-size-md, 14px));
 }
+.taroify-calendar__header-subtitle--with-switch {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--padding-base, 4px);
+}
+.taroify-calendar__header-subtitle-text {
+  flex: 1;
+}
+.taroify-calendar__header-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--calendar-header-action-width, 28px);
+  height: 100%;
+  color: var(--calendar-header-action-color, var(--text-color, var(--text-color, var(--gray-8, #323233))));
+  cursor: pointer;
+}
+.taroify-calendar__header-action--disabled {
+  color: var(--calendar-header-action-disabled-color, var(--text-color-3, var(--text-color-3, var(--gray-5, #c8c9cc))));
+  cursor: not-allowed;
+}
 .taroify-calendar__month-title {
   font-size: var(--calendar-month-title-font-size, var(--font-size-md, 14px));
 }

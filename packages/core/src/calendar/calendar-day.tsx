@@ -1,6 +1,7 @@
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import { type ReactNode, useCallback, useContext } from "react"
 import { prefixClassname } from "../styles"
@@ -17,19 +18,23 @@ export interface CalendarDayProps extends ViewProps {
 
 function CalendarDay(props: CalendarDayProps) {
   const { className, style, type, value, top, bottom, children, ...restProps } = props
-  const { type: ctxType, onDayClick } = useContext(CalendarContext)
+  const { type: ctxType, onDayClick, onClickDisabledDate } = useContext(CalendarContext)
   const single = ctxType === "single"
   const disabled = type === "disabled"
+  const placeholder = type === "placeholder"
 
   const onClick = useCallback(() => {
-    if (!disabled) {
-      onDayClick?.({
-        type,
-        value,
-        children,
-      })
+    const day = {
+      type,
+      value,
+      children,
     }
-  }, [children, disabled, onDayClick, type, value])
+    if (disabled) {
+      onClickDisabledDate?.(day)
+    } else if (!placeholder) {
+      onDayClick?.(day)
+    }
+  }, [children, disabled, onClickDisabledDate, onDayClick, placeholder, type, value])
 
   const renderContent = () => {
     if (single && type === "active") {

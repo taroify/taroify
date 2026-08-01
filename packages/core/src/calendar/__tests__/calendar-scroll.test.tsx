@@ -1,4 +1,5 @@
 import { act, fireEvent, render, waitFor } from "@testing-library/react"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import { prefixClassname } from "../../styles"
 import { getScrollTop } from "../../utils/dom/scroll"
@@ -8,6 +9,7 @@ import { genMonthId } from "../calendar.shared"
 let mockScrollTop = 0
 let mockEnvironment = "WEB"
 let mockMissingMonthRef = false
+const mockSetVisible = jest.fn()
 
 jest.mock("@tarojs/taro", () => ({
   getEnv: () => mockEnvironment,
@@ -45,12 +47,21 @@ jest.mock("../../utils/raf", () => ({
   },
 }))
 
+jest.mock("../../toast", () => ({
+  __esModule: true,
+  default: { open: jest.fn() },
+}))
+
 jest.mock("../calendar-month", () => {
   const React = jest.requireActual("react") as typeof import("react")
+  const CalendarContext = (
+    jest.requireActual("../calendar.context") as typeof import("../calendar.context")
+  ).default
 
   return {
     __esModule: true,
     default: React.forwardRef((props: { value: Date }, ref) => {
+      const context = React.useContext(CalendarContext)
       React.useImperativeHandle(
         ref,
         () =>
@@ -60,7 +71,10 @@ jest.mock("../calendar-month", () => {
                 disabledDays: [],
                 getHeight: () => 100,
                 getValue: () => props.value,
+                getTitle: () => `${props.value.getFullYear()}年${props.value.getMonth() + 1}月`,
                 getRectTop: async () => props.value.getMonth() * 100,
+                getDisabledDays: () => [],
+                setVisible: mockSetVisible,
               },
         [props.value],
       )
@@ -68,6 +82,12 @@ jest.mock("../calendar-month", () => {
       return React.createElement("div", {
         id: `taroify-calendar-${props.value.getFullYear()}-${props.value.getMonth()}`,
         "data-testid": `month-${props.value.getMonth()}`,
+        onClick: () =>
+          context.onDayClick?.({
+            type: "",
+            value: props.value,
+            children: props.value.getDate(),
+          }),
       })
     }),
   }
@@ -81,17 +101,28 @@ describe("<Calendar /> scrolling", () => {
     mockScrollTop = 0
     mockEnvironment = "WEB"
     mockMissingMonthRef = false
+    mockSetVisible.mockClear()
   })
 
   it("updates the default subtitle to the visible month", async () => {
+    const onMonthShow = jest.fn()
     const { container } = render(
-      <Calendar min={min} max={max} value={new Date(2024, 0, 10)} showConfirm={false} />,
+      <Calendar
+        min={min}
+        max={max}
+        value={new Date(2024, 0, 10)}
+        showConfirm={false}
+        lazyRender
+        onMonthShow={onMonthShow}
+      />,
     )
     const subtitle = container.querySelector(`.${prefixClassname("calendar__header-subtitle")}`)
     const body = container.querySelector(`.${prefixClassname("calendar__body")}`) as HTMLElement
 
     await waitFor(() => expect(subtitle).toHaveTextContent("2024年1月"))
     await waitFor(() => expect(getScrollTop).toHaveBeenCalled())
+    await waitFor(() => expect(onMonthShow).toHaveBeenCalledWith({ date: min, title: "2024年1月" }))
+    expect(mockSetVisible).toHaveBeenCalled()
 
     mockScrollTop = 101
     await act(async () => {
@@ -99,6 +130,7 @@ describe("<Calendar /> scrolling", () => {
     })
 
     await waitFor(() => expect(subtitle).toHaveTextContent("2024年2月"))
+    expect(onMonthShow).toHaveBeenCalledTimes(2)
   })
 
   it("uses scrollIntoView outside the web environment", async () => {
@@ -125,5 +157,46 @@ describe("<Calendar /> scrolling", () => {
     })
 
     expect(body).toBeInTheDocument()
+  })
+
+  it("handles overlapping scroll work, repeated months, and iOS bounce positions", async () => {
+    const onMonthShow = jest.fn()
+    const { container } = render(
+      <Calendar
+        min={min}
+        max={max}
+        value={new Date(2024, 0, 10)}
+        lazyRender
+        onMonthShow={onMonthShow}
+      />,
+    )
+    const body = container.querySelector(`.${prefixClassname("calendar__body")}`) as HTMLElement
+
+    fireEvent.scroll(body)
+    await waitFor(() => expect(onMonthShow).toHaveBeenCalled())
+
+    mockScrollTop = 50
+    await act(async () => {
+      fireEvent.scroll(body)
+    })
+    expect(onMonthShow).toHaveBeenCalledTimes(2)
+
+    mockScrollTop = 250
+    await act(async () => {
+      fireEvent.scroll(body)
+    })
+    expect(body).toBeInTheDocument()
+  })
+
+  it("selects safely when month refs are missing", () => {
+    mockMissingMonthRef = true
+    const onChange = jest.fn()
+    const { getByTestId } = render(
+      <Calendar type="range" min={min} max={max} defaultValue={null} onChange={onChange} />,
+    )
+
+    fireEvent.click(getByTestId("month-0"))
+
+    expect(onChange).toHaveBeenCalledWith([min])
   })
 })

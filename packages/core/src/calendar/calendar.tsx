@@ -1,22 +1,26 @@
 import { useUncontrolled } from "@taroify/hooks"
-import { ScrollView, View } from "@tarojs/components"
+import { ScrollView, View, type ITouchEvent } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import { nextTick, getEnv } from "@tarojs/taro"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import {
   Children,
+  forwardRef,
   isValidElement,
   type ReactElement,
   type ReactNode,
   type FC,
   useEffect,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
 } from "react"
 import Popup from "../popup"
+import Toast from "../toast"
 import type { PopupPlacement } from "../popup"
 import type { PopupProps } from "../popup/popup"
 import { prefixClassname } from "../styles"
@@ -32,14 +36,21 @@ import CalendarMonth, { type CalendarMonthInstance } from "./calendar-month"
 import CalendarContext from "./calendar.context"
 import {
   type CalendarDayObject,
+  type CalendarInstance,
+  type CalendarMonthShowEvent,
+  type CalendarMonthTitle,
+  type CalendarPanelChangeEvent,
+  type CalendarSubtitle,
+  type CalendarSwitchMode,
   type CalendarType,
   type CalendarValueType,
-  type CalendarSubtitle,
   compareDate,
   compareYearMonth,
+  createDayByOffset,
   createNextDay,
   createPreviousDay,
   createToday,
+  getDateCount,
   MAX_DATE,
   MIN_DATE,
   genMonthId,
@@ -93,10 +104,12 @@ function normalizeCalendarValue(
 
 export interface CalendarProps extends ViewProps {
   type?: CalendarType
+  switchMode?: CalendarSwitchMode
   showTitle?: boolean
   title?: ReactNode
   subtitle?: CalendarSubtitle
   showSubtitle?: boolean
+  monthTitle?: CalendarMonthTitle
   defaultValue?: CalendarValueType
   value?: CalendarValueType
   min?: Date
@@ -111,7 +124,12 @@ export interface CalendarProps extends ViewProps {
   confirmDisabledText?: ReactNode
   firstDayOfWeek?: number
   watermark?: boolean
+  lazyRender?: boolean
   readonly?: boolean
+  maxRange?: number
+  rangePrompt?: ReactNode
+  showRangePrompt?: boolean
+  allowSameDay?: boolean
   children?: ReactNode
 
   formatter?(day: CalendarDayObject): CalendarDayObject
@@ -121,9 +139,21 @@ export interface CalendarProps extends ViewProps {
   onConfirm?(value: any): void
 
   onClose?(val: boolean): void
+
+  onUnselect?(value: Date): void
+
+  onMonthShow?(event: CalendarMonthShowEvent): void
+
+  onOverRange?(): void
+
+  onClickSubtitle?(event: ITouchEvent): void
+
+  onClickDisabledDate?(value: Date): void
+
+  onPanelChange?(event: CalendarPanelChangeEvent): void
 }
 
-function Calendar(props: CalendarProps) {
+const Calendar = forwardRef<CalendarInstance, CalendarProps>((props, ref) => {
   const {
     className,
     style,
@@ -132,6 +162,7 @@ function Calendar(props: CalendarProps) {
     subtitle = defaultSubtitleRender,
     showSubtitle = true,
     type = "single",
+    switchMode = "none",
     // set false to be compatible with lower versions
     poppable = false,
     showPopup = false,
@@ -148,18 +179,31 @@ function Calendar(props: CalendarProps) {
     firstDayOfWeek,
     readonly = false,
     watermark = true,
+    lazyRender = false,
     formatter = defaultFormatter,
+    monthTitle,
+    maxRange,
+    rangePrompt,
+    showRangePrompt = true,
+    allowSameDay = true,
     children: childrenProp,
     onChange: onChangeProp,
     onConfirm,
     onClose,
+    onUnselect,
+    onMonthShow,
+    onOverRange,
+    onClickSubtitle,
+    onClickDisabledDate,
+    onPanelChange,
   } = props
+  const canSwitch = switchMode !== "none"
   const scrollToDateLoadingRef = useRef(false)
   const Wrapper = useMemo<FC<PopupProps>>(
     () => (poppable ? Popup : ({ children }) => <>{children}</>),
     [poppable],
   )
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: defaultValue only initializes uncontrolled state
   const defaultValue = useMemo(() => getInitialDate(defaultValueProp), [])
   const { value: currentValue, setValue } = useUncontrolled({
     defaultValue,
@@ -177,6 +221,7 @@ function Calendar(props: CalendarProps) {
         : currentValue,
     [currentValue, type, minValue, maxValue, shouldNormalizeValue],
   )
+  const [currentPanelDate, setCurrentPanelDate] = useState(() => getInitialPanelDate(value))
 
   const renderFooter = () => {
     let _footer: ReactNode = null
@@ -209,6 +254,7 @@ function Calendar(props: CalendarProps) {
   const hasConfirmRef = useRef(false)
 
   const [currentMonth, setCurrentMonth] = useState<Date>()
+  const shownMonthsRef = useRef(new Set<number>())
 
   const changeValueRef = useRef<CalendarValueType>()
 
@@ -224,6 +270,9 @@ function Calendar(props: CalendarProps) {
   const dayOffset = useMemo(() => (firstDayOfWeek ? +firstDayOfWeek % 7 : 0), [firstDayOfWeek])
 
   const months = useMemo<Date[]>(() => {
+    if (canSwitch) {
+      return [currentPanelDate]
+    }
     const months: Date[] = []
     const cursor = new Date(minValue)
 
@@ -235,7 +284,7 @@ function Calendar(props: CalendarProps) {
     } while (compareYearMonth(cursor, maxValue) !== 1)
 
     return months
-  }, [maxValue, minValue])
+  }, [canSwitch, currentPanelDate, maxValue, minValue])
 
   function limitDateRange(date: Date, minDate = minValue, maxDate = maxValue) {
     if (compareDate(date, minDate) === -1) {
@@ -263,7 +312,11 @@ function Calendar(props: CalendarProps) {
         minValue,
         createPreviousDay(maxValue),
       )
-      const end = limitDateRange(defaultDateCache[1] || now, createNextDay(minValue))
+      const endDefault = defaultDateCache[1] || (allowSameDay ? now : createNextDay(now))
+      const end = limitDateRange(endDefault, createNextDay(minValue))
+      if (!allowSameDay && compareDate(start, end) === 0) {
+        return [start, limitDateRange(createNextDay(start), createNextDay(minValue))]
+      }
       return [start, end]
     }
 
@@ -280,6 +333,11 @@ function Calendar(props: CalendarProps) {
     return limitDateRange(defaultDateCache)
   }
 
+  function getInitialPanelDate(dateValue?: CalendarValueType) {
+    const date = Array.isArray(dateValue) ? dateValue[0] : dateValue
+    return limitDateRange(date || createToday())
+  }
+
   // get first disabled calendarDay between date range
   function getDisabledDate(
     disabledDays: CalendarDayObject[],
@@ -294,9 +352,24 @@ function Calendar(props: CalendarProps) {
   // disabled calendarDay
   function getDisabledDays() {
     return getMonthRefs().reduce((arr, ref) => {
-      arr.push(...(ref.current?.disabledDays ?? []))
+      arr.push(...(ref.current?.getDisabledDays() ?? []))
       return arr
     }, [] as CalendarDayObject[])
+  }
+
+  function notifyOverRange() {
+    if (showRangePrompt) {
+      Toast.open(rangePrompt ?? `最多选择 ${maxRange} 天`)
+    }
+    onOverRange?.()
+  }
+
+  function checkRange(dateRange: [Date, Date]) {
+    if (maxRange && maxRange > 0 && getDateCount(dateRange) > maxRange) {
+      notifyOverRange()
+      return false
+    }
+    return true
   }
 
   function change(dateValue: CalendarValueType, complete?: boolean) {
@@ -330,14 +403,15 @@ function Calendar(props: CalendarProps) {
         if (compareToStart === 1) {
           const disabledDay = getDisabledDate(disabledDays, startDay, date)
 
-          if (disabledDay) {
-            change([startDay, createPreviousDay(disabledDay)], true)
+          const endDay = disabledDay ? createPreviousDay(disabledDay) : date
+          if (!checkRange([startDay, endDay])) {
+            change([startDay, createDayByOffset(startDay, maxRange! - 1)])
           } else {
-            change([startDay, date], true)
+            change([startDay, endDay], true)
           }
         } else if (compareToStart === -1) {
           change([date])
-        } else {
+        } else if (allowSameDay) {
           change([date, date], true)
         }
       } else {
@@ -353,6 +427,9 @@ function Calendar(props: CalendarProps) {
       const newDates = _.filter(dates, (dateItem) => compareDate(dateItem, date) !== 0)
       if (_.size(newDates) !== _.size(dates)) {
         change(newDates)
+        onUnselect?.(date)
+      } else if (maxRange && maxRange > 0 && dates.length >= maxRange) {
+        notifyOverRange()
       } else {
         change([...dates, date])
       }
@@ -367,7 +444,7 @@ function Calendar(props: CalendarProps) {
     }
     const top = await getScrollTop(scrollViewRef)
     const bottom = top + scrollViewHeightRef.current
-    const monthRefs = months.map((item, index) => getMonthRef(index).current)
+    const monthRefs = months.map((_, index) => getMonthRef(index).current)
     const heights = monthRefs.map((monthRef) => monthRef?.getHeight() ?? 0)
     const heightSum = heights.reduce((a, b) => a + b, 0)
 
@@ -377,19 +454,34 @@ function Calendar(props: CalendarProps) {
     }
 
     let height = 0
-    // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-    let currentMonthRef
+    let currentMonthRef: CalendarMonthInstance | undefined
+    const visibleRange = [-1, -1]
 
     for (let i = 0; i < months.length; i++) {
       const month = monthRefs[i]
       const visible = height <= bottom && height + heights[i] >= top
 
-      if (visible && month && !currentMonthRef) {
-        currentMonthRef = month
-        break
+      if (visible && month) {
+        visibleRange[1] = i
+        if (!currentMonthRef) {
+          currentMonthRef = month
+          visibleRange[0] = i
+        }
+        const monthValue = month.getValue()
+        const monthTime = monthValue.getTime()
+        if (!shownMonthsRef.current.has(monthTime)) {
+          shownMonthsRef.current.add(monthTime)
+          onMonthShow?.({ date: monthValue, title: month.getTitle() })
+        }
       }
 
       height += heights[i]
+    }
+
+    if (lazyRender) {
+      monthRefs.forEach((month, index) => {
+        month?.setVisible(index >= visibleRange[0] - 1 && index <= visibleRange[1] + 1)
+      })
     }
 
     if (currentMonthRef) {
@@ -397,9 +489,13 @@ function Calendar(props: CalendarProps) {
     }
   }
 
-  async function scrollToDate(targetDate?: Date) {
+  async function scrollToDate(targetDate: Date) {
+    if (canSwitch) {
+      setCurrentPanelDate(limitDateRange(targetDate))
+      return
+    }
     months.some((month, index) => {
-      if (compareYearMonth(month, targetDate as Date) === 0) {
+      if (compareYearMonth(month, targetDate) === 0) {
         scrollToDateLoadingRef.current = true
         const currentMonthRef = getMonthRef(index)
         const currentMonth = currentMonthRef.current
@@ -407,18 +503,18 @@ function Calendar(props: CalendarProps) {
           scrollToDateLoadingRef.current = false
           return false
         }
+        if (lazyRender) {
+          currentMonth.setVisible(true)
+        }
         const month = currentMonth.getValue()
         setCurrentMonth(month)
         if (getEnv() === "WEB") {
           nextTick(() => {
-            const scrollView = scrollViewRef.current
-            if (!scrollView) {
-              scrollToDateLoadingRef.current = false
-              return
-            }
+            const scrollView = scrollViewRef.current!
             const resetScrollToDateLoading = () => {
               nextTick(() => {
                 scrollToDateLoadingRef.current = false
+                void onScroll()
               })
             }
             Promise.all([
@@ -435,6 +531,7 @@ function Calendar(props: CalendarProps) {
           setScrollIntoView(genMonthId(month))
           nextTick(() => {
             scrollToDateLoadingRef.current = false
+            void onScroll()
           })
         }
 
@@ -451,17 +548,22 @@ function Calendar(props: CalendarProps) {
     }
     if (newValue) {
       const targetDate = type === "single" ? (newValue as Date) : (newValue as Date[])[0]
-      if (_.isDate(targetDate)) {
-        scrollToDate(targetDate)
-      }
+      scrollToDate(targetDate)
+    } else {
+      void onScroll()
     }
   }
 
-  const reset = (date?: CalendarValueType) => nextTick(() => scrollToCurrentDate(date).then())
+  const resetScroll = (date?: CalendarValueType) => nextTick(() => scrollToCurrentDate(date).then())
 
   const init = useMemoizedFn(() => {
     if (poppable && !showPopup) {
       setScrollIntoView("")
+      return
+    }
+
+    if (canSwitch) {
+      resetScroll(getInitialDate(value))
       return
     }
 
@@ -470,14 +572,14 @@ function Calendar(props: CalendarProps) {
       // https://github.com/vant-ui/vant/issues/5640
       const bodyHeight = (await getRect(scrollViewRef)).height
       scrollViewHeightRef.current = Math.floor(bodyHeight)
-      reset(getInitialDate(value))
+      resetScroll(getInitialDate(value))
     })
   })
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: value changes only need to reset scrolling
   useEffect(() => {
     if (value !== changeValueRef.current) {
-      reset(getInitialDate(value))
+      resetScroll(getInitialDate(value))
     }
   }, [value])
 
@@ -494,12 +596,14 @@ function Calendar(props: CalendarProps) {
     }
   }, [type, minTime, maxTime])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: option changes intentionally reset normalized state
   useEffect(() => {
-    reset(getInitialDate(value))
-  }, [type, minValue, maxValue])
+    const initialDate = getInitialDate(value)
+    setCurrentPanelDate(getInitialPanelDate(initialDate))
+    resetScroll(initialDate)
+  }, [type, minValue, maxValue, switchMode])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: popup visibility controls initialization
   useEffect(() => {
     init()
   }, [showPopup])
@@ -516,9 +620,20 @@ function Calendar(props: CalendarProps) {
         value={month}
         showMonthTitle={index !== 0 || !showSubtitle}
         watermark={watermark}
+        lazyRender={lazyRender && !canSwitch}
+        monthTitle={monthTitle}
       />
     ))
-  }, [clearMonthRefs, months, setMonthRefs, watermark, showSubtitle])
+  }, [
+    canSwitch,
+    clearMonthRefs,
+    lazyRender,
+    monthTitle,
+    months,
+    setMonthRefs,
+    watermark,
+    showSubtitle,
+  ])
 
   function notifyConfirm(hasConfirm: boolean) {
     hasConfirmRef.current = hasConfirm
@@ -527,6 +642,26 @@ function Calendar(props: CalendarProps) {
   function handleConfirm() {
     onConfirm?.(value as CalendarValueType)
   }
+
+  function handlePanelChange(date: Date) {
+    const panelDate = limitDateRange(date)
+    setCurrentPanelDate(panelDate)
+    onPanelChange?.({ date: panelDate })
+  }
+
+  function reset(date?: CalendarValueType) {
+    const newValue = getInitialDate(date === undefined ? defaultValueProp : date)
+    changeValueRef.current = newValue
+    setValue?.(newValue)
+    setCurrentPanelDate(getInitialPanelDate(newValue))
+    resetScroll(newValue)
+  }
+
+  useImperativeHandle(ref, () => ({
+    reset,
+    scrollToDate,
+    getSelectedDate: () => value ?? null,
+  }))
 
   return (
     <CalendarContext.Provider
@@ -538,6 +673,7 @@ function Calendar(props: CalendarProps) {
         value,
         formatter,
         onDayClick,
+        onClickDisabledDate: (day) => onClickDisabledDate?.(day.value),
         notifyConfirm,
         onConfirm: handleConfirm,
       }}
@@ -562,15 +698,20 @@ function Calendar(props: CalendarProps) {
             showTitle={showTitle}
             title={title}
             subtitle={subtitle}
-            date={currentMonth}
+            switchMode={switchMode}
+            date={canSwitch ? currentPanelDate : currentMonth}
+            min={minValue}
+            max={maxValue}
             showSubtitle={showSubtitle}
+            onClickSubtitle={onClickSubtitle}
+            onPanelChange={handlePanelChange}
           />
           <ScrollView
             ref={scrollViewRef}
             className={prefixClassname("calendar__body")}
             scrollY
             scrollIntoView={scrollIntoView}
-            onScroll={onScroll}
+            onScroll={canSwitch ? undefined : onScroll}
           >
             {monthsRender}
           </ScrollView>
@@ -579,6 +720,6 @@ function Calendar(props: CalendarProps) {
       </Wrapper>
     </CalendarContext.Provider>
   )
-}
+})
 
 export default Calendar

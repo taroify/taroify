@@ -11,6 +11,9 @@ $calendar-header-box-shadow: var(--calendar-header-box-shadow, (0 2px * $hd 10px
 $calendar-header-title-height: var(--calendar-header-title-height, 44px * $hd);
 $calendar-header-title-font-size: var(--calendar-header-title-font-size, var(--font-size-lg, $font-size-lg));
 $calendar-header-subtitle-font-size: var(--calendar-header-subtitle-font-size, var(--font-size-md, $font-size-md));
+$calendar-header-action-width: var(--calendar-header-action-width, 28px * $hd);
+$calendar-header-action-color: var(--calendar-header-action-color, var(--text-color, $text-color));
+$calendar-header-action-disabled-color: var(--calendar-header-action-disabled-color, var(--text-color-3, $text-color-3));
 //
 $calendar-weekdays-height: var(--calendar-weekdays-height, 30px * $hd);
 $calendar-weekdays-font-size: var(--calendar-weekdays-font-size, var(--font-size-sm, $font-size-sm));

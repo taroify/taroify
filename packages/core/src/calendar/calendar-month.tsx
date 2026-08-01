@@ -1,5 +1,6 @@
 import { View } from "@tarojs/components"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import {
   forwardRef,
@@ -9,6 +10,7 @@ import {
   useImperativeHandle,
   useMemo,
   useRef,
+  useState,
 } from "react"
 import { prefixClassname } from "../styles"
 import { getRect } from "../utils/dom/rect"
@@ -18,6 +20,7 @@ import CalendarContext from "./calendar.context"
 import {
   type CalendarDayObject,
   type CalendarDayType,
+  type CalendarMonthTitle,
   type CalendarType,
   compareDate,
   createNextDay,
@@ -36,13 +39,17 @@ function CalendarMonthWatermark(props: CalendarMonthWatermarkProps) {
 }
 
 export interface CalendarMonthInstance {
-  disabledDays: CalendarDayObject[]
-
   getValue(): Date
+
+  getTitle(): string
 
   getHeight(): number
 
   getRectTop(): Promise<number>
+
+  getDisabledDays(): CalendarDayObject[]
+
+  setVisible(visible: boolean): void
 }
 
 function getBottom(type: CalendarType, dayType: CalendarDayType) {
@@ -64,12 +71,20 @@ interface CalendarMonthProps {
   showMonthTitle?: boolean
   readonly?: boolean
   watermark?: boolean
+  lazyRender?: boolean
+  monthTitle?: CalendarMonthTitle
   children?: ReactNode
 }
 
 const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
   (props: CalendarMonthProps, ref) => {
-    const { value: monthValue = new Date(), watermark, showMonthTitle } = props
+    const {
+      value: monthValue = new Date(),
+      watermark,
+      showMonthTitle,
+      lazyRender,
+      monthTitle,
+    } = props
     const {
       type,
       firstDayOfWeek,
@@ -80,9 +95,10 @@ const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
     } = useContext(CalendarContext)
 
     const monthRef = useRef()
-    // const daysRef = useRef()
+    const [visible, setVisible] = useState(false)
+    const shouldRender = visible || !lazyRender
 
-    const height = useHeight(monthRef)
+    const height = useHeight(monthRef, [shouldRender])
 
     const month = useMemo(() => monthValue.getMonth() + 1, [monthValue])
     const id = useMemo(() => genMonthId(monthValue), [monthValue])
@@ -189,7 +205,7 @@ const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
       [currentValue, getMultipleDayType, getRangeDayType, max, min, type],
     )
 
-    const days = useMemo<CalendarDayObject[]>(() => {
+    const buildDays = useCallback(() => {
       const days: CalendarDayObject[] = []
       const year = monthValue?.getFullYear()
       const month = monthValue?.getMonth()
@@ -209,9 +225,14 @@ const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
       return days
     }, [monthValue, totalDay, getDayType, type, formatter])
 
-    const disabledDays = useMemo<CalendarDayObject[]>(
-      () => days.filter((day) => day.type === "disabled"),
-      [days],
+    const days = useMemo<CalendarDayObject[]>(
+      () => (shouldRender ? buildDays() : []),
+      [buildDays, shouldRender],
+    )
+
+    const getDisabledDays = useCallback(
+      () => (days.length ? days : buildDays()).filter((day) => day.type === "disabled"),
+      [buildDays, days],
     )
 
     const getRectTop = useCallback(() => {
@@ -222,37 +243,50 @@ const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
       ref,
       () => ({
         getRectTop,
-        disabledDays,
+        getDisabledDays,
         getHeight: () => height,
         getValue: () => monthValue,
+        getTitle: () => title,
+        setVisible,
       }),
-      [disabledDays, getRectTop, monthValue, height],
+      [getDisabledDays, getRectTop, monthValue, height, title],
     )
 
-    const content = useMemo(
-      () =>
-        _.map(days, (day, index) => (
-          <CalendarDay
-            key={`${day.value}-${index}`}
-            className={day.className}
-            style={{ marginLeft: index === 0 ? `${(100 * offset) / 7}%` : "" }}
-            value={day.value}
-            type={day.type}
-            top={day.top}
-            bottom={day.bottom}
-            children={day.children}
-          />
-        )),
-      [days, offset],
-    )
+    const content = useMemo(() => {
+      if (!shouldRender) {
+        const rowCount = Math.ceil((totalDay + offset) / 7)
+        return _.map(new Array(rowCount), (_, index) => (
+          <CalendarDay key={`placeholder-${index}`} value={monthValue} type="placeholder" />
+        ))
+      }
+      return _.map(days, (day, index) => (
+        <CalendarDay
+          key={`${day.value}-${index}`}
+          className={day.className}
+          style={{ marginLeft: index === 0 ? `${(100 * offset) / 7}%` : "" }}
+          value={day.value}
+          type={day.type}
+          top={day.top}
+          bottom={day.bottom}
+          children={day.children}
+        />
+      ))
+    }, [days, monthValue, offset, shouldRender, totalDay])
 
     return (
       <View id={id} ref={monthRef} className={prefixClassname("calendar__month")}>
         {showMonthTitle && (
-          <View className={prefixClassname("calendar__month-title")} children={title} />
+          <View
+            className={prefixClassname("calendar__month-title")}
+            children={
+              typeof monthTitle === "function"
+                ? monthTitle(monthValue, title)
+                : (monthTitle ?? title)
+            }
+          />
         )}
         <View className={prefixClassname("calendar__days")}>
-          {watermark && <CalendarMonthWatermark children={month} />}
+          {watermark && shouldRender && <CalendarMonthWatermark children={month} />}
           {content}
         </View>
       </View>

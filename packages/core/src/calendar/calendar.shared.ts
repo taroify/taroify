@@ -4,9 +4,30 @@ export { getEndDayOfMonth } from "../datetime-picker/datetime-picker.shared"
 
 export type CalendarType = "single" | "multiple" | "range"
 
+export type CalendarSwitchMode = "none" | "month" | "year-month"
+
 export type CalendarValueType = Date | Date[] | null
 
 export type CalendarSubtitle = ReactNode | ((date: Date) => ReactNode)
+
+export type CalendarMonthTitle = ReactNode | ((date: Date, title: string) => ReactNode)
+
+export interface CalendarMonthShowEvent {
+  date: Date
+  title: string
+}
+
+export interface CalendarPanelChangeEvent {
+  date: Date
+}
+
+export interface CalendarInstance {
+  reset(date?: CalendarValueType): void
+
+  scrollToDate(date: Date): void
+
+  getSelectedDate(): CalendarValueType
+}
 
 export type CalendarDayType =
   | ""
@@ -35,6 +56,9 @@ export type CalendarThemeVars = {
   calendarHeaderTitleHeight?: string
   calendarHeaderTitleFontSize?: string
   calendarHeaderSubtitleFontSize?: string
+  calendarHeaderActionWidth?: string
+  calendarHeaderActionColor?: string
+  calendarHeaderActionDisabledColor?: string
   calendarWeekdaysHeight?: string
   calendarWeekdaysFontSize?: string
   calendarMonthTitleFontSize?: string
@@ -90,6 +114,30 @@ export function createDayByOffset(date: Date, offset: number) {
   const cloned = cloneDate(date)
   cloned.setDate(cloned.getDate() + offset)
   return cloned
+}
+
+export function createMonthByOffset(date: Date, offset: number) {
+  const cloned = cloneDate(date)
+  cloned.setMonth(cloned.getMonth() + offset)
+  if (cloned.getDate() !== date.getDate()) {
+    cloned.setDate(0)
+  }
+  return cloned
+}
+
+export function createYearByOffset(date: Date, offset: number) {
+  const cloned = cloneDate(date)
+  cloned.setFullYear(cloned.getFullYear() + offset)
+  if (cloned.getDate() !== date.getDate()) {
+    cloned.setDate(0)
+  }
+  return cloned
+}
+
+export function getDateCount([start, end]: [Date, Date]) {
+  const startDate = new Date(start.getFullYear(), start.getMonth(), start.getDate())
+  const endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate())
+  return Math.round((endDate.getTime() - startDate.getTime()) / 86400000) + 1
 }
 
 export const createPreviousDay = (date: Date) => createDayByOffset(date, -1)

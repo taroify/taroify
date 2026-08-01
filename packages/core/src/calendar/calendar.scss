@@ -41,6 +41,31 @@ $popup-close-icon-size: var(--popup-close-icon-size, 22px * $hd);
 
   &__header-subtitle {
     font-size: $calendar-header-subtitle-font-size;
+
+    &--with-switch {
+      display: flex;
+      align-items: center;
+      padding: 0 var(--padding-base, $padding-base);
+    }
+  }
+
+  &__header-subtitle-text {
+    flex: 1;
+  }
+
+  &__header-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: $calendar-header-action-width;
+    height: 100%;
+    color: $calendar-header-action-color;
+    cursor: pointer;
+
+    &--disabled {
+      color: $calendar-header-action-disabled-color;
+      cursor: not-allowed;
+    }
   }
 
   &__month-title {

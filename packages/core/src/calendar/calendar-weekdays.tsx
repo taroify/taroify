@@ -1,5 +1,6 @@
 import { View } from "@tarojs/components"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: the package Babel preset uses the classic JSX runtime
 import * as React from "react"
 import { useContext } from "react"
 import { prefixClassname } from "../styles"
