@@ -1,5 +1,11 @@
 import { useUncontrolled } from "@taroify/hooks"
-import { ScrollView, View, type ITouchEvent } from "@tarojs/components"
+import {
+  ScrollView,
+  View,
+  type BaseEventOrig,
+  type ITouchEvent,
+  type ScrollViewProps,
+} from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import { nextTick, getEnv } from "@tarojs/taro"
 import classNames from "classnames"
@@ -199,6 +205,7 @@ const Calendar = forwardRef<CalendarInstance, CalendarProps>((props, ref) => {
   } = props
   const canSwitch = switchMode !== "none"
   const scrollToDateLoadingRef = useRef(false)
+  const scrollRequestRef = useRef(0)
   const Wrapper = useMemo<FC<PopupProps>>(
     () => (poppable ? Popup : ({ children }) => <>{children}</>),
     [poppable],
@@ -438,11 +445,21 @@ const Calendar = forwardRef<CalendarInstance, CalendarProps>((props, ref) => {
     }
   }
 
-  async function onScroll() {
+  async function onScroll(event?: BaseEventOrig<ScrollViewProps.onScrollDetail>) {
     if (scrollToDateLoadingRef.current) {
       return
     }
-    const top = await getScrollTop(scrollViewRef)
+    const request = ++scrollRequestRef.current
+    const eventScrollTop = event?.detail?.scrollTop
+    const top =
+      typeof eventScrollTop === "number"
+        ? Math.max(eventScrollTop, 0)
+        : await getScrollTop(scrollViewRef)
+
+    if (request !== scrollRequestRef.current) {
+      return
+    }
+
     const bottom = top + scrollViewHeightRef.current
     const monthRefs = months.map((_, index) => getMonthRef(index).current)
     const heights = monthRefs.map((monthRef) => monthRef?.getHeight() ?? 0)
@@ -478,7 +495,7 @@ const Calendar = forwardRef<CalendarInstance, CalendarProps>((props, ref) => {
       height += heights[i]
     }
 
-    if (lazyRender) {
+    if (lazyRender && visibleRange[0] !== -1) {
       monthRefs.forEach((month, index) => {
         month?.setVisible(index >= visibleRange[0] - 1 && index <= visibleRange[1] + 1)
       })

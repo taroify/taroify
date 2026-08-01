@@ -145,10 +145,45 @@ describe("<Calendar /> scrolling", () => {
     )
   })
 
+  it("uses the mini-program scroll event position and ignores stale async queries", async () => {
+    mockEnvironment = "WEAPP"
+    const { container } = render(
+      <Calendar min={min} max={max} value={new Date(2024, 0, 10)} showConfirm={false} lazyRender />,
+    )
+    const subtitle = container.querySelector(`.${prefixClassname("calendar__header-subtitle")}`)
+    const body = container.querySelector(`.${prefixClassname("calendar__body")}`) as HTMLElement
+
+    await waitFor(() => expect(subtitle).toHaveTextContent("2024年1月"))
+    jest.mocked(getScrollTop).mockClear()
+
+    let resolveStaleScroll: (scrollTop: number) => void = () => undefined
+    const staleScroll = new Promise<number>((resolve) => {
+      resolveStaleScroll = resolve
+    })
+    jest.mocked(getScrollTop).mockImplementationOnce(() => staleScroll)
+
+    fireEvent.scroll(body)
+    const miniProgramScrollEvent = new Event("scroll", { bubbles: true })
+    Object.defineProperty(miniProgramScrollEvent, "detail", {
+      value: { scrollTop: 101 },
+    })
+    fireEvent(body, miniProgramScrollEvent)
+
+    await waitFor(() => expect(subtitle).toHaveTextContent("2024年2月"))
+    expect(getScrollTop).toHaveBeenCalledTimes(1)
+
+    await act(async () => {
+      resolveStaleScroll(0)
+      await staleScroll
+    })
+
+    expect(subtitle).toHaveTextContent("2024年2月")
+  })
+
   it("does not throw while month refs are temporarily unavailable", async () => {
     mockMissingMonthRef = true
     const { container } = render(
-      <Calendar min={min} max={max} value={new Date(2024, 0, 10)} showConfirm={false} />,
+      <Calendar min={min} max={max} value={new Date(2024, 0, 10)} showConfirm={false} lazyRender />,
     )
     const body = container.querySelector(`.${prefixClassname("calendar__body")}`) as HTMLElement
 
