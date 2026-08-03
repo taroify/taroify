@@ -12,7 +12,7 @@ import { Calendar } from "@taroify/core"
 
 ## 代码演示
 
-### 年月切换
+### 年月切换 <Tag tag="v1.0.3" />
 
 默认会平铺展示日期范围内的全部月份。设置 `switchMode` 后只渲染当前月份，并展示月份或年份切换按钮，适合日期跨度较大的场景。
 
@@ -164,7 +164,7 @@ function SingleQuicklyCalendar() {
 }
 ```
 
-### 限制选择范围
+### 限制选择范围 <Tag tag="v1.0.3" />
 
 通过 `maxRange` 限制区间或多选模式下最多可选的天数。超出范围时默认提示“最多选择 n 天”，并触发 `onOverRange`。
 
@@ -399,7 +399,7 @@ function TiledCalendar() {
 }
 ```
 
-### 惰性渲染
+### 惰性渲染 <Tag tag="v1.0.3" />
 
 日期范围较大时，可以开启 `lazyRender`，仅渲染可视区域附近月份的日期节点。该属性默认关闭，以保持历史版本中 `formatter` 的调用时机。
 
@@ -412,7 +412,7 @@ function TiledCalendar() {
 />
 ```
 
-### 实例方法
+### 实例方法 <Tag tag="v1.0.3" />
 
 通过 `ref` 可以重置选中日期、滚动到指定日期或读取当前选中日期。
 
@@ -477,16 +477,16 @@ function CustomConfirmCalendar() {
 
 | 参数                                      | 说明                                                                                                  | 类型                                              | 默认值                                                        |
 | ----------------------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------- |
-| type                                      | 选择类型:<br>`single` 表示选择单个日期，<br>`multiple` 表示选择多个日期，<br>`range` 表示选择日期区间 | _string_                                          | `single`                                                      |
-| switchMode                                | 切换模式，可选值为 `none` `month` `year-month`                                                       | _string_                                               | `none`                                                        |
+| type                                      | 选择类型:<br />`single` 表示选择单个日期，<br />`multiple` 表示选择多个日期，<br />`range` 表示选择日期区间 | _string_                                          | `single`                                                      |
+| switchMode <Tag tag="v1.0.3" />          | 切换模式，可选值为 `none` `month` `year-month`                                                       | _string_                                               | `none`                                                        |
 | defaultValue                              | 默认选中的日期，`type` 为 `multiple` 或 `range` 时为数组，传入 `null` 表示默认不选择                  | _Date \| Date[] \| null_                          | 今天                                                          |
 | value                                     | 选中的日期，`type` 为 `multiple` 或 `range` 时为数组，传入 `null` 表示默认不选择                      | _Date \| Date[] \| null_                          | 今天                                                          |
 | formatter                                 | 日期格式化函数                                                                                        | _(day: Calendar.DayObject) => Calendar.DayObject_ | -                                                             |
 | title                                     | 日历标题                                                                                              | _ReactNode_                                       | `日期选择`                                                    |
 | showTitle                                 | 是否展示日历标题                                                                                      | _boolean_                                         | `true`                                                        |
 | showSubtitle                              | 是否展示日历副标题（年月）                                                                             | _boolean_                                              | `true`                                                        |
-| subtitle                                  | 自定义日历副标题                                                                                      | _ReactNode\|((date: Date) => ReactNode)_          | (date) => \`${date.getFullYear()}年${date.getMonth() + 1}月\` |
-| monthTitle                                | 自定义月份标题                                                                                        | _ReactNode\|((date: Date, title: string) => ReactNode)_ | -                                                       |
+| subtitle                                  | 自定义日历副标题                                                                                      | _ReactNode\|((date: Date) => ReactNode)_          | (date) => \`$&#123;date.getFullYear()&#125;年$&#123;date.getMonth() + 1&#125;月\` |
+| monthTitle <Tag tag="v1.0.3" />          | 自定义月份标题                                                                                        | _ReactNode\|((date: Date, title: string) => ReactNode)_ | -                                                       |
 | watermark                                 | 是否显示月份背景水印                                                                                  | _boolean_                                         | `true`                                                        |
 | min                                       | 可选择的最小日期                                                                                      | _Date_                                            | 当前日期                                                      |
 | max                                       | 可选择的最大日期                                                                                      | _Date_                                            | 当前日期的六个月后                                            |
@@ -500,11 +500,11 @@ function CustomConfirmCalendar() {
 | confirmText                               | 确认按钮的文字                                                                                         | _ReactNode_                                            | `确认`                                                        |
 | confirmDisabledText | 确认按钮处于禁用状态时的文字                                                                          | _ReactNode_                                       | `确认`                                                        |
 | firstDayOfWeek                            | 设置周起始日                                                                                          | _0-6_                                             | `0`                                                           |
-| lazyRender                                | 是否只渲染可视区域附近月份的日期节点                                                                  | _boolean_                                         | `false`                                                       |
-| maxRange                                  | 区间或多选模式下最多可选天数                                                                          | _number_                                          | -                                                             |
-| rangePrompt                               | 超出最多可选天数时的提示文案                                                                          | _ReactNode_                                       | `最多选择 n 天`                                               |
-| showRangePrompt                           | 超出最多可选天数时是否展示提示                                                                         | _boolean_                                         | `true`                                                        |
-| allowSameDay                              | 区间的开始和结束日期是否允许为同一天                                                                  | _boolean_                                         | `true`                                                        |
+| lazyRender <Tag tag="v1.0.3" />          | 是否只渲染可视区域附近月份的日期节点                                                                  | _boolean_                                         | `false`                                                       |
+| maxRange <Tag tag="v1.0.3" />            | 区间或多选模式下最多可选天数                                                                          | _number_                                          | -                                                             |
+| rangePrompt <Tag tag="v1.0.3" />         | 超出最多可选天数时的提示文案                                                                          | _ReactNode_                                       | `最多选择 n 天`                                               |
+| showRangePrompt <Tag tag="v1.0.3" />     | 超出最多可选天数时是否展示提示                                                                         | _boolean_                                         | `true`                                                        |
+| allowSameDay <Tag tag="v1.0.3" />        | 区间的开始和结束日期是否允许为同一天                                                                  | _boolean_                                         | `true`                                                        |
 
 ### Calendar.DayObject 数据结构
 
@@ -526,20 +526,20 @@ function CustomConfirmCalendar() {
 | onChange                     | 点击并选中任意日期时触发                                                | _value: Date \| Date[]_ |
 | onConfirm                    | 日期选择完成后触发，若使用 `Calendar.Button` 组件，则点击确认按钮后触发 | _value: Date \| Date[]_ |
 | onClose                      | 关闭弹层时触发                                                        | _visible: boolean_               |
-| onUnselect                   | 多选模式下取消选中日期时触发                                          | _value: Date_                    |
-| onMonthShow                  | 平铺模式下月份首次进入可视区域时触发                                  | _{ date: Date, title: string }_  |
-| onOverRange                  | 选择数量超过 `maxRange` 时触发                                        | -                                |
-| onClickSubtitle              | 点击日历副标题时触发                                                  | _event_                          |
-| onClickDisabledDate          | 点击禁用日期时触发                                                    | _value: Date_                    |
-| onPanelChange                | 年月面板切换时触发                                                    | _{ date: Date }_                 |
+| onUnselect <Tag tag="v1.0.3" />          | 多选模式下取消选中日期时触发                                          | _value: Date_                    |
+| onMonthShow <Tag tag="v1.0.3" />         | 平铺模式下月份首次进入可视区域时触发                                  | _&#123; date: Date, title: string &#125;_  |
+| onOverRange <Tag tag="v1.0.3" />         | 选择数量超过 `maxRange` 时触发                                        | -                                |
+| onClickSubtitle <Tag tag="v1.0.3" />     | 点击日历副标题时触发                                                  | _event_                          |
+| onClickDisabledDate <Tag tag="v1.0.3" /> | 点击禁用日期时触发                                                    | _value: Date_                    |
+| onPanelChange <Tag tag="v1.0.3" />       | 年月面板切换时触发                                                    | _&#123; date: Date &#125;_                 |
 
-### 方法
+### 方法 <Tag tag="v1.0.3" />
 
 | 方法名          | 说明                                             | 参数                         | 返回值                         |
 | --------------- | ------------------------------------------------ | ---------------------------- | ------------------------------ |
-| reset           | 重置到指定日期，未传参数时恢复 `defaultValue`    | _Date \| Date[] \| null_     | -                              |
-| scrollToDate    | 滚动或切换到指定日期                             | _Date_                       | -                              |
-| getSelectedDate | 获取当前选中的日期                               | -                            | _Date \| Date[] \| null_       |
+| reset <Tag tag="v1.0.3" />           | 重置到指定日期，未传参数时恢复 `defaultValue`    | _Date \| Date[] \| null_     | -                              |
+| scrollToDate <Tag tag="v1.0.3" />    | 滚动或切换到指定日期                             | _Date_                       | -                              |
+| getSelectedDate <Tag tag="v1.0.3" /> | 获取当前选中的日期                               | -                            | _Date \| Date[] \| null_       |
 
 ### Calendar.Footer Props
 
@@ -570,9 +570,9 @@ function CustomConfirmCalendar() {
 | --calendar-header-title-height             | _44px \* $hd_                                      | -    |
 | --calendar-header-title-font-size          | _var(--font-size-lg)_                              | -    |
 | --calendar-header-subtitle-font-size       | _var(--font-size-md)_                              | -    |
-| --calendar-header-action-width             | _28px \* $hd_                                      | -    |
-| --calendar-header-action-color             | _var(--text-color)_                                | -    |
-| --calendar-header-action-disabled-color    | _var(--text-color-3)_                              | -    |
+| --calendar-header-action-width <Tag tag="v1.0.3" />          | _28px \* $hd_                                      | -    |
+| --calendar-header-action-color <Tag tag="v1.0.3" />          | _var(--text-color)_                                | -    |
+| --calendar-header-action-disabled-color <Tag tag="v1.0.3" /> | _var(--text-color-3)_                              | -    |
 | --calendar-weekdays-height                 | _30px \* $hd_                                      | -    |
 | --calendar-weekdays-font-size              | _var(--font-size-sm)_                              | -    |
 | --calendar-month-title-font-size           | _var(--font-size-md)_                              | -    |
