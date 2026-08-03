@@ -15,7 +15,7 @@ const workspaceAliases = Object.fromEntries(
   ]),
 )
 
-const taroPackageNames = ["components", "runtime", "shared", "taro"]
+const taroPackageNames = ["components", "runtime", "shared"]
 
 const taroPackageAliases = Object.fromEntries(
   taroPackageNames.map((name) => {
