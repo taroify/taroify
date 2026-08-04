@@ -1625,7 +1625,7 @@
       ],
       "kind": "component",
       "packageName": "@taroify/icons",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "category": {
         "id": "basic",
         "name": "基础组件"
@@ -19692,7 +19692,7 @@
       ],
       "kind": "hook",
       "packageName": "@taroify/hooks",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "category": {
         "id": "hooks",
         "name": "Hooks"

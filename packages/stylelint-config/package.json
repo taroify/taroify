@@ -1,6 +1,6 @@
 {
   "name": "@taroify/stylelint-config",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "license": "MIT",
   "private": "true",
   "main": "index.js",
