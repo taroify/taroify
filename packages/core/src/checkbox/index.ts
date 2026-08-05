@@ -9,7 +9,11 @@ export type {
   CheckboxGroupToggleAllOptions,
 } from "./checkbox-group"
 
-export type { CheckboxShape, CheckboxThemeVars } from "./checkbox.shared"
+export type {
+  CheckboxLabelPosition,
+  CheckboxShape,
+  CheckboxThemeVars,
+} from "./checkbox.shared"
 
 type CheckboxInterface = typeof CheckboxComponent & {
   Group: typeof CheckboxGroup

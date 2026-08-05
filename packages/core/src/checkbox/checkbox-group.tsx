@@ -16,6 +16,7 @@ import {
 import { prefixClassname } from "../styles"
 import CheckboxGroupContext, { type CheckboxGroupItem } from "./checkbox-group.context"
 import type { CheckboxGroupDirection } from "./checkbox-group.shared"
+import type { CheckboxShape } from "./checkbox.shared"
 
 export interface CheckboxGroupToggleAllOptions {
   checked?: boolean
@@ -34,6 +35,8 @@ export interface CheckboxGroupProps<T = any> extends ViewProps {
   disabled?: boolean
   max?: number
   direction?: CheckboxGroupDirection
+  shape?: CheckboxShape
+  checkedColor?: string
   children?: ReactNode
 
   onChange?(value: T[]): void
@@ -50,6 +53,8 @@ const CheckboxGroup = forwardRef<CheckboxGroupInstance, CheckboxGroupProps<any>>
     disabled,
     max,
     direction = "vertical",
+    shape,
+    checkedColor,
     children,
     onChange: onChangeProp,
     ...restProps
@@ -98,6 +103,8 @@ const CheckboxGroup = forwardRef<CheckboxGroupInstance, CheckboxGroupProps<any>>
         max,
         disabled,
         direction,
+        shape,
+        checkedColor,
         onChange: setValue,
         register,
       }}

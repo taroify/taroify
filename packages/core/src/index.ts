@@ -63,10 +63,14 @@ export { default as Cascader } from "./cascader"
 export { default as Calendar } from "./calendar"
 export { default as Checkbox } from "./checkbox"
 export type {
+  CheckboxGroupProps,
   CheckboxGroupInstance,
   CheckboxGroupToggleAll,
   CheckboxGroupToggleAllOptions,
   CheckboxInstance,
+  CheckboxLabelPosition,
+  CheckboxProps,
+  CheckboxShape,
 } from "./checkbox"
 export { default as DatetimePicker } from "./datetime-picker"
 export { default as Input } from "./input"

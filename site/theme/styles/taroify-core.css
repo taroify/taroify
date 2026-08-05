@@ -946,6 +946,9 @@
 .taroify-checkbox--disabled {
   cursor: not-allowed;
 }
+.taroify-checkbox--label-disabled {
+  cursor: default;
+}
 .taroify-checkbox--horizontal {
   margin-right: var(--checkbox-gap, var(--padding-sm, 12px));
 }
@@ -981,12 +984,12 @@
 .taroify-checkbox__icon--round .taroify-icon {
   border-radius: 100%;
 }
-.taroify-checkbox__icon--checked .taroify-icon {
+.taroify-checkbox__icon--checked .taroify-icon, .taroify-checkbox__icon--indeterminate .taroify-icon {
   color: var(--checkbox-checked-icon-color, var(--white, #fff));
   background: var(--checkbox-checked-icon-background-color, var(--primary-color, var(--primary-color, #1989fa)));
   border-color: var(--checkbox-checked-icon-border-color, var(--primary-color, var(--primary-color, #1989fa)));
 }
-.taroify-checkbox__icon--checked.taroify-checkbox__icon--disabled .taroify-icon {
+.taroify-checkbox__icon--checked.taroify-checkbox__icon--disabled .taroify-icon, .taroify-checkbox__icon--indeterminate.taroify-checkbox__icon--disabled .taroify-icon {
   color: var(--checkbox-disabled-icon-color, var(--gray-5, #c8c9cc));
 }
 .taroify-checkbox__icon--disabled {
