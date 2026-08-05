@@ -12,6 +12,10 @@
     cursor: not-allowed;
   }
 
+  &--label-disabled {
+    cursor: default;
+  }
+
   &--horizontal {
     margin-right: $checkbox-gap;
 
@@ -55,7 +59,8 @@
       }
     }
 
-    &--checked {
+    &--checked,
+    &--indeterminate {
       .#{$component-prefix}icon {
         color: $checkbox-checked-icon-color;
         background: $checkbox-checked-icon-background-color;

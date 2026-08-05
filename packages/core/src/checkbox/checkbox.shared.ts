@@ -1,5 +1,7 @@
 export type CheckboxShape = "square" | "round" | "button"
 
+export type CheckboxLabelPosition = "left" | "right"
+
 export type CheckboxThemeVars = {
   checkboxSize?: string
   checkboxFontSize?: string

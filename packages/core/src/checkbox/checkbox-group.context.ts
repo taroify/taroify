@@ -1,5 +1,6 @@
 import { createContext } from "react"
 import type { CheckboxGroupDirection } from "./checkbox-group.shared"
+import type { CheckboxShape } from "./checkbox.shared"
 
 export interface CheckboxGroupItem {
   name?: any
@@ -11,6 +12,8 @@ interface CheckboxGroupContextValue {
   max?: number
   disabled?: boolean
   direction?: CheckboxGroupDirection
+  shape?: CheckboxShape
+  checkedColor?: string
 
   onChange?(value: any[]): void
 

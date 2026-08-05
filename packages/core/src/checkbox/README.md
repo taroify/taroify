@@ -37,6 +37,17 @@ import { Checkbox } from "@taroify/core"
 <Checkbox shape="square">自定义形状</Checkbox>
 ```
 
+### 复选框组自定义形状 <Tag tag="v1.0.5" />
+
+通过 `Checkbox.Group` 的 `shape` 属性统一设置组内复选框的形状。
+
+```tsx
+<Checkbox.Group shape="square" defaultValue={["a"]}>
+  <Checkbox name="a">复选框 a</Checkbox>
+  <Checkbox name="b">复选框 b</Checkbox>
+</Checkbox.Group>
+```
+
 ### 按钮形状
 
 将 `shape` 属性设置为 `button`，复选框会变成适合规格选择等场景的按钮。按钮形状下，`icon` 和 `size` 属性不生效。
@@ -48,21 +59,12 @@ import { Checkbox } from "@taroify/core"
 </Checkbox.Group>
 ```
 
-### 自定义颜色
+### 自定义颜色 <Tag tag="v1.0.5" />
 
-通过 `css` 设置选中状态的图标颜色。
+通过 `checkedColor` 属性设置选中状态的图标颜色。
 
 ```tsx
-<Checkbox className="custom-color">
-  自定义颜色
-</Checkbox>
-```
-
-```scss
-.custom-color {
-  --checkbox-checked-icon-border-color: #ee0a24;
-  --checkbox-checked-icon-background-color: #ee0a24;
-}
+<Checkbox defaultChecked checkedColor="#ee0a24">自定义颜色</Checkbox>
 ```
 
 ### 自定义大小
@@ -99,6 +101,22 @@ function CheckboxWithCustomIcon() {
     </Checkbox>
   )
 }
+```
+
+### 左侧文本 <Tag tag="v1.0.5" />
+
+将 `labelPosition` 属性设置为 `left`，可以将文本位置调整到复选框左侧。
+
+```tsx
+<Checkbox labelPosition="left">复选框</Checkbox>
+```
+
+### 禁用文本点击 <Tag tag="v1.0.5" />
+
+设置 `labelDisabled` 属性后，点击图标以外的内容不会触发复选框切换。
+
+```tsx
+<Checkbox labelDisabled>复选框</Checkbox>
 ```
 
 ### 复选框组
@@ -194,6 +212,36 @@ function CheckboxWithCell() {
 }
 ```
 
+### 不确定状态 <Tag tag="v1.0.5" />
+
+通过 `indeterminate` 设置复选框是否为不确定状态。
+
+```tsx
+function CheckboxIndeterminate() {
+  const options = ["a", "b", "c"]
+  const [value, setValue] = useState(["a", "b"])
+  const checked = value.length === options.length
+  const indeterminate = value.length > 0 && !checked
+
+  return (
+    <>
+      <Checkbox
+        checked={checked}
+        indeterminate={indeterminate}
+        onChange={(nextChecked) => setValue(nextChecked ? options : [])}
+      >
+        全选
+      </Checkbox>
+      <Checkbox.Group value={value} onChange={setValue}>
+        {options.map((name) => (
+          <Checkbox key={name} name={name}>复选框 {name}</Checkbox>
+        ))}
+      </Checkbox.Group>
+    </>
+  )
+}
+```
+
 ## API
 
 ### Checkbox Props
@@ -205,7 +253,12 @@ function CheckboxWithCell() {
 | name           | 标识符                    | _any_              | -         |
 | shape <Tag tag="v1.0.0" /> | 形状，可选值为 `square` `button` | _string_      | `round`   |
 | disabled       | 是否禁用复选框            | _boolean_          | `false`   |
-| size      | 图标大小，默认单位为 `px` | _number \| string_ | `20px`    |
+| labelPosition <Tag tag="v1.0.5" /> | 文本位置，可选值为 `left` | _string_ | `right` |
+| labelDisabled <Tag tag="v1.0.5" /> | 是否禁用复选框文本点击 | _boolean_ | `false` |
+| size | 图标大小，默认单位为 `px`；字符串类型支持 <Tag tag="v1.0.5" /> | _number \| string_ | `20px` |
+| checkedColor <Tag tag="v1.0.5" /> | 选中状态颜色 | _string_ | - |
+| bindGroup <Tag tag="v1.0.5" /> | 是否与复选框组绑定 | _boolean_ | `true` |
+| indeterminate <Tag tag="v1.0.5" /> | 是否为不确定状态 | _boolean_ | `false` |
 
 ### CheckboxGroup Props
 
@@ -217,6 +270,8 @@ function CheckboxWithCell() {
 | max | 最大可选数，`0` 为无限制 | _number \| string_ | `0` |
 | direction | 排列方向，可选值为 `horizontal` | _string_ | `vertical` |
 | size | 所有复选框的图标大小，默认单位为 `px` | _number \| string_ | `20px` |
+| shape <Tag tag="v1.0.5" /> | 所有复选框的形状，可选值为 `square` `button` | _string_ | `round` |
+| checkedColor <Tag tag="v1.0.5" /> | 所有复选框的选中状态颜色 | _string_ | - |
 
 ### Checkbox Events
 
@@ -271,7 +326,11 @@ checkboxGroupRef.current?.toggleAll({ checked: true, skipDisabled: true })
 
 ```tsx
 import type {
+  CheckboxLabelPosition,
+  CheckboxProps,
+  CheckboxShape,
   CheckboxInstance,
+  CheckboxGroupProps,
   CheckboxGroupInstance,
   CheckboxGroupToggleAll,
   CheckboxGroupToggleAllOptions,

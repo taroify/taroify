@@ -83,6 +83,32 @@ function CheckboxWithCell() {
   )
 }
 
+function CheckboxIndeterminate() {
+  const options = ["a", "b", "c"]
+  const [value, setValue] = useState(["a", "b"])
+  const checked = value.length === options.length
+  const indeterminate = value.length > 0 && !checked
+
+  return (
+    <Space direction="vertical">
+      <Checkbox
+        checked={checked}
+        indeterminate={indeterminate}
+        onChange={(nextChecked) => setValue(nextChecked ? options : [])}
+      >
+        全选
+      </Checkbox>
+      <Checkbox.Group value={value} onChange={setValue}>
+        {options.map((name) => (
+          <Checkbox key={name} name={name}>
+            复选框 {name}
+          </Checkbox>
+        ))}
+      </Checkbox.Group>
+    </Space>
+  )
+}
+
 export default function CheckboxDemo() {
   return (
     <Page title="Checkbox 复选框" className="checkbox-demo">
@@ -100,7 +126,10 @@ export default function CheckboxDemo() {
         </Space>
       </Block>
       <Block title="自定义形状">
-        <Checkbox shape="square">自定义形状</Checkbox>
+        <Checkbox.Group shape="square" defaultValue={["a"]}>
+          <Checkbox name="a">复选框 a</Checkbox>
+          <Checkbox name="b">复选框 b</Checkbox>
+        </Checkbox.Group>
       </Block>
       <Block title="按钮形状">
         <Checkbox.Group defaultValue={["a", "c"]} direction="horizontal">
@@ -116,13 +145,21 @@ export default function CheckboxDemo() {
         </Checkbox.Group>
       </Block>
       <Block title="自定义颜色">
-        <Checkbox className="custom-color">自定义颜色</Checkbox>
+        <Checkbox defaultChecked checkedColor="#ee0a24">
+          自定义颜色
+        </Checkbox>
       </Block>
       <Block title="自定义大小">
         <Checkbox size={24}>自定义大小</Checkbox>
       </Block>
       <Block title="自定义图标">
         <CheckboxWithCustomIcon />
+      </Block>
+      <Block title="左侧文本">
+        <Checkbox labelPosition="left">复选框</Checkbox>
+      </Block>
+      <Block title="禁用文本点击">
+        <Checkbox labelDisabled>复选框</Checkbox>
       </Block>
       <Block title="复选框组">
         <Checkbox.Group>
@@ -152,6 +189,9 @@ export default function CheckboxDemo() {
       </Block>
       <Block title="搭配单元格组件使用" className="checkbox-cell-group">
         <CheckboxWithCell />
+      </Block>
+      <Block title="不确定状态">
+        <CheckboxIndeterminate />
       </Block>
     </Page>
   )
