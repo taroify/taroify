@@ -1,4 +1,6 @@
 import { DatetimePicker } from "@taroify/core"
+// biome-ignore lint/correctness/noUnusedImports: the classic JSX runtime requires React in scope
+import * as React from "react"
 import { useState } from "react"
 import Block from "../../../components/block"
 import CustomWrapper from "../../../components/custom-wrapper"
@@ -212,6 +214,28 @@ function DatePickerWithFields() {
   )
 }
 
+function DatePickerWithColumnsType() {
+  const [minDate] = useState(new Date(2020, 0, 1))
+  const [maxDate] = useState(new Date(2025, 11, 31))
+  const [defaultValue] = useState(new Date(2024, 0, 1))
+
+  return (
+    <DatetimePicker
+      columnsType={["year"]}
+      defaultValue={defaultValue}
+      min={minDate}
+      max={maxDate}
+      formatter={(type, val) => (type === "year" ? `${val}年` : val)}
+    >
+      <DatetimePicker.Toolbar>
+        <DatetimePicker.Button>取消</DatetimePicker.Button>
+        <DatetimePicker.Title>选择年份</DatetimePicker.Title>
+        <DatetimePicker.Button>确认</DatetimePicker.Button>
+      </DatetimePicker.Toolbar>
+    </DatetimePicker>
+  )
+}
+
 export default function PickerDemo() {
   return (
     <Page title="DatetimePicker 时间选择" className="datetime-picker-demo">
@@ -258,6 +282,11 @@ export default function PickerDemo() {
       <Block variant="card" title="自定义列排序">
         <CustomWrapper>
           <DatePickerWithFields />
+        </CustomWrapper>
+      </Block>
+      <Block variant="card" title="选项类型">
+        <CustomWrapper>
+          <DatePickerWithColumnsType />
         </CustomWrapper>
       </Block>
     </Page>

@@ -3,8 +3,19 @@ import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: the classic JSX runtime requires React in scope
 import * as React from "react"
-import { Children, type ReactElement, type ReactNode, useCallback, useRef, useMemo } from "react"
+import {
+  Children,
+  forwardRef,
+  type ForwardedRef,
+  type ReactElement,
+  type ReactNode,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react"
 import Loading from "../loading"
 import { prefixClassname } from "../styles"
 import { useRefs, useToRef } from "../utils/state"
@@ -54,12 +65,17 @@ export interface PickerProps extends PickerBaseProps {
   onCancel?(values: string | string[], option: PickerOptionObject | PickerOptionObject[]): void
 }
 
+export interface PickerInstance {
+  confirm(): void
+  getSelectedOptions(): PickerOptionObject[]
+}
+
 const defaultFieldNames = {
   label: "label",
   value: "value",
 }
 
-function Picker(props: PickerProps) {
+function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
   const {
     defaultValue,
     value: valueProp,
@@ -103,7 +119,7 @@ function Picker(props: PickerProps) {
     let toolbar: ReactNode = null
     const __children__: ReactNode[] = []
     const columns: ReactNode[] = []
-    // biome-ignore lint/complexity/noForEach: <explanation>
+    // biome-ignore lint/complexity/noForEach: compound children are partitioned into ordered groups
     Children.toArray(childrenProp).forEach((child: ReactNode) => {
       if (isElementOf(child, PickerColumn)) {
         const element = child as ReactElement
@@ -129,11 +145,9 @@ function Picker(props: PickerProps) {
     if (_.isEmpty(columns) && columnsProp && columnsProp.length > 0) {
       ;(Array.isArray(columnsProp[0]) ? columnsProp : [columnsProp]).forEach((col, i) => {
         columns.push(
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
           <PickerColumn key={i}>
             {col.map((data, ii) => (
               <PickerOption
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 key={ii}
                 label={data[fieldNames.label!]}
                 value={data[fieldNames.value!]}
@@ -179,20 +193,37 @@ function Picker(props: PickerProps) {
 
   const stopMomentum = useCallback(
     () =>
-      // biome-ignore lint/complexity/noForEach: <explanation>
+      // biome-ignore lint/complexity/noForEach: every mounted column must stop independently
       getColumnRefs()
         .filter((columnRef) => columnRef.current)
         .forEach((columnRef) => columnRef.current.stopMomentum()),
     [getColumnRefs],
   )
 
-  const handleAction = (action: any) => () => {
-    stopMomentum()
-    action?.(
-      _.map(valueOptionsRef.current, ({ value }) => value),
-      _.map(valueOptionsRef.current, (valueOption) => ({ ...valueOption })),
-    )
-  }
+  const handleAction = useCallback(
+    (action?: PickerProps["onConfirm"]) => () => {
+      stopMomentum()
+      action?.(
+        _.map(valueOptionsRef.current, ({ value }) => value),
+        _.map(valueOptionsRef.current, (valueOption) => ({ ...valueOption })),
+      )
+    },
+    [stopMomentum],
+  )
+
+  const getSelectedOptions = useCallback(
+    () => _.map(valueOptionsRef.current, (valueOption) => ({ ...valueOption })),
+    [],
+  )
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      confirm: handleAction(onConfirm),
+      getSelectedOptions,
+    }),
+    [getSelectedOptions, handleAction, onConfirm],
+  )
 
   const getValueOptions = useCallback(() => valueOptionsRef.current, [])
 
@@ -222,5 +253,7 @@ function Picker(props: PickerProps) {
     </PickerContext.Provider>
   )
 }
+
+const Picker = forwardRef(PickerElement)
 
 export default Picker
