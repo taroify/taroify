@@ -25,7 +25,7 @@
   "peerDependencies": {
     "@tarojs/components": ">=3",
     "@tarojs/taro": ">=3",
-    "react": "^18.2.0"
+    "react": "^18.2.0 || ^19.0.0"
   },
   "dependencies": {
     "@taroify/hooks": "workspace:^",
@@ -34,7 +34,7 @@
     "lodash": "^4.17.21",
     "promise": "^8.1.0",
     "raf": "^3.4.1",
-    "react-is": "^18.2.0",
+    "react-is": "^19.0.0",
     "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
@@ -50,10 +50,10 @@
     "@types/lodash": "^4.14.178",
     "@types/node": "^20.19.9",
     "@types/raf": "^3.4.0",
-    "@types/react": "18.2.0",
-    "@types/react-is": "^18.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-is": "^19.0.0",
     "@types/react-transition-group": "^4.4.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
   }
 }
