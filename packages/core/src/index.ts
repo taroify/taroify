@@ -73,6 +73,12 @@ export type {
   CheckboxShape,
 } from "./checkbox"
 export { default as DatetimePicker } from "./datetime-picker"
+export type {
+  DatetimePickerColumnType,
+  DatetimePickerInstance,
+  DatetimePickerProps,
+  DatetimePickerType,
+} from "./datetime-picker"
 export { default as Input } from "./input"
 export { default as Textarea } from "./textarea"
 export { default as Field } from "./field"

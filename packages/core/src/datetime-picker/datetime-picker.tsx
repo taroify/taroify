@@ -1,22 +1,45 @@
 import { useUncontrolled } from "@taroify/hooks"
-import type { ViewProps } from "@tarojs/components/types/View"
+// biome-ignore lint/correctness/noUnusedImports: the classic JSX runtime requires React in scope
 import * as React from "react"
-import type { ReactNode } from "react"
-import Picker from "../picker"
+import {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  type ForwardedRef,
+  type ReactNode,
+} from "react"
+import Picker, { type PickerInstance, type PickerProps } from "../picker"
 import type { DatetimePickerColumnType, DatetimePickerType } from "./datetime-picker.shared"
 import useDatetimePicker from "./use-datetime-picker"
 
-export interface DatetimePickerProps extends ViewProps {
+export interface DatetimePickerInstance {
+  confirm(): void
+  getSelectedDate(): Date
+}
+
+export interface DatetimePickerProps
+  extends Omit<
+    PickerProps,
+    | "columns"
+    | "columnsFieldNames"
+    | "title"
+    | "confirmText"
+    | "cancelText"
+    | "optionHeight"
+    | "defaultValue"
+    | "value"
+    | "onChange"
+    | "onConfirm"
+    | "onCancel"
+  > {
   type?: DatetimePickerType
   fields?: DatetimePickerColumnType[]
+  columnsType?: DatetimePickerColumnType[]
   defaultValue?: Date
   value?: Date
   min?: Date
   max?: Date
-  readonly?: boolean
-  loading?: boolean
-  siblingCount?: number
-  children?: ReactNode
 
   filter?(type: DatetimePickerColumnType, values: string[]): string[]
 
@@ -29,13 +52,17 @@ export interface DatetimePickerProps extends ViewProps {
   onCancel?(date: Date): void
 }
 
-function DatetimePicker(props: DatetimePickerProps) {
+function DatetimePickerElement(
+  props: DatetimePickerProps,
+  ref: ForwardedRef<DatetimePickerInstance>,
+) {
   const {
     className,
     readonly,
     loading,
     type,
     fields,
+    columnsType,
     filter,
     formatter,
     min,
@@ -55,19 +82,44 @@ function DatetimePicker(props: DatetimePickerProps) {
     onChange: onChangeProp,
   })
 
-  const { defaultValue, value, columns, toDate } = useDatetimePicker({
+  const { defaultValue, value, selectedDate, columns, toDate } = useDatetimePicker({
     defaultValue: defaultValueProp,
     value: dateValue,
     min,
     max,
     type,
     fields,
+    columnsType,
     filter,
     formatter,
   })
 
+  const pickerRef = useRef<PickerInstance>(null)
+
+  const getSelectedDate = useCallback(() => {
+    const selectedValues = pickerRef.current
+      ?.getSelectedOptions()
+      .map(({ value: selectedValue }) => selectedValue)
+    if (selectedValues?.length) {
+      return toDate(selectedValues)
+    }
+    return new Date(selectedDate.getTime())
+  }, [selectedDate, toDate])
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      confirm() {
+        pickerRef.current?.confirm()
+      },
+      getSelectedDate,
+    }),
+    [getSelectedDate],
+  )
+
   return (
     <Picker
+      ref={pickerRef}
       className={className}
       readonly={readonly}
       loading={loading}
@@ -84,5 +136,7 @@ function DatetimePicker(props: DatetimePickerProps) {
     </Picker>
   )
 }
+
+const DatetimePicker = forwardRef(DatetimePickerElement)
 
 export default DatetimePicker

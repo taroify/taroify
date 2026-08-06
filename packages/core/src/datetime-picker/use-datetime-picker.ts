@@ -18,13 +18,46 @@ interface UseDatetimePicker {
   min?: Date
   max?: Date
   fields?: DatetimePickerColumnType[]
+  columnsType?: DatetimePickerColumnType[]
 
   filter?(type: DatetimePickerColumnType, values: string[]): string[]
 
   formatter?(type: DatetimePickerColumnType, value: string): string
 }
 
-const defaultFormatter = (type: DatetimePickerColumnType, value: string) => value
+const defaultFormatter = (_type: DatetimePickerColumnType, value: string) => value
+
+const DATETIME_COLUMN_TYPES: DatetimePickerColumnType[] = [
+  "year",
+  "month",
+  "day",
+  "hour",
+  "minute",
+  "second",
+]
+
+function createDate(
+  selected: Map<DatetimePickerColumnType, number>,
+  columnsType: DatetimePickerColumnType[],
+  minDate: Date,
+  maxDate: Date,
+) {
+  const [minYear, minMonth, minDay, minHour, minMinute, minSecond] = getDatetime(minDate)
+  const year = selected.get("year") ?? minYear
+  const month = selected.get("month") ?? minMonth
+  const day = Math.min(
+    selected.get("day") ?? (columnsType.includes("month") ? 1 : minDay),
+    getEndDayOfMonth(year, month),
+  )
+  const date = new Date(minDate.getTime())
+  date.setFullYear(year, month - 1, day)
+  date.setHours(
+    selected.get("hour") ?? minHour,
+    selected.get("minute") ?? minMinute,
+    selected.get("second") ?? minSecond,
+  )
+  return clampDate(date, minDate, maxDate)
+}
 
 export function useDatetimePicker(options: UseDatetimePicker = {}) {
   const {
@@ -34,6 +67,7 @@ export function useDatetimePicker(options: UseDatetimePicker = {}) {
     max: maxDate = MAX_DATE,
     type = "datetime",
     fields = [],
+    columnsType = [],
     filter,
     formatter = defaultFormatter,
   } = options
@@ -42,7 +76,20 @@ export function useDatetimePicker(options: UseDatetimePicker = {}) {
   // set the value to defaultValue
   // The clampValue is value or defaultValue
   const clampValue = clampDate(value ?? defaultValue, minDate, maxDate)
-  const ranges = useDatetimeRanges(clampValue, minDate, maxDate, type, fields)
+  const rangeValue = useMemo(() => {
+    if (_.isEmpty(columnsType)) {
+      return clampValue
+    }
+    const currentDatetime = getDatetime(clampValue)
+    const selected = new Map<DatetimePickerColumnType, number>()
+    _.forEach(DATETIME_COLUMN_TYPES, (columnType, index) => {
+      if (columnsType.includes(columnType)) {
+        selected.set(columnType, currentDatetime[index])
+      }
+    })
+    return createDate(selected, columnsType, minDate, maxDate)
+  }, [clampValue, columnsType, maxDate, minDate])
+  const ranges = useDatetimeRanges(rangeValue, minDate, maxDate, type, fields, columnsType)
 
   const columns = useMemo(
     () =>
@@ -69,46 +116,20 @@ export function useDatetimePicker(options: UseDatetimePicker = {}) {
   )
 
   function toDate(datetimeValue: string[]): Date {
-    const date: Date = new Date(minDate.getTime())
+    const selected = new Map<DatetimePickerColumnType, number>()
+
     _.forEach(columns, ({ type }, index) => {
-      switch (type) {
-        case "year":
-          if (_.size(datetimeValue) > index) {
-            date.setFullYear(_.toNumber(datetimeValue[index]))
-          }
-          break
-        case "month":
-          date.setDate(1)
-          if (_.size(datetimeValue) > index) {
-            date.setMonth(_.toNumber(datetimeValue[index]) - 1)
-          }
-          break
-        case "day":
-          if (_.size(datetimeValue) > index) {
-            const endDayOfMonth = getEndDayOfMonth(date.getFullYear(), date.getMonth() + 1)
-            const day = _.toNumber(datetimeValue[index])
-            date.setDate(day > endDayOfMonth ? endDayOfMonth : day)
-          }
-          break
-        case "hour":
-          if (_.size(datetimeValue) > index) {
-            date.setHours(_.toNumber(datetimeValue[index]))
-          }
-          break
-        case "minute":
-          if (_.size(datetimeValue) > index) {
-            date.setMinutes(_.toNumber(datetimeValue[index]))
-          }
-          break
-        case "second":
-          if (_.size(datetimeValue) > index) {
-            date.setSeconds(_.toNumber(datetimeValue[index]))
-          }
-          break
+      if (_.size(datetimeValue) > index) {
+        selected.set(type, _.toNumber(datetimeValue[index]))
       }
     })
 
-    return clampDate(date, minDate, maxDate)
+    return createDate(
+      selected,
+      _.map(columns, ({ type }) => type),
+      minDate,
+      maxDate,
+    )
   }
 
   function toValue(date: Date | undefined) {
@@ -130,8 +151,6 @@ export function useDatetimePicker(options: UseDatetimePicker = {}) {
           return _.padStart(_.toString(minute), 2, "0")
         case "second":
           return _.padStart(_.toString(second), 2, "0")
-        default:
-          return ""
       }
     })
   }
@@ -140,6 +159,7 @@ export function useDatetimePicker(options: UseDatetimePicker = {}) {
     toDate,
     defaultValue: toValue(_.isUndefined(defaultValue) ? defaultValue : clampDefaultValue),
     value: toValue(_.isUndefined(value) ? value : clampValue),
+    selectedDate: clampValue,
     columns,
   }
 }

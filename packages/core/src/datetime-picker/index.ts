@@ -1,7 +1,14 @@
+import type { ForwardRefExoticComponent } from "react"
 import Picker from "../picker"
-import DatetimePickerElement, { type DatetimePickerProps } from "./datetime-picker"
+import DatetimePickerElement, {
+  type DatetimePickerInstance,
+  type DatetimePickerProps,
+} from "./datetime-picker"
 
-interface DatetimePickerInterface {
+export type { DatetimePickerInstance, DatetimePickerProps }
+export type { DatetimePickerColumnType, DatetimePickerType } from "./datetime-picker.shared"
+
+interface DatetimePickerInterface extends ForwardRefExoticComponent<DatetimePickerProps> {
   (props: DatetimePickerProps): JSX.Element
 
   Toolbar: typeof Picker.Toolbar

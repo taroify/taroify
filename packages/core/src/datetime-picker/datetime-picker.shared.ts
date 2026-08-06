@@ -19,7 +19,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 
 export const MIN_DATE = new Date(CURRENT_YEAR - 10, 0, 1, 0, 0, 0)
 
-export const MAX_DATE = new Date(CURRENT_YEAR + 10, 11, 31, 59, 59, 59)
+export const MAX_DATE = new Date(CURRENT_YEAR + 10, 11, 31, 23, 59, 59)
 
 export function getEndDayOfMonth(year: number, month: number): number {
   return 32 - new Date(year, month - 1, 32).getDate()
@@ -27,7 +27,7 @@ export function getEndDayOfMonth(year: number, month: number): number {
 
 export function clampDate(value: Date | undefined, minDate: Date, maxDate: Date) {
   if (_.isUndefined(value)) {
-    return minDate ?? maxDate
+    return minDate
   }
   const timestamp = _.clamp(value.getTime(), minDate.getTime(), maxDate.getTime())
   return new Date(timestamp)
@@ -149,8 +149,20 @@ function useAllDatetimeRanges(
   )
 }
 
-function useSpecifiedDatetimeRanges(ranges: DatetimeRange[], type: DatetimePickerType) {
+function useSpecifiedDatetimeRanges(
+  ranges: DatetimeRange[],
+  type: DatetimePickerType,
+  columnsType: DatetimePickerColumnType[],
+) {
   return useMemo(() => {
+    if (!_.isEmpty(columnsType)) {
+      return _.compact(
+        _.map(_.uniq(columnsType), (columnType) =>
+          _.find(ranges, ({ type }) => type === columnType),
+        ),
+      )
+    }
+
     switch (type) {
       case "date":
         return _.slice(ranges, 0, 3)
@@ -168,7 +180,7 @@ function useSpecifiedDatetimeRanges(ranges: DatetimeRange[], type: DatetimePicke
         return _.slice(ranges, 3, 5)
     }
     return ranges
-  }, [ranges, type])
+  }, [columnsType, ranges, type])
 }
 
 function useOrderedDatetimeRanges(ranges: DatetimeRange[], fields: DatetimePickerColumnType[]) {
@@ -182,7 +194,7 @@ function useOrderedDatetimeRanges(ranges: DatetimeRange[], fields: DatetimePicke
       _.map(ranges, ({ type }) => type),
     )
 
-    return ranges.sort((a, b) => fieldsOrder.indexOf(a.type) - fieldsOrder.indexOf(b.type))
+    return _.sortBy(ranges, ({ type }) => fieldsOrder.indexOf(type))
   }, [fields, ranges])
 }
 
@@ -192,8 +204,9 @@ export function useDatetimeRanges(
   maxDate: Date,
   type: DatetimePickerType,
   fields: DatetimePickerColumnType[],
+  columnsType: DatetimePickerColumnType[] = [],
 ) {
   const allRanges = useAllDatetimeRanges(date, minDate, maxDate)
-  const specifiedRanges = useSpecifiedDatetimeRanges(allRanges, type)
-  return useOrderedDatetimeRanges(specifiedRanges, fields)
+  const specifiedRanges = useSpecifiedDatetimeRanges(allRanges, type, columnsType)
+  return useOrderedDatetimeRanges(specifiedRanges, _.isEmpty(columnsType) ? fields : [])
 }
