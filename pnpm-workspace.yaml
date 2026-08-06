@@ -17,5 +17,5 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
-  "@types/minimatch": "3.0.5"
+  "@types/minimatch": "6.0.0"
   enhanced-resolve: "5.22.2"
