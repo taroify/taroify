@@ -236,6 +236,9 @@
 .taroify-form-item > .taroify-cell__value {
   text-align: initial;
 }
+.taroify-form-item--label-top {
+  flex-wrap: wrap;
+}
 .taroify-form-item--disabled .taroify-form__label {
   color: var(--form-label-disabled-color, var(--gray-5, #c8c9cc));
 }

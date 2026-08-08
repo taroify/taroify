@@ -28,7 +28,7 @@ import { isElementOf } from "../utils/validate"
 import FormFeedback from "./form-feedback"
 import FormItemContext from "./form-item.context"
 import { validateRules } from "./form.rule"
-import type { FormItemInstance, FormRule, FormValidateTrigger } from "./form.shared"
+import type { FormItemInstance, FormRequired, FormRule, FormValidateTrigger } from "./form.shared"
 import useFormError from "./use-form-error"
 import useFormFieldValueEffect from "./use-form-field-value-effect"
 import { useDependenciesChange, useShouldUpdateSignal } from "./use-form-item"
@@ -79,10 +79,10 @@ function useFormItemChildren(
   }, [childrenProps, shouldUpdateSignal, noStyle])
 }
 
-export interface FormItemProps extends Omit<CellProps, "children"> {
+export interface FormItemProps extends Omit<CellProps, "children" | "required"> {
   name?: string
   defaultValue?: any
-  required?: boolean
+  required?: FormRequired
   rules?: FormRule[]
   dependencies?: string[]
   shouldUpdate?: boolean | ((prev, next) => boolean)
@@ -108,7 +108,7 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
       isLink = false,
       arrowDirection = "right",
       clickable,
-      required,
+      required: requiredProp,
       children: childrenProp,
       rules: rulesProp,
       dependencies,
@@ -140,9 +140,18 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
 
     const rulesRef = useToRef(rulesProp)
 
-    const { validateTrigger, disabled: disabledContext } = useContext(FormContext)
+    const {
+      validateTrigger,
+      disabled: disabledContext,
+      labelAlign: labelAlignContext,
+      required: requiredContext,
+    } = useContext(FormContext)
 
     const disabled = disabledProp ?? disabledContext
+    const required = requiredProp ?? requiredContext
+    const showRequiredMark =
+      required === "auto" ? rulesProp?.some((rule) => rule.required) : required
+    const labelAlign = label?.props.align ?? labelAlignContext
 
     const { validateStatus, error, setError, resetError } = useFormError(name)
 
@@ -253,7 +262,13 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
         }}
       >
         <CellBase
-          className={classNames(prefixClassname("form-item"), className)}
+          className={classNames(
+            prefixClassname("form-item"),
+            {
+              [prefixClassname("form-item--label-top")]: labelAlign === "top",
+            },
+            className,
+          )}
           style={style}
           bordered={bordered}
           align={align}
@@ -262,7 +277,7 @@ const FormItem = forwardRef<FormItemInstance, FormItemProps>(
           icon={cloneIconElement(icon, { className: prefixClassname("form-item__icon") })}
           rightIcon={rightIcon}
           extra={extra}
-          required={required}
+          required={showRequiredMark}
           {...(onClick && { onClick })}
         >
           {label}

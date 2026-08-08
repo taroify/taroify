@@ -85,6 +85,29 @@ function BasicForm() {
 }
 ```
 
+### 自动显示必填星号 <Tag tag="v1.0.5" />
+
+设置 `required="auto"` 后，Form.Item 和 Field 会根据 `rules` 中的 `required` 规则自动显示必填星号。`required` 只控制星号显示，实际校验仍由 `rules.required` 完成。
+
+```tsx
+function FormWithRequiredMark() {
+  return (
+    <Form required="auto">
+      <Cell.Group inset>
+        <Field label="用户名" name="username" rules={[{ required: true }]}>
+          <Input placeholder="自动显示必填星号" />
+        </Field>
+        <Field label="昵称" name="nickname" rules={[{ required: false }]}>
+          <Input placeholder="非必填项不显示星号" />
+        </Field>
+      </Cell.Group>
+    </Form>
+  )
+}
+```
+
+单个 Form.Item 或 Field 可以通过显式设置 `required` 覆盖 Form 的配置。
+
 ### 校验规则
 
 通过 `rules` 定义表单校验规则，所有可用字段见[下方表格](#rule-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84)。
@@ -120,7 +143,6 @@ function FormWithRules() {
           rules={[{ pattern: /\d{6}/, message: "请输入正确内容" }]}
         >
           <Input placeholder="正则校验" />
-        </Field>
         <Field
           label="文本"
           name="validator"
@@ -155,7 +177,7 @@ function FormWithRules() {
 
 ### 禁用表单
 
-设置 `disabled` 后，会为 `Form` 内部的 `taroify` 组件 `Input`, `Textarea`, `Checkbox`, `Switch`, `Checkbox.Group`, `Radio.Group`, `Rate`, `Slider`, `Stepper`, `Uploader` 设置 `disabled` <br>
+设置 `disabled` 后，会为 `Form` 内部的 `taroify` 组件 `Input`, `Textarea`, `Checkbox`, `Switch`, `Checkbox.Group`, `Radio.Group`, `Rate`, `Slider`, `Stepper`, `Uploader` 设置 `disabled` <br />
 
 form 设置 disabled 后，也可以单独为表单项和组件设置 disabled={false}, 优先级：表单 < 表单项 < 组件
 
@@ -616,19 +638,20 @@ function ShouldUpdateDemo() {
 | 参数                          | 说明                                                        | 类型      | 默认值   |
 | ----------------------------- | ----------------------------------------------------------- | --------- | -------- |
 | defaultValues                 | 表单默认值                                                  | _object_  |          |
-| labelAlign                    | 表单项 label 对齐方式，可选值为 `center` `right`            | _string_  | `left`   |
+| labelAlign <Tag tag="v1.0.5" /> | 表单项 label 对齐方式，可选值为 `center` `right` `top`      | _string_  | `left`   |
 | controlAlign                  | 表单项 control 对齐方式，可选值为 `center` `right`          | _string_  | `left`   |
 | validateTrigger               | 表单校验触发时机，可选值为 `onChange`、`onSubmit`，详见下表 | _string_  | `onBlur` |
 | colon                         | 是否在 label 后面添加冒号                                   | _boolean_ | `false`  |
+| required <Tag tag="v1.0.5" /> | 必填星号显示方式，设置为 `auto` 时根据 `rules.required` 自动显示 | _boolean \| 'auto'_ | `false` |
 | disabled | 是否禁用表单                                                | _boolean_ | `false`  |
 
 ### Form Events
 
 | 事件名         | 说明                       | 回调参数                                              |
 | -------------- | -------------------------- | ----------------------------------------------------- |
-| onSubmit       | 提交表单且验证通过后触发   | _event: BaseEventOrig<FormProps.onSubmitEventDetail>_ |
+| onSubmit       | 提交表单且验证通过后触发   | _event: BaseEventOrig&lt;FormProps.onSubmitEventDetail&gt;_ |
 | onReset        | 重置表单后触发             | _event: BaseEventOrig_                                |
-| onValidate     | 提交表单且验证不通过后触发 | _errors: { name: string, errors: string[] }[]_        |
+| onValidate     | 提交表单且验证不通过后触发 | _errors: &#123; name: string, errors: string[] &#125;[]_ |
 | onValuesChange | 字段值更新后触发           | _changedValues: object, allValues: object_            |
 
 ### Form Methods
@@ -661,7 +684,7 @@ function ShouldUpdateDemo() {
 | --------------------------------- | ------------------------------------ | --------------------------------------------- | ------- |
 | name                              | 表单项名称，提交表单的标识符         | _string_                                      | -       |
 | defaultValue                      | 表单项默认值                         | _any_                                         | -       |
-| required                          | 是否显示表单必填星号                 | _boolean_                                     | `false` |
+| required <Tag tag="v1.0.5" /> | 是否显示表单必填星号，设置为 `auto` 时根据自身 `rules.required` 自动显示 | _boolean \| 'auto'_ | `false` |
 | rules                             | 表单校验规则                         | _FormRule[]_                                  | -       |
 | dependencies | 当依赖的字段值改变时，触发自身的校验 | _string[]_                                    | -       |
 | shouldUpdate | 当值为 true 时，触发当前区域重新渲染 | _boolean\|(prevValues, curValues) => boolean_ | -       |
@@ -687,7 +710,7 @@ function ShouldUpdateDemo() {
 
 | 参数  | 说明                                | 类型      | 默认值  |
 | ----- | ----------------------------------- | --------- | ------- |
-| align | 对齐方式，可选值为 `center` `right` | _string_  | `left`  |
+| align <Tag tag="v1.0.5" /> | 对齐方式，可选值为 `center` `right` `top` | _string_  | `left`  |
 | colon | 是否在 label 后面添加冒号           | _boolean_ | `false` |
 
 ### Form.Feedback Props
@@ -702,7 +725,7 @@ function ShouldUpdateDemo() {
 | 参数     | 说明                                | 类型                                                        | 默认值 |
 | -------- | ----------------------------------- | ----------------------------------------------------------- | ------ |
 | align    | 对齐方式，可选值为 `center` `right` | _string_                                                    | `left` |
-| children | 内容                                | _ReactNode\|((controller: FormController<V>) => ReactNode)_ | --     |
+| children | 内容                                | _ReactNode\|((controller: FormController&lt;V&gt;) => ReactNode)_ | --     |
 
 ```tsx
 interface FormController<V> {
@@ -722,7 +745,7 @@ interface FormController<V> {
 
 | 参数         | 说明                         | 类型                                                                                 |
 | ------------ | ---------------------------- | ------------------------------------------------------------------------------------ |
-| children     | 渲染函数                     | _(fields: { key: string, name: string }[], operation: { add, remove }) => ReactNode_ |
+| children     | 渲染函数                     | _(fields: &#123; key: string, name: string &#125;[], operation: &#123; add, remove &#125;) => ReactNode_ |
 | name         | 表单项名称，提交表单的标识符 | _string_                                                                             |
 | defaultValue | 表单项默认值                 | _any_                                                                                |
 
@@ -745,6 +768,7 @@ import { FormRule, FormItemInstance, FormListInstance, FormInstance } from "@tar
 | form-label-width                   | _6.2em_                   | -    |
 | form-label-color                   | _var(--gray-7)_           | -    |
 | form-label-margin-right            | _var(--padding-sm)_       | -    |
+| form-label-top-margin-bottom <Tag tag="v1.0.5" /> | _var(--padding-base)_     | -    |
 | form-label-disabled-color          | _var(--gray-5)_           | -    |
 | form-item-icon-size                | _16px \* $hd_             | -    |
 | form-item-right-icon-color         | _var(--gray-6)_           | -    |

@@ -24,5 +24,13 @@
     justify-content: flex-end;
     text-align: right;
   }
-}
 
+  &--top {
+    justify-content: flex-start;
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: $form-label-top-margin-bottom;
+    text-align: left;
+    overflow-wrap: break-word;
+  }
+}

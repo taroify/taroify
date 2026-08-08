@@ -5,6 +5,10 @@
     text-align: initial;
   }
 
+  &--label-top {
+    flex-wrap: wrap;
+  }
+
   &--disabled {
     .#{$component-prefix}form__label {
       color: $form-label-disabled-color;

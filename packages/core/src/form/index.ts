@@ -10,6 +10,7 @@ export type {
   FormRule,
   FormInstance,
   FormLabelAlign,
+  FormRequired,
   FormValidError,
   FormItemInstance,
   FormListItemField,

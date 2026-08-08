@@ -86,6 +86,35 @@ function CustomField() {
 }
 ```
 
+### 限制数值范围 <Tag tag="v1.0.5" />
+
+对于 `number` 和 `digit` 类型，可以通过 `min` 和 `max` 设置允许输入的数值范围。输入值超出范围时，会在输入框失焦后自动调整为最接近的边界值。
+
+```tsx
+import { Cell, Field, Input } from "@taroify/core"
+
+function RangeField() {
+  const [value, setValue] = useState("50")
+
+  return (
+    <Cell.Group inset>
+      <Field label="数量">
+        <Input
+          type="number"
+          min={1}
+          max={100}
+          value={value}
+          placeholder="请输入 1 至 100"
+          onChange={(event) => setValue(event.detail.value)}
+        />
+      </Field>
+    </Cell.Group>
+  )
+}
+```
+
+`min` 和 `max` 会自动调整输入值。如果需要保留用户输入并显示错误提示，请使用 Form 的 `rules.validator` 进行校验。
+
 ### 禁用输入框
 
 通过 `readonly` 将输入框设置为只读状态，通过 `disabled` 将输入框设置为禁用状态。
@@ -130,7 +159,7 @@ function IconField() {
 
 ### 错误提示
 
-设置 `required` 属性表示这是一个必填项，可以配合 `Input` 或 `Field.Feedback` 组件显示对应的错误提示。
+设置 `required` 属性可以显示必填星号，可以配合 `Input` 或 `Field.Feedback` 组件显示对应的错误提示。
 
 ```tsx
 import { Cell, Field, Input } from "@taroify/core"
@@ -153,6 +182,33 @@ function ErrorField() {
 }
 ```
 
+`required` 只控制必填星号的显示，实际校验需要通过 `rules.required` 配置。
+
+### 自动显示必填星号 <Tag tag="v1.0.5" />
+
+在 Form 上设置 `required="auto"` 后，Field 会根据 `rules` 中的 `required` 规则自动决定是否显示必填星号，避免重复配置。
+
+```tsx
+import { Cell, Field, Form, Input } from "@taroify/core"
+
+function RequiredAutoField() {
+  return (
+    <Form required="auto">
+      <Cell.Group inset>
+        <Field label="用户名" name="username" rules={[{ required: true }]}>
+          <Input placeholder="自动显示必填星号" />
+        </Field>
+        <Field label="昵称" name="nickname" rules={[{ required: false }]}>
+          <Input placeholder="非必填项不显示星号" />
+        </Field>
+      </Cell.Group>
+    </Form>
+  )
+}
+```
+
+也可以在单个 Field 上设置 `required="auto"`。Field 上显式设置的 `required` 优先于 Form 的配置。
+
 ### 插入按钮
 
 通过 `Button` 可以在输入框尾部插入按钮。
@@ -173,6 +229,44 @@ function ButtonField() {
   )
 }
 ```
+
+### 格式化输入内容 <Tag tag="v1.0.5" />
+
+通过 `formatter` 可以格式化 Input 或 Textarea 的输入内容，`formatTrigger` 用于指定格式化时机，默认在输入内容变化时执行。
+
+```tsx
+import { Cell, Field, Input } from "@taroify/core"
+
+function FormatterField() {
+  const [changeValue, setChangeValue] = useState("")
+  const [blurValue, setBlurValue] = useState("")
+  const formatter = (value: string) => value.replace(/\d/g, "")
+
+  return (
+    <Cell.Group inset>
+      <Field label="实时格式化">
+        <Input
+          value={changeValue}
+          formatter={formatter}
+          placeholder="输入内容中的数字会被过滤"
+          onChange={(event) => setChangeValue(event.detail.value)}
+        />
+      </Field>
+      <Field label="失焦格式化">
+        <Input
+          value={blurValue}
+          formatter={formatter}
+          formatTrigger="onBlur"
+          placeholder="失焦后过滤数字"
+          onChange={(event) => setBlurValue(event.detail.value)}
+        />
+      </Field>
+    </Cell.Group>
+  )
+}
+```
+
+Input/Textarea 的 `formatter` 会改变实际输入值；Form 校验规则中的 `formatter` 仅格式化参与校验的值，两者用途不同。
 
 ### 高度自适应
 
@@ -237,6 +331,28 @@ function FieldWithInputAlign() {
 }
 ```
 
+### 顶部标签 <Tag tag="v1.0.5" />
+
+通过 Form 的 `labelAlign="top"` 可以让标签显示在输入控件上方，适合 Textarea、长标签和窄屏表单。
+
+```tsx
+import { Cell, Field, Form, Textarea } from "@taroify/core"
+
+function FieldWithTopLabel() {
+  return (
+    <Form labelAlign="top">
+      <Cell.Group inset>
+        <Field label="留言">
+          <Textarea style={{ height: "48px" }} placeholder="请输入留言" />
+        </Field>
+      </Cell.Group>
+    </Form>
+  )
+}
+```
+
+单个 Field 也可以通过 `label={{ children: "留言", align: "top" }}` 设置顶部标签。
+
 
 ### 标签（Field.Label）和反馈（Field.Feedback）
 
@@ -271,4 +387,31 @@ function FieldWithVaraintLabel() {
 | label | 左侧文本 | _string \| [FormLabelProps](/components/form/#formlabel-props) \| ReactElement_ | - |
 | feedback | 提示文案，为空时不展示 | _string \| [FormFeedbackProps](/components/form/#formfeedback-props) \| ReactElement_ | - |
 
-> 属性继承自 Form.Item 组件，更多属性参见：[Form.Item 组件](/components/form/#formitem-props)
+> 属性继承自 Form.Item 组件，但不支持 `noStyle` 和 `shouldUpdate`。更多属性参见：[Form.Item 组件](/components/form/#formitem-props)
+
+### Input Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| align | 输入内容对齐方式，可选值为 `left` `center` `right` | _string_ | - |
+| readonly | 是否只读 | _boolean_ | `false` |
+| clearable | 是否显示清除图标 | _boolean_ | `false` |
+| clearIcon | 自定义清除图标 | _ReactNode_ | `Clear` |
+| clearTrigger | 清除图标显示时机，可选值为 `focus` `always` | _string_ | `focus` |
+| formatter <Tag tag="v1.0.5" /> | 输入内容格式化函数 | _(value: string) => string_ | - |
+| formatTrigger <Tag tag="v1.0.5" /> | 格式化触发时机，可选值为 `onChange` `onBlur` | _string_ | `onChange` |
+| min <Tag tag="v1.0.5" /> | `number` 或 `digit` 类型允许的最小值，失焦时生效 | _number_ | - |
+| max <Tag tag="v1.0.5" /> | `number` 或 `digit` 类型允许的最大值，失焦时生效 | _number_ | - |
+
+> 其他属性继承自 Taro Input 组件。不同小程序平台支持的原生属性可能不同，请以对应 Taro 版本的 Input 文档为准。
+
+### Textarea Props
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| limit | 是否显示字数统计，传入数字时同时限制最大长度 | _boolean \| number_ | `false` |
+| readonly | 是否只读 | _boolean_ | `false` |
+| formatter <Tag tag="v1.0.5" /> | 输入内容格式化函数 | _(value: string) => string_ | - |
+| formatTrigger <Tag tag="v1.0.5" /> | 格式化触发时机，可选值为 `onChange` `onBlur` | _string_ | `onChange` |
+
+> 其他属性继承自 Taro Textarea 组件。

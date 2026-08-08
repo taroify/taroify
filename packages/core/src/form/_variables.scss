@@ -7,6 +7,7 @@
 $form-label-width: var(--form-label-width, 6.2em);
 $form-label-color: var(--form-label-color, var(--gray-7, $gray-7));
 $form-label-margin-right: var(--form-label-margin-right, var(--padding-sm, $padding-sm));
+$form-label-top-margin-bottom: var(--form-label-top-margin-bottom, var(--padding-base, $padding-base));
 $form-label-disabled-color: var(--form-label-disabled-color, var(--gray-5, $gray-5));
 
 $form-item-icon-size: var(--form-item-icon-size, 16px * $hd);
