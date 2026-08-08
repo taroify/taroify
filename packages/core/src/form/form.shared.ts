@@ -31,7 +31,9 @@ export interface FormInstance {
   reset(): void
 }
 
-export type FormLabelAlign = "left" | "center" | "right"
+export type FormLabelAlign = "left" | "center" | "right" | "top"
+
+export type FormRequired = boolean | "auto"
 
 export type FormControlAlign = "left" | "center" | "right"
 
@@ -101,6 +103,7 @@ export type FormThemeVars = {
   formLabelWidth?: string
   formLabelColor?: string
   formLabelMarginRight?: string
+  formLabelTopMarginBottom?: string
   formLabelRequiredColor?: string
   formLabelDisabledColor?: string
   formItemIconSize?: string

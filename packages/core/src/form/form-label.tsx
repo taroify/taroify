@@ -27,6 +27,7 @@ function FormLabel(props: FormLabelProps) {
           [prefixClassname("form-label--left")]: align === "left",
           [prefixClassname("form-label--center")]: align === "center",
           [prefixClassname("form-label--right")]: align === "right",
+          [prefixClassname("form-label--top")]: align === "top",
         },
         className,
       )}

@@ -30,7 +30,16 @@ registerFormControlHandler(
         onChange: onDelegatingChange,
       } = controller
       const { props: elementProps } = element
-      const { name: nameProp, value: valueProp, color, onBlur, onInput, disabled } = elementProps
+      const {
+        name: nameProp,
+        value: valueProp,
+        color,
+        onBlur,
+        onInput,
+        onChange,
+        disabled,
+      } = elementProps
+      const isTaroifyInput = element.type === Input || element.type === Textarea
       return cloneElement<InputProps>(element, {
         name: nameProp ?? name,
         value: valueProp ?? value,
@@ -40,6 +49,14 @@ registerFormControlHandler(
           onInput?.(e)
           onDelegatingChange?.(e.detail.value)
         },
+        ...(isTaroifyInput && {
+          onChange: (e) => {
+            onChange?.(e)
+            if (e.type === "blur") {
+              onDelegatingChange?.(e.detail.value)
+            }
+          },
+        }),
         onBlur: (e) => {
           onBlur?.(e)
           onDelegatingBlur?.(e.detail.value)

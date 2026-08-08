@@ -11,7 +11,13 @@ import { type ReactNode, useMemo, useState } from "react"
 import { prefixClassname } from "../styles"
 import { inBrowser } from "../utils/base"
 import { preventDefault } from "../utils/dom/event"
-import type { InputAlign, InputClearTrigger, InputColor } from "./input.shared"
+import type {
+  InputAlign,
+  InputClearTrigger,
+  InputColor,
+  InputFormatter,
+  InputFormatTrigger,
+} from "./input.shared"
 import NativeInput from "./native-input"
 
 export function resolveOnChange<
@@ -66,6 +72,10 @@ export interface InputProps extends TaroInputProps {
   clearable?: boolean
   clearIcon?: ReactNode
   clearTrigger?: InputClearTrigger
+  formatter?: InputFormatter
+  formatTrigger?: InputFormatTrigger
+  min?: number
+  max?: number
 
   onClear?(event: ITouchEvent): void
 
@@ -86,6 +96,10 @@ function Input(props: InputProps) {
     clearable,
     clearTrigger = "focus",
     clearIcon = <Clear />,
+    formatter,
+    formatTrigger = "onChange",
+    min,
+    max,
     onInput,
     onChange,
     onFocus,
@@ -95,6 +109,34 @@ function Input(props: InputProps) {
   } = props
   const { value, setValue } = useUncontrolled({ value: valueProp })
   const [focused, setFocused] = useState(false)
+
+  const formatValue = (inputValue: string, trigger: InputFormatTrigger) => {
+    let nextValue = inputValue
+
+    if (
+      trigger === "onBlur" &&
+      (type === "number" || type === "digit") &&
+      nextValue !== "" &&
+      (min !== undefined || max !== undefined)
+    ) {
+      const numericValue = Number(nextValue)
+      if (Number.isFinite(numericValue)) {
+        const adjustedValue = Math.min(
+          max ?? Number.POSITIVE_INFINITY,
+          Math.max(min ?? Number.NEGATIVE_INFINITY, numericValue),
+        )
+        if (adjustedValue !== numericValue) {
+          nextValue = adjustedValue.toString()
+        }
+      }
+    }
+
+    if (formatter && formatTrigger === trigger) {
+      nextValue = formatter(nextValue)
+    }
+
+    return nextValue
+  }
 
   const allowClear = useMemo(() => {
     if (clearable && !disabled) {
@@ -119,28 +161,41 @@ function Input(props: InputProps) {
   }
 
   const handleInput = (event: BaseEventOrig<TaroInputProps.inputEventDetail>) => {
-    if (type === "number") {
-      const inputValue = event.detail.value
-      const nextValue = inputValue.replace(/\D/g, "")
+    const inputValue = event.detail.value
+    let nextValue = inputValue
 
-      if (nextValue === inputValue) {
-        onInput?.(event)
-        onChange?.(event)
-      } else {
-        resolveOnChange(event, onInput, nextValue)
-        resolveOnChange(event, onChange, nextValue)
-      }
-      setValue(nextValue)
-      return nextValue
+    if (type === "number") {
+      nextValue = inputValue.replace(/\D/g, "")
     }
 
-    onInput?.(event)
-    onChange?.(event)
-    setValue(event.detail.value)
+    nextValue = formatValue(nextValue, "onChange")
+    resolveOnChange(event, onInput, nextValue === inputValue ? undefined : nextValue)
+    resolveOnChange(event, onChange, nextValue === inputValue ? undefined : nextValue)
+    setValue(nextValue)
+
+    if (nextValue !== inputValue) {
+      return nextValue
+    }
   }
 
   const handleBlur = (event: BaseEventOrig<TaroInputProps.inputValueEventDetail>) => {
-    onBlur?.(event)
+    const inputValue = event.detail.value
+    const nextValue = formatValue(inputValue, "onBlur")
+    const nextEvent =
+      nextValue === inputValue
+        ? event
+        : Object.assign({}, event, {
+            detail: {
+              ...event.detail,
+              value: nextValue,
+            },
+          })
+
+    if (nextValue !== inputValue) {
+      setValue(nextValue)
+      resolveOnChange(event, onChange, nextValue)
+    }
+    onBlur?.(nextEvent)
     // Update focused by setTimeout
     setTimeout(() => setFocused(false), 80)
   }
