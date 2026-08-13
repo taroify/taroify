@@ -14,7 +14,7 @@ import { NumberKeyboard } from "@taroify/core";
 
 ### 默认样式
 
-数字键盘提供了 `onKeyPress`、`onBackspace`、`onHide` 事件，分别对应输入内容、删除内容和隐藏键盘。
+数字键盘提供了 `onKeyPress`、`onBackspace` 和 `onClose` 事件，分别对应按键、删除和关闭操作。
 
 ```tsx
 function BasicNumberKeyboard(props: KeyboardProps) {
@@ -29,15 +29,16 @@ function BasicNumberKeyboard(props: KeyboardProps) {
       />
       <NumberKeyboard
         open={keyboard === "basic"}
+        hideOnClickOutside
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onBlur={() => onKeyboard?.("")}
       />
     </>
   )
 }
 ```
 
-> 点击键盘以外的区域时，键盘会自动收起，通过阻止元素上的 touchstart 事件冒泡可以避免键盘收起。
+> `hideOnClickOutside` 默认为 `false`。开启后，点击键盘以外的区域会触发 `onBlur`，可以在该事件中更新 `open` 来收起键盘。
 
 ### 带右侧栏的键盘
 
@@ -58,7 +59,7 @@ function SidebarNumberKeyboard(props: KeyboardProps) {
         open={keyboard === "sidebar"}
         extraKey={[undefined, "."]}
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Sidebar>
           <NumberKeyboard.Key size="large" code="backspace" />
@@ -89,10 +90,10 @@ function IdCardNumberKeyboard(props: KeyboardProps) {
         onClick={() => onKeyboard?.("idCard")}
       />
       <NumberKeyboard
-        open={keyboard === "idcard"}
+        open={keyboard === "idCard"}
         extraKey="X"
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Header>
           <NumberKeyboard.Button>完成</NumberKeyboard.Button>
@@ -114,7 +115,7 @@ function TitleNumberKeyboard(props: KeyboardProps) {
     <>
       <Cell
         clickable
-        title="弹出身份证号键盘"
+        title="弹出带标题的键盘"
         isLink
         onClick={() => onKeyboard?.("title")}
       />
@@ -123,7 +124,7 @@ function TitleNumberKeyboard(props: KeyboardProps) {
         title="键盘标题"
         extraKey="."
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Header>
           <NumberKeyboard.Button>完成</NumberKeyboard.Button>
@@ -153,7 +154,7 @@ function NumberKeyboardWithKeys(props: KeyboardProps) {
         open={keyboard === "keys"}
         extraKey={["00", "."]}
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Sidebar>
           <NumberKeyboard.Key size="large" code="backspace" />
@@ -162,6 +163,36 @@ function NumberKeyboardWithKeys(props: KeyboardProps) {
           </NumberKeyboard.Key>
         </NumberKeyboard.Sidebar>
       </NumberKeyboard>
+    </>
+  )
+}
+```
+
+### 双向绑定 <Tag tag="v1.0.6" />
+
+通过 `value` 和 `onChange` 管理当前输入值，并使用 `maxlength` 限制最大输入长度。点击数字或额外按键时会追加内容，点击删除键时会移除最后一个字符。
+
+```tsx
+function ControlledNumberKeyboard() {
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState("")
+
+  return (
+    <>
+      <Cell
+        clickable
+        title="双向绑定"
+        brief={value || "最多输入 6 位数字"}
+        isLink
+        onClick={() => setOpen(true)}
+      />
+      <NumberKeyboard
+        open={open}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => setOpen(false)}
+      />
     </>
   )
 }
@@ -186,7 +217,7 @@ function RandomNumberKeyboard(props: KeyboardProps) {
         open={keyboard === "random"}
         random
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       />
     </>
   )
@@ -199,21 +230,42 @@ function RandomNumberKeyboard(props: KeyboardProps) {
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| value | 当前输入值 | _string_ | - |
+| value <Tag tag="v1.0.6" /> | 当前输入值 | _string_ | `''` |
 | open | 是否显示键盘 | _boolean_ | - |
-| title | 键盘标题 | _string_ | - |
-| maxlength | 输入值最大长度 | _number \| string_ | - |
-| transition | 是否开启过场动画 | _boolean_ | `true` |
-| extraKey | 底部额外按键的内容 | _ReactNode \| [ReactNode, ReactNode]_ | `''` |
+| title | 键盘标题 | _ReactNode_ | - |
+| maxlength <Tag tag="v1.0.6" /> | 输入值最大长度 | _number \| string_ | `Infinity` |
+| transition <Tag tag="v1.0.6" /> | 是否开启过场动画 | _boolean_ | `true` |
+| extraKey | 底部额外按键的内容 | _ReactNode \| [ReactNode, ReactNode]_ | - |
 | random | 是否将通过随机顺序展示按键 | _boolean_ | `false` |
+| hideOnClickOutside <Tag tag="v1.0.6" /> | 点击键盘外部时是否触发 `onBlur` | _boolean_ | `false` |
+| safeAreaInsetBottom <Tag tag="v1.0.6" /> | 是否开启底部安全区适配 | _boolean_ | `true` |
 
 ### NumberKeyboard Events
 
-| 事件名 | 说明                           | 回调参数      |
-| ------ | ------------------------------ | ------------- |
-| onChange  | 点击按键时触发                 | key: 按键内容 |
-| onBackspace | 点击删除键时触发               | -             |
-| onHide  | 点击关闭按钮时触发             | -             |
+| 事件名 | 说明 | 回调参数 |
+| --- | --- | --- |
+| onChange <Tag tag="v1.0.6" /> | 输入值变化时触发 | _value: string_ |
+| onKeyPress | 点击任意按键时触发 | _value: string \| number, code: NumberKeyboardKeyCode_ |
+| onBackspace | 点击删除键时触发 | - |
+| onClose <Tag tag="v1.0.6" /> | 点击关闭按钮时触发 | - |
+| onBlur <Tag tag="v1.0.6" /> | 点击关闭按钮，或开启 `hideOnClickOutside` 后点击外部时触发 | - |
+| onShow <Tag tag="v1.0.6" /> | 键盘完全弹出时触发 | - |
+| onHide | 点击关闭按钮时触发，兼容旧版本，推荐使用 `onClose` | - |
+
+### 类型定义 <Tag tag="v1.0.6" />
+
+组件导出以下类型定义：
+
+```ts
+import type {
+  NumberKeyboardChangeHandler,
+  NumberKeyboardEventHandler,
+  NumberKeyboardKeyCode,
+  NumberKeyboardKeyOnPress,
+  NumberKeyboardKeyValue,
+  NumberKeyboardProps,
+} from "@taroify/core"
+```
 
 ## 主题定制
 
@@ -239,7 +291,7 @@ function RandomNumberKeyboard(props: KeyboardProps) {
 | number-keyboard-key-active-opacity          | _var(--active-opacity)_                     | -   |
 | number-keyboard-large-key-font-size         | _var(--font-size-lg)_                       | -   |
 | number-keyboard-hide-padding                | _0 var(--padding-md)_                       | -   |
-| number-keyboard-hide-font-size              | _24px * $hd_                                | -   |
+| number-keyboard-hide-font-size              | _var(--font-size-md)_                       | -   |
 | number-keyboard-hide-color                  | _var(--text-link-color)_                    | -   |
 | number-keyboard-hide-active-opacity         | _var(--number-keyboard-key-active-opacity)_ | -   |
 | number-keyboard-backspace-font-size         | _22px * $hd_                                | -   |

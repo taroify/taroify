@@ -1,7 +1,6 @@
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
-import * as React from "react"
 import { Children, isValidElement, type ReactElement, type ReactNode, useMemo } from "react"
 import FixedView from "../fixed-view"
 import type { SafeAreaPosition } from "../safe-area"
@@ -69,7 +68,7 @@ function Navbar(props: NavbarProps) {
 
   return (
     <FixedView
-      position={fixed && "top"}
+      position={fixed ? "top" : false}
       safeArea={safeArea}
       nativeSafeTop={nativeSafeTop}
       placeholder={fixed && placeholder && prefixClassname("navbar__placeholder")}

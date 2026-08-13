@@ -26,6 +26,14 @@
     color: $number-keyboard-header-color;
   }
 
+  &__click-away {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    height: 100vh;
+  }
+
   &__title {
     display: inline-block;
     font-weight: normal;

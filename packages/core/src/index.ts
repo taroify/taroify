@@ -84,6 +84,15 @@ export { default as Textarea } from "./textarea"
 export { default as Field } from "./field"
 export { default as Form } from "./form"
 export { default as NumberKeyboard } from "./number-keyboard"
+export type {
+  NumberKeyboardChangeHandler,
+  NumberKeyboardEventHandler,
+  NumberKeyboardKeyCode,
+  NumberKeyboardKeyOnPress,
+  NumberKeyboardKeyValue,
+  NumberKeyboardProps,
+  NumberKeyboardThemeVars,
+} from "./number-keyboard"
 export { default as PasswordInput } from "./password-input"
 export { default as Picker } from "./picker"
 export { default as Radio } from "./radio"

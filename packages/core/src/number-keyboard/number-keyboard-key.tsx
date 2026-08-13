@@ -1,6 +1,5 @@
 import { View } from "@tarojs/components"
 import classNames from "classnames"
-import * as React from "react"
 import { useContext, useState } from "react"
 import { prefixClassname } from "../styles"
 import { useTouch } from "../utils/touch"
@@ -51,8 +50,9 @@ function NumberKeyboardKey(props: NumberKeyboardKeyProps) {
       }
 
       setActive(false)
-      onPress?.(value, code ?? value)
-      onKeyPress?.(value, code ?? value)
+      const keyCode = (code ?? value) as NumberKeyboardKeyCode
+      onPress?.(value, keyCode)
+      onKeyPress?.(value, keyCode)
     }
   }
 

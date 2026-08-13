@@ -1,5 +1,9 @@
-import { Cell, NumberKeyboard, Toast } from "@taroify/core"
-import { ArrowRight } from "@taroify/icons"
+import {
+  Cell,
+  NumberKeyboard,
+  Toast,
+  type NumberKeyboardKeyCode,
+} from "@taroify/core"
 import { useState } from "react"
 import BlockCard from "../../../components/block-card"
 import Page from "../../../components/page"
@@ -10,7 +14,7 @@ interface KeyboardProps {
 
   onKeyboard?(keyboard: string): void
 
-  onKeyPress?(value: string | number, code: string): void
+  onKeyPress?(value: string | number, code: NumberKeyboardKeyCode): void
 }
 
 function BasicNumberKeyboard(props: KeyboardProps) {
@@ -25,8 +29,9 @@ function BasicNumberKeyboard(props: KeyboardProps) {
       />
       <NumberKeyboard
         open={keyboard === "basic"}
+        hideOnClickOutside
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onBlur={() => onKeyboard?.("")}
       />
     </>
   )
@@ -46,7 +51,7 @@ function SidebarNumberKeyboard(props: KeyboardProps) {
         open={keyboard === "sidebar"}
         extraKey={[undefined, "."]}
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Sidebar>
           <NumberKeyboard.Key size="large" code="backspace" />
@@ -73,7 +78,7 @@ function IdCardNumberKeyboard(props: KeyboardProps) {
         open={keyboard === "idCard"}
         extraKey="X"
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Header>
           <NumberKeyboard.Button>完成</NumberKeyboard.Button>
@@ -98,7 +103,7 @@ function TitleNumberKeyboard(props: KeyboardProps) {
         title="键盘标题"
         extraKey="."
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Header>
           <NumberKeyboard.Button>完成</NumberKeyboard.Button>
@@ -122,7 +127,7 @@ function NumberKeyboardWithKeys(props: KeyboardProps) {
         open={keyboard === "keys"}
         extraKey={["00", "."]}
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
       >
         <NumberKeyboard.Sidebar>
           <NumberKeyboard.Key size="large" code="backspace" />
@@ -149,7 +154,30 @@ function RandomNumberKeyboard(props: KeyboardProps) {
         open={keyboard === "random"}
         random
         onKeyPress={onKeyPress}
-        onHide={() => onKeyboard?.("")}
+        onClose={() => onKeyboard?.("")}
+      />
+    </>
+  )
+}
+
+function ControlledNumberKeyboard(props: KeyboardProps) {
+  const { keyboard, onKeyboard } = props
+  const [value, setValue] = useState("")
+  return (
+    <>
+      <Cell
+        clickable
+        title="双向绑定"
+        brief={value || "最多输入 6 位数字"}
+        isLink
+        onClick={() => onKeyboard?.("controlled")}
+      />
+      <NumberKeyboard
+        open={keyboard === "controlled"}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onKeyboard?.("")}
       />
     </>
   )
@@ -160,7 +188,7 @@ export default function NumberKeyboardDemo() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState<any>()
 
-  const onKeyPress = (aValue: string | number, code: string) => {
+  const onKeyPress = (aValue: string | number, code: NumberKeyboardKeyCode) => {
     setOpen(code !== "keyboard-hide")
     if (code === "backspace") {
       setValue("backspace")
@@ -194,6 +222,7 @@ export default function NumberKeyboardDemo() {
           onKeyboard={setKeyboard}
           onKeyPress={onKeyPress}
         />
+        <ControlledNumberKeyboard keyboard={keyboard} onKeyboard={setKeyboard} />
       </BlockCard>
       <Toast open={open} duration={800} onClose={() => setOpen(false)} children={value} />
     </Page>
