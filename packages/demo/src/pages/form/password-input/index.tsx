@@ -19,9 +19,10 @@ function BasicPasswordInput(props: OpenKeyboardProps) {
       <PasswordInput focus value={value} onFocus={() => onOpen?.("basic")} />
       <NumberKeyboard
         open={open === "basic"}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => onOpen?.("")}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onOpen?.("")}
       />
     </>
   )
@@ -36,9 +37,10 @@ function CustomLengthPasswordInput(props: OpenKeyboardProps) {
       <PasswordInput focus length={6} value={value} onFocus={() => onOpen?.("length")} />
       <NumberKeyboard
         open={open === "length"}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => onOpen?.("")}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onOpen?.("")}
       />
     </>
   )
@@ -53,9 +55,10 @@ function GutterPasswordInput(props: OpenKeyboardProps) {
       <PasswordInput focus gutter={10} value={value} onFocus={() => onOpen?.("gutter")} />
       <NumberKeyboard
         open={open === "gutter"}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => onOpen?.("")}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onOpen?.("")}
       />
     </>
   )
@@ -70,9 +73,10 @@ function NoMaskPasswordInput(props: OpenKeyboardProps) {
       <PasswordInput focus mask={false} value={value} onFocus={() => onOpen?.("mask")} />
       <NumberKeyboard
         open={open === "mask"}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => onOpen?.("")}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onOpen?.("")}
       />
     </>
   )
@@ -92,9 +96,10 @@ function PasswordInputWithFeedback(props: OpenKeyboardProps) {
       />
       <NumberKeyboard
         open={open === "feedback"}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => onOpen?.("")}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => onOpen?.("")}
       />
     </>
   )

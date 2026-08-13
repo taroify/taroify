@@ -4,6 +4,14 @@ import NumberKeyboardHeader from "./number-keyboard-header"
 import NumberKeyboardKey from "./number-keyboard-key"
 import NumberKeyboardSidebar from "./number-keyboard-sidebar"
 
+export type { NumberKeyboardProps } from "./number-keyboard"
+export type {
+  NumberKeyboardChangeHandler,
+  NumberKeyboardEventHandler,
+  NumberKeyboardKeyCode,
+  NumberKeyboardKeyOnPress,
+  NumberKeyboardKeyValue,
+} from "./number-keyboard-key.shared"
 export type { NumberKeyboardThemeVars } from "./number-keyboard.shared"
 
 interface NumberKeyboardInterface {

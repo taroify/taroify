@@ -26,9 +26,10 @@ function BasicPasswordInput() {
       <PasswordInput focus value={value} onFocus={() => setOpen(true)} />
       <NumberKeyboard
         open={open}
-        onKeyPress={(key) => setValue(value + key)}
-        onBackspace={() => setValue(value.substring(0, value.length - 1))}
-        onHide={() => setOpen(false)}
+        value={value}
+        maxlength={6}
+        onChange={setValue}
+        onClose={() => setOpen(false)}
       />
     </>
   )

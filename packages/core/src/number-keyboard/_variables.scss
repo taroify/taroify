@@ -24,7 +24,7 @@ $number-keyboard-key-background-color: var(
   var(--background-color-2, $background-color-2)
 );
 $number-keyboard-key-border-radius: var(
-  --number-keyboard-key-font-size,
+  --number-keyboard-key-border-radius,
   var(--border-radius-lg, $border-radius-lg)
 );
 $number-keyboard-key-line-height: var(--number-keyboard-key-line-height, 1.5);

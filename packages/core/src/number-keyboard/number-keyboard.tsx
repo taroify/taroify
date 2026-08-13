@@ -2,6 +2,7 @@ import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: Babel uses the classic JSX transform in tests.
 import * as React from "react"
 import {
   Children,
@@ -17,6 +18,8 @@ import NumberKeyboardHeader from "./number-keyboard-header"
 import NumberKeyboardKey, { type NumberKeyboardKeyProps } from "./number-keyboard-key"
 import {
   isNumberKeyboardKeyElement,
+  type NumberKeyboardChangeHandler,
+  type NumberKeyboardEventHandler,
   type NumberKeyboardKeyCode,
   type NumberKeyboardKeyOnPress,
 } from "./number-keyboard-key.shared"
@@ -24,14 +27,23 @@ import NumberKeyboardKeys from "./number-keyboard-keys"
 import NumberKeyboardSidebar from "./number-keyboard-sidebar"
 import NumberKeyboardContext from "./number-keyboard.context"
 
+export function shuffleNumberKeyboardKeys<T>(keys: T[]): T[] {
+  for (let index = keys.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const key = keys[index]
+    keys[index] = keys[randomIndex]
+    keys[randomIndex] = key
+  }
+  return keys
+}
+
 function createBasicKeys(random: boolean): ReactNode[] {
   const keys = Array(9)
     .fill("")
-    // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
     .map((_, i) => <NumberKeyboardKey key={i + 1} children={i + 1} />)
 
   if (random) {
-    keys.sort(() => (Math.random() > 0.5 ? 1 : -1))
+    shuffleNumberKeyboardKeys(keys)
   }
 
   return keys
@@ -40,8 +52,8 @@ function createBasicKeys(random: boolean): ReactNode[] {
 export function createExtraNumberKeyboardKey(extraKey: ReactNode): ReactNode {
   if (_.isString(extraKey) || _.isNumber(extraKey)) {
     return <NumberKeyboardKey key={extraKey} children={extraKey} />
-    // biome-ignore lint/style/noUselessElse: <explanation>
-  } else if (isNumberKeyboardKeyElement(extraKey)) {
+  }
+  if (isNumberKeyboardKeyElement(extraKey)) {
     const element = extraKey as ReactElement
     const elementProps = element.props as NumberKeyboardKeyProps
     return cloneElement(extraKey as ReactElement, {
@@ -124,31 +136,54 @@ function useNumberKeyboardChildren(
   }, [children, title])
 }
 
-export interface NumberKeyboardProps extends ViewProps {
+export interface NumberKeyboardProps extends Omit<ViewProps, "onBlur"> {
   className?: string
   open?: boolean
+  value?: string
   title?: ReactNode
+  maxlength?: number | string
+  transition?: boolean
   extraKey?: ReactNode | [ReactNode, ReactNode]
   random?: boolean
+  hideOnClickOutside?: boolean
+  safeAreaInsetBottom?: boolean
   children?: ReactNode
 
   onKeyPress?: NumberKeyboardKeyOnPress
 
-  onBackspace?(): void
+  onChange?: NumberKeyboardChangeHandler
 
-  onHide?(): void
+  onBackspace?: NumberKeyboardEventHandler
+
+  onClose?: NumberKeyboardEventHandler
+
+  onBlur?: NumberKeyboardEventHandler
+
+  onShow?: NumberKeyboardEventHandler
+
+  /** @deprecated 请使用 onClose。 */
+  onHide?: NumberKeyboardEventHandler
 }
 
 function NumberKeyboard(props: NumberKeyboardProps) {
   const {
     className,
     open,
+    value = "",
     title,
+    maxlength = Number.POSITIVE_INFINITY,
+    transition = true,
     extraKey,
     random = false,
+    hideOnClickOutside = false,
+    safeAreaInsetBottom = true,
     children: childrenProp,
     onKeyPress,
+    onChange,
     onBackspace,
+    onClose,
+    onBlur,
+    onShow,
     onHide,
     ...restProps
   } = props
@@ -157,12 +192,17 @@ function NumberKeyboard(props: NumberKeyboardProps) {
   const basicKeys = useMemo(() => createBasicKeys(random), [random])
   const keys = useMemo(() => [...basicKeys, ...createCustomKeys(extraKey)], [basicKeys, extraKey])
 
-  const handleKeyPress = (value: string | number, code: NumberKeyboardKeyCode) => {
-    onKeyPress?.(value, code)
+  const handleKeyPress = (keyValue: string | number, code: NumberKeyboardKeyCode) => {
+    onKeyPress?.(keyValue, code)
     if (code === "backspace") {
       onBackspace?.()
+      onChange?.(value.slice(0, -1))
     } else if (code === "keyboard-hide") {
+      onClose?.()
+      onBlur?.()
       onHide?.()
+    } else if (value.length < Number(maxlength)) {
+      onChange?.(`${value}${keyValue}`)
     }
   }
   return (
@@ -172,17 +212,30 @@ function NumberKeyboard(props: NumberKeyboardProps) {
         onKeyPress: handleKeyPress,
       }}
     >
-      <Transition in={open} appear name="slide-up">
+      <Transition
+        in={open}
+        appear
+        name={transition ? "slide-up" : undefined}
+        timeout={transition ? undefined : 0}
+        onEntered={onShow}
+      >
         <View
           className={classNames(
             prefixClassname("number-keyboard"),
             {
               [prefixClassname("number-keyboard--with-title")]: header,
+              [prefixClassname("number-keyboard--unfit")]: !safeAreaInsetBottom,
             },
             className,
           )}
           {...restProps}
         >
+          {open && hideOnClickOutside && (
+            <View
+              className={prefixClassname("number-keyboard__click-away")}
+              onTouchStart={onBlur}
+            />
+          )}
           {header}
           <View className={prefixClassname("number-keyboard__body")}>
             <NumberKeyboardKeys children={keys} />
