@@ -1,5 +1,7 @@
 import { View } from "@tarojs/components"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: The package build uses the classic JSX runtime.
+import * as React from "react"
 import { useContext, useState } from "react"
 import { prefixClassname } from "../styles"
 import { useTouch } from "../utils/touch"
