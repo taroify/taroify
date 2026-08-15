@@ -2,6 +2,14 @@ import { getWindowInfo } from "@tarojs/taro"
 import * as _ from "lodash"
 import type { CSSProperties } from "react"
 
+export function addUnit(value?: string | number): string {
+  if (value === undefined) {
+    return ""
+  }
+
+  return typeof value === "number" || /^\d+(\.\d+)?$/.test(value) ? `${value}px` : value
+}
+
 export function addUnitPx(value?: string | number): string {
   return value === undefined ? "" : `${unitToPx(value)}px`
 }

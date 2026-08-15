@@ -4,6 +4,7 @@ export type PasswordInputThemeVars = {
   passwordInputBorderRadius?: string
   passwordInputItemFontSize?: string
   passwordInputItemBackgroundColor?: string
+  passwordInputTextColor?: string
   passwordInputMaskSize?: string
   passwordInputMaskWidth?: string
   passwordInputMaskHeight?: string

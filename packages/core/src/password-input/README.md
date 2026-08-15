@@ -23,7 +23,7 @@ function BasicPasswordInput() {
 
   return (
     <>
-      <PasswordInput focus value={value} onFocus={() => setOpen(true)} />
+      <PasswordInput focus={open} value={value} onFocus={() => setOpen(true)} />
       <NumberKeyboard
         open={open}
         value={value}
@@ -41,7 +41,7 @@ function BasicPasswordInput() {
 通过 `length` 属性来设置密码长度。
 
 ```tsx
-<PasswordInput length={6} value="123" />
+<PasswordInput length={4} value="123" />
 ```
 
 ### 格子间距
@@ -77,8 +77,8 @@ function BasicPasswordInput() {
 | 参数       | 说明                                  | 类型           | 默认值                         |
 |----------|-------------------------------------|--------------|-----------------------------|
 | value    | 密码值                                 | _string_     | `''`                        |
-| length   | 密码最大长度                              | _number \| string_                     | `6` |
-| gutter   | 输入框格子之间的间距，如 `20px` `2em`，默认单位为`px` | _number \| string_                     | `0` |
+| length   | 密码最大长度，字符串类型支持 <Tag tag="v1.0.6" /> | _number \| string_                     | `6` |
+| gutter   | 输入框格子之间的间距，如 `20px` `2em`，字符串单位支持 <Tag tag="v1.0.6" />，默认单位为`px` | _number \| string_                     | `0` |
 | mask     | 是否隐藏密码内容                            | _boolean_    | `true`                      |
 | focus    | 是否聚焦，聚焦时会显示光标                       | _boolean_    | `false`                     |
 | feedback | 输入框下方文字提示           | _ReactText \| PasswordInputFeedbackProps \| ReactElement_ | - |
@@ -108,11 +108,12 @@ function BasicPasswordInput() {
 | password-input-margin                    | _0 var(--padding-md)_             | -   |
 | password-input-border-radius             | _6px * $hd_                       | -   |
 | password-input-item-font-size            | _20px * $hd_                      | -   |
-| password-input-item-background-color     | _var(--white)_                    | -   |
+| password-input-item-background-color     | _var(--background-color-2)_       | -   |
+| password-input-text-color <Tag tag="v1.0.6" /> | _var(--text-color)_               | -   |
 | password-input-mask-size                 | _10px * $hd_                      | -   |
 | password-input-mask-width                | _var(--password-input-mask-size)_ | -   |
 | password-input-mask-height               | _var(--password-input-mask-size)_ | -   |
-| password-input-mask-color                | _var(--black)_                    | -   |
+| password-input-mask-color                | _var(--password-input-text-color)_ | -   |
 | password-input-cursor-color              | _var(--text-color)_               | -   |
 | password-input-cursor-width              | _1px * $hd_                       | -   |
 | password-input-cursor-height             | _40%_                             | -   |

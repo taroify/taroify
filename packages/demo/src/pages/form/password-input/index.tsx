@@ -16,7 +16,11 @@ function BasicPasswordInput(props: OpenKeyboardProps) {
 
   return (
     <>
-      <PasswordInput focus value={value} onFocus={() => onOpen?.("basic")} />
+      <PasswordInput
+        focus={open === "basic"}
+        value={value}
+        onFocus={() => onOpen?.("basic")}
+      />
       <NumberKeyboard
         open={open === "basic"}
         value={value}
@@ -34,11 +38,16 @@ function CustomLengthPasswordInput(props: OpenKeyboardProps) {
 
   return (
     <>
-      <PasswordInput focus length={6} value={value} onFocus={() => onOpen?.("length")} />
+      <PasswordInput
+        focus={open === "length"}
+        length={4}
+        value={value}
+        onFocus={() => onOpen?.("length")}
+      />
       <NumberKeyboard
         open={open === "length"}
         value={value}
-        maxlength={6}
+        maxlength={4}
         onChange={setValue}
         onClose={() => onOpen?.("")}
       />
@@ -52,7 +61,12 @@ function GutterPasswordInput(props: OpenKeyboardProps) {
 
   return (
     <>
-      <PasswordInput focus gutter={10} value={value} onFocus={() => onOpen?.("gutter")} />
+      <PasswordInput
+        focus={open === "gutter"}
+        gutter={10}
+        value={value}
+        onFocus={() => onOpen?.("gutter")}
+      />
       <NumberKeyboard
         open={open === "gutter"}
         value={value}
@@ -70,7 +84,12 @@ function NoMaskPasswordInput(props: OpenKeyboardProps) {
 
   return (
     <>
-      <PasswordInput focus mask={false} value={value} onFocus={() => onOpen?.("mask")} />
+      <PasswordInput
+        focus={open === "mask"}
+        mask={false}
+        value={value}
+        onFocus={() => onOpen?.("mask")}
+      />
       <NumberKeyboard
         open={open === "mask"}
         value={value}
@@ -89,7 +108,7 @@ function PasswordInputWithFeedback(props: OpenKeyboardProps) {
   return (
     <>
       <PasswordInput
-        focus
+        focus={open === "feedback"}
         feedback="密码为 6 位数字"
         value={value}
         onFocus={() => onOpen?.("feedback")}

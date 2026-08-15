@@ -7,11 +7,12 @@ $password-input-margin: var(--password-input-margin, 0 var(--padding-md, $paddin
 $password-input-border-radius: var(--password-input-border-radius, 6px * $hd);
 $password-input-item-font-size: var(--password-input-item-font-size, 20px * $hd);
 $password-input-item-background-color: var(--password-input-item-background-color, var(--background-color-2, $background-color-2));
+$password-input-text-color: var(--password-input-text-color, var(--text-color, $text-color));
 //
 $password-input-mask-size: var(--password-input-mask-size, 10px * $hd);
 $password-input-mask-width: var(--password-input-mask-width, $password-input-mask-size);
 $password-input-mask-height: var(--password-input-mask-height, $password-input-mask-size);
-$password-input-mask-color: var(--password-input-mask-color, var(--black, $black));
+$password-input-mask-color: var(--password-input-mask-color, $password-input-text-color);
 //
 $password-input-cursor-color: var(--password-input-cursor-color, var(--text-color, $text-color));
 $password-input-cursor-width: var(--password-input-cursor-width, 1px * $hd);
