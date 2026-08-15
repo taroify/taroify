@@ -2,19 +2,20 @@ import { type ITouchEvent, View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
 import * as _ from "lodash"
+// biome-ignore lint/correctness/noUnusedImports: the TypeScript JSX transform requires React in scope
 import * as React from "react"
 import { type ReactNode, type CSSProperties, useCallback, useMemo } from "react"
 import { prefixClassname } from "../styles"
 import { HAIRLINE_BORDER_LEFT, HAIRLINE_BORDER_SURROUND } from "../styles/hairline"
 import { stopPropagation } from "../utils/dom/event"
 import { createVariantElement } from "../utils/element"
-import { addUnitPx } from "../utils/format/unit"
+import { addUnit } from "../utils/format/unit"
 import PasswordInputFeedback, { type PasswordInputFeedbackProps } from "./password-input-feedback"
 
 export interface PasswordInputProps extends ViewProps {
   value?: string
-  length?: number
-  gutter?: number
+  length?: number | string
+  gutter?: number | string
   mask?: boolean
   focused?: boolean
   focus?: boolean
@@ -58,15 +59,16 @@ function PasswordInput(props: PasswordInputProps) {
 
   const points = useMemo(() => {
     const Points: JSX.Element[] = []
+    const inputLength = Number(length)
 
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < inputLength; i++) {
       const char = value[i]
       const bordered = i !== 0 && !gutter
       const showCursor = focus && i === value.length
 
       let style: CSSProperties = {}
       if (i !== 0 && gutter) {
-        style = { marginLeft: addUnitPx(gutter) }
+        style = { marginLeft: addUnit(gutter) }
       }
 
       Points.push(
