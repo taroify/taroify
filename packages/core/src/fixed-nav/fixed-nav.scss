@@ -24,9 +24,9 @@
     .#{$component-prefix}fixed-nav_btn-icon {
       margin-right: 5px * $hd;
       line-height: normal;
-      transition: all 0.3s;
       transform: rotate(0deg);
       transform-origin: center;
+      transition: all 0.3s;
     }
 
     &-text {
@@ -50,15 +50,15 @@
     background: $fixed-nav-background-color;
     border-radius: 25px * $hd 0 0 25px * $hd;
     box-shadow: 2px * $hd 2px * $hd 8px * $hd 0 rgba(0, 0, 0, 0.2);
-    transition: all 0.5s;
     transform: translateX(100%);
+    transition: all 0.5s;
 
     &--item {
       position: relative;
       display: flex;
       flex: 1;
-      flex-direction: column;
       flex-shrink: 0;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       min-width: 50px * $hd;

@@ -52,7 +52,7 @@
 
       &__content {
         position: relative;
-        word-wrap: break-word;
+        overflow-wrap: break-word;
         white-space: normal;
       }
     }

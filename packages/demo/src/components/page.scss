@@ -23,9 +23,9 @@
     }
 
     &__title {
-      color: $text-color;
       font-size: 16px * $hd;
       font-weight: 600;
+      color: $text-color;
       text-transform: capitalize;
     }
   }

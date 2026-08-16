@@ -91,7 +91,7 @@
     font-size: $cell-value-font-size;
     color: $cell-value-color;
     text-align: right;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
 
     &--empty {
       flex: 0 0 auto;

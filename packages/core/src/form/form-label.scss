@@ -8,7 +8,7 @@
   margin-right: $form-label-margin-right;
   color: $form-label-color;
   text-align: left;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   &--left {
     justify-content: flex-start;

@@ -6,8 +6,8 @@
   }
 
   &__theme {
-    background: var(--background-color, #f7f8fa);
-    color: var(--text-color, #323233);
     padding-bottom: 1px;
+    color: var(--text-color, #323233);
+    background: var(--background-color, #f7f8fa);
   }
 }

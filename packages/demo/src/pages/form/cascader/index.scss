@@ -42,11 +42,11 @@
     &__brief {
       margin-top: 2px * $hd;
       overflow: hidden;
+      text-overflow: ellipsis;
       font-size: var(--font-size-sm, $font-size-sm);
       font-weight: var(--font-weight-normal, 400);
       line-height: var(--line-height-sm, $line-height-sm);
       color: var(--gray-6, $gray-6);
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
 

@@ -3,15 +3,15 @@
 body,
 page {
   font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, "Segoe UI", Arial, Roboto, "PingFang SC", miui, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-  background-color: var(--background-color, #f7f8fa);
   color: var(--text-color, #323233);
+  background-color: var(--background-color, #f7f8fa);
   -webkit-font-smoothing: antialiased;
 }
 
 html[data-taroify-theme="dark"] {
   body {
-    background: #101010;
     color: #fff;
+    background: #101010;
   }
 }
 

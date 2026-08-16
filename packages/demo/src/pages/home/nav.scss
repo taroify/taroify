@@ -16,12 +16,12 @@
   &__block {
     position: relative;
     display: flex;
-    margin: 0 0 12px * $hd;
     padding-left: 20px * $hd;
-    color: $text-color;
-    font-weight: 600;
+    margin: 0 0 12px * $hd;
     font-size: 14px * $hd;
+    font-weight: 600;
     line-height: 40px * $hd;
+    color: $text-color;
     background: $background-color;
     border-radius: 99px * $hd;
     transition: background 0.3s;
@@ -38,8 +38,8 @@
       position: absolute;
       top: 50%;
       right: 16px * $hd;
-      font-size: 16px * $hd;
       margin-top: -8px * $hd;
+      font-size: 16px * $hd;
       color: #b6c3d2;
     }
   }

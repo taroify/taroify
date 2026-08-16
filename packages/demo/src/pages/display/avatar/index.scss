@@ -3,8 +3,8 @@
 @use "../../../styles/prefix" as *;
 
 .avatars-demo {
-  background: $background-color-2;
   height: 100%;
+  background: $background-color-2;
 }
 
 .avatar-block {
@@ -17,8 +17,8 @@
   }
 
   .avatar-dot {
-    bottom: 2px * $hd;
-    right: 6px * $hd,
+    right: 6px * $hd,;
+    bottom: 2px * $hd
   }
 
   .avatar-avatar {
@@ -26,7 +26,7 @@
     --badge-padding: 0;
     --badge-size: #{12px * $hd};
     --avatar-size: var(--badge-size);
-    bottom: 2px * $hd;
-    right: 6px * $hd,
+    right: 6px * $hd,;
+    bottom: 2px * $hd
   }
 }

@@ -11,8 +11,8 @@
 
   .vertical-slider {
     .#{$demo-prefix}block__content {
-      padding-left: 30px * $hd;
       height: 150px * $hd;
+      padding-left: 30px * $hd;
     }
   }
 
@@ -22,9 +22,9 @@
 
   .custom-thumb {
     width: 26px * $hd;
-    color: #fff;
     font-size: 10px * $hd;
     line-height: 18px * $hd;
+    color: #fff;
     text-align: center;
     background-color: var(--slider-active-background-color);
     border-radius: 100px * $hd;

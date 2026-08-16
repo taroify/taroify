@@ -13,8 +13,8 @@
     height: $stepper-input-height;
     padding: 0;
     margin: 0;
-    color: $stepper-button-icon-color;
     vertical-align: middle;
+    color: $stepper-button-icon-color;
     cursor: pointer;
     background: $stepper-background-color;
     border: 0;
@@ -67,13 +67,13 @@
     margin: $stepper-input-margin;
     font-size: $stepper-input-font-size;
     line-height: $stepper-input-line-height;
+    vertical-align: middle;
     color: $stepper-input-color;
     text-align: center;
-    vertical-align: middle;
+    appearance: none;
     background: $stepper-input-background-color;
     border: 0 none;
     border-radius: 0;
-    appearance: none;
 
     &:disabled {
       color: $stepper-input-disabled-color;

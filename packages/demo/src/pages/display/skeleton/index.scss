@@ -15,15 +15,15 @@
   }
 
   .demo-preview {
-    padding: 0 32px;
     display: flex;
+    padding: 0 32px;
   }
 
   .demo-image {
+    flex-shrink: 0;
     width: 64px;
     height: 64px;
     margin-right: 32px;
-    flex-shrink: 0;
   }
 
   .demo-content {
