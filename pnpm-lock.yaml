@@ -226,7 +226,7 @@ importers:
         version: 2.3.4
       '@types/lodash':
         specifier: ^4.14.178
-        version: 4.17.24
+        version: 4.17.25
       '@types/node':
         specifier: ^20.19.9
         version: 20.19.43
@@ -305,7 +305,7 @@ importers:
         version: 2.3.4
       '@types/lodash':
         specifier: ^4.14.178
-        version: 4.17.24
+        version: 4.17.25
       '@types/node':
         specifier: ^20.19.9
         version: 20.19.43
@@ -429,7 +429,7 @@ importers:
         version: 4.2.1(@babel/core@7.29.7)(@rspack/core@2.1.6(@swc/helpers@0.5.23))(@swc/helpers@0.5.23)(@tarojs/runtime@4.2.1)(less@3.13.1)(postcss@8.5.24)(sass@1.102.0)(typescript@4.9.5)(webpack@5.91.0(postcss@8.5.24))
       '@types/lodash':
         specifier: ^4.14.178
-        version: 4.17.24
+        version: 4.17.25
       '@types/react':
         specifier: ^18.2.0
         version: 18.2.0
@@ -559,7 +559,7 @@ importers:
         version: 3.6.23(@tarojs/helper@3.6.23(@swc/helpers@0.5.23))(@tarojs/runtime@3.6.23(@tarojs/shared@3.6.23))(@types/react@18.2.0)(postcss@8.5.26)
       '@types/lodash':
         specifier: ^4.14.178
-        version: 4.17.24
+        version: 4.17.25
       '@types/react':
         specifier: 18.2.0
         version: 18.2.0
@@ -599,7 +599,7 @@ importers:
         version: 2.3.4
       '@types/lodash':
         specifier: ^4.14.178
-        version: 4.17.24
+        version: 4.17.25
       '@types/node':
         specifier: ^20.19.9
         version: 20.19.43
@@ -3933,8 +3933,8 @@ packages:
   '@types/lodash.debounce@4.0.9':
     resolution: {integrity: sha512-Ma5JcgTREwpLRwMM+XwBR7DaWe96nC38uCBDFKZWbNKD+osjVzdpnUSwBcqCptrp16sSOLBAUb50Car5I0TCsQ==}
 
-  '@types/lodash@4.17.24':
-    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
+  '@types/lodash@4.17.25':
+    resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
@@ -15793,9 +15793,9 @@ snapshots:
 
   '@types/lodash.debounce@4.0.9':
     dependencies:
-      '@types/lodash': 4.17.24
+      '@types/lodash': 4.17.25
 
-  '@types/lodash@4.17.24': {}
+  '@types/lodash@4.17.25': {}
 
   '@types/mdast@4.0.4':
     dependencies:
