@@ -43,9 +43,9 @@
   line-height: var(--input-line-height, 24px);
   color: var(--input-color, var(--text-color, var(--text-color, var(--gray-8, #323233))));
   resize: none;
+  outline: none;
   background-color: transparent;
   border: 0;
-  outline: none;
 }
 .taroify-input[type=date], .taroify-input[type=time], .taroify-input[type=datetime-local] {
   min-height: var(--cell-line-height, var(--cell-line-height, 24px));
@@ -183,7 +183,7 @@
   font-size: var(--cell-value-font-size, inherit);
   color: var(--cell-value-color, var(--gray-6, #969799));
   text-align: right;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .taroify-cell__value--empty {
   flex: 0 0 auto;
@@ -359,7 +359,7 @@
 }
 .taroify-notice-bar--wordwrap .taroify-notice-bar__content {
   position: relative;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   white-space: normal;
 }
 
@@ -1048,8 +1048,8 @@
   height: var(--stepper-input-height, 28px);
   padding: 0;
   margin: 0;
-  color: var(--stepper-button-icon-color, var(--text-color, var(--text-color, var(--gray-8, #323233))));
   vertical-align: middle;
+  color: var(--stepper-button-icon-color, var(--text-color, var(--text-color, var(--gray-8, #323233))));
   cursor: pointer;
   background: var(--stepper-background-color, var(--active-color, var(--active-color, var(--gray-2, #f2f3f5))));
   border: 0;
@@ -1093,13 +1093,13 @@
   margin: var(--stepper-input-margin, 0 2px);
   font-size: var(--stepper-input-font-size, var(--font-size-md, 14px));
   line-height: var(--stepper-input-line-height, normal);
+  vertical-align: middle;
   color: var(--stepper-input-color, var(--text-color, var(--text-color, var(--gray-8, #323233))));
   text-align: center;
-  vertical-align: middle;
+  appearance: none;
   background: var(--stepper-input-background-color, var(--stepper-background-color, var(--active-color, var(--active-color, var(--gray-2, #f2f3f5)))));
   border: 0 none;
   border-radius: 0;
-  appearance: none;
 }
 .taroify-stepper__input:disabled {
   color: var(--stepper-input-disabled-color, var(--gray-5, #c8c9cc));
@@ -1232,9 +1232,9 @@
   width: 100%;
   height: 100%;
   padding: 0;
+  outline: none;
   background: transparent;
   border: 0 none;
-  outline: none;
   opacity: 0;
 }
 .taroify-button-base::after {
@@ -1410,7 +1410,6 @@
   height: 100%;
 }
 
-/* stylelint-disable selector-pseudo-element-colon-notation */
 /* stylelint-disable font-family-no-missing-generic-family-keyword */
 @font-face {
   font-family: "vant-icon";
@@ -1426,14 +1425,14 @@
   font-size: inherit;
   font-style: normal;
   font-weight: normal;
+  font-stretch: normal;
   font-variant-ligatures: normal;
   font-variant-caps: normal;
   font-variant-numeric: normal;
   font-variant-east-asian: normal;
-  font-stretch: normal;
   line-height: 1;
-  -webkit-font-smoothing: antialiased;
   text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
 }
 .van-icon:before {
   display: inline-block;
