@@ -56,8 +56,10 @@ test("unknown entries return a stable error and suggestion", () => {
 })
 
 test("command parser returns clean JSON usage errors", () => {
-  const result = run(["unknown"])
-  assert.equal(result.status, 2)
-  assert.equal(result.stderr, "")
-  assert.equal(json(result).error.code, "INVALID_ARGUMENT")
+  for (const args of [["unknown"], ["info", "Button", "extra"]]) {
+    const result = run(args)
+    assert.equal(result.status, 2)
+    assert.equal(result.stderr, "")
+    assert.equal(json(result).error.code, "INVALID_ARGUMENT")
+  }
 })

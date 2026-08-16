@@ -37,7 +37,7 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=22.12.0"
   },
   "publishConfig": {
     "access": "public",
@@ -56,7 +56,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@types/node": "^20.19.9",
+    "@types/node": "^22.12.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.2"
   }

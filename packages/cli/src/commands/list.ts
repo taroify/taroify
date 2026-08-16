@@ -1,10 +1,8 @@
-import commander from "commander"
+import { type Command, Option } from "commander"
 import { textRenderers } from "../format.js"
 import { listEntries } from "../queries.js"
 import type { EntryKind } from "../types.js"
 import type { ExecuteCommand } from "./_shared.js"
-
-const { Option } = commander
 
 interface ListCommandOptions {
   category?: string
@@ -12,7 +10,7 @@ interface ListCommandOptions {
   kind?: EntryKind
 }
 
-export function registerListCommand(program: commander.Command, execute: ExecuteCommand) {
+export function registerListCommand(program: Command, execute: ExecuteCommand) {
   program
     .command("list")
     .alias("ls")
@@ -22,7 +20,7 @@ export function registerListCommand(program: commander.Command, execute: Execute
     .addOption(
       new Option("-k, --kind <kind>", "按条目类型筛选").choices(["component", "guide", "hook"]),
     )
-    .action((options: ListCommandOptions, command: commander.Command) => {
+    .action((options: ListCommandOptions, command: Command) => {
       execute(
         command,
         () =>

@@ -164,8 +164,8 @@ importers:
         version: 4.4.3
     devDependencies:
       '@types/node':
-        specifier: ^20.19.9
-        version: 20.19.43
+        specifier: ^22.12.0
+        version: 22.20.1
       tsup:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.3.96(@swc/helpers@0.5.23))(jiti@2.7.0)(postcss@8.5.26)(typescript@5.9.3)(yaml@2.9.0)
@@ -423,7 +423,7 @@ importers:
         version: 0.6.2(react-refresh@0.14.2)(type-fest@4.41.0)(webpack-dev-server@4.15.2(webpack@5.91.0(postcss@8.5.24)))(webpack@5.91.0(postcss@8.5.24))
       '@tarojs/cli':
         specifier: 4.2.1
-        version: 4.2.1(@swc/helpers@0.5.23)(@types/node@20.19.43)
+        version: 4.2.1(@swc/helpers@0.5.23)(@types/node@22.20.1)
       '@tarojs/webpack5-runner':
         specifier: 4.2.1
         version: 4.2.1(@babel/core@7.29.7)(@rspack/core@2.1.6(@swc/helpers@0.5.23))(@swc/helpers@0.5.23)(@tarojs/runtime@4.2.1)(less@3.13.1)(postcss@8.5.24)(sass@1.102.0)(typescript@4.9.5)(webpack@5.91.0(postcss@8.5.24))
@@ -3959,6 +3959,9 @@ packages:
 
   '@types/node@20.19.43':
     resolution: {integrity: sha512-6oYBAi5ikg4Pl+kGsoYtawUMBT2zZMCvPNF7pVLnHZfd1zf38DRiWn/gT01RYCdUqkv7Fhr+C9ot4/tb+2sVvA==}
+
+  '@types/node@22.20.1':
+    resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -13826,6 +13829,13 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.19.43
 
+  '@inquirer/external-editor@1.0.3(@types/node@22.20.1)':
+    dependencies:
+      chardet: 2.2.0
+      iconv-lite: 0.7.3
+    optionalDependencies:
+      '@types/node': 22.20.1
+
   '@inquirer/figures@1.0.15': {}
 
   '@inquirer/input@4.3.1(@types/node@20.19.43)':
@@ -15072,7 +15082,7 @@ snapshots:
       '@tarojs/binding-linux-x64-gnu': 4.2.1
       '@tarojs/binding-win32-x64-msvc': 4.2.1
 
-  '@tarojs/cli@4.2.1(@swc/helpers@0.5.23)(@types/node@20.19.43)':
+  '@tarojs/cli@4.2.1(@swc/helpers@0.5.23)(@types/node@22.20.1)':
     dependencies:
       '@tarojs/binding': 4.2.1
       '@tarojs/helper': 4.2.1(@swc/helpers@0.5.23)
@@ -15084,7 +15094,7 @@ snapshots:
       cli-highlight: 2.1.11
       download-git-repo: 3.0.2
       envinfo: 7.21.0
-      inquirer: 8.2.7(@types/node@20.19.43)
+      inquirer: 8.2.7(@types/node@22.20.1)
       latest-version: 5.1.0
       minimist: 1.2.8
       ora: 5.4.1
@@ -15820,6 +15830,10 @@ snapshots:
       '@types/node': 20.19.43
 
   '@types/node@20.19.43':
+    dependencies:
+      undici-types: 6.21.0
+
+  '@types/node@22.20.1':
     dependencies:
       undici-types: 6.21.0
 
@@ -20055,9 +20069,9 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.19.43
 
-  inquirer@8.2.7(@types/node@20.19.43):
+  inquirer@8.2.7(@types/node@22.20.1):
     dependencies:
-      '@inquirer/external-editor': 1.0.3(@types/node@20.19.43)
+      '@inquirer/external-editor': 1.0.3(@types/node@22.20.1)
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       cli-cursor: 3.1.0

@@ -1,7 +1,7 @@
-import type commander from "commander"
+import type { Command } from "commander"
 
 export type ExecuteCommand = <T>(
-  command: commander.Command,
+  command: Command,
   operation: () => T,
   renderer: (data: T) => string,
 ) => void

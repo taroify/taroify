@@ -28,6 +28,8 @@ npm i -g @taroify/cli
 taroify info Button
 ```
 
+CLI 需要 Node.js 22.12 或更高版本。
+
 ## 命令
 
 | 命令 | 说明 |

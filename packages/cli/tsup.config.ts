@@ -11,7 +11,7 @@ export default defineConfig({
     mcp: "src/mcp/public.ts",
   },
   format: ["esm"],
-  target: "node18.18",
+  target: "node22.12",
   platform: "node",
   splitting: false,
   dts: true,

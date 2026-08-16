@@ -1,3 +1,7 @@
+---
+description: Taroify 离线组件知识 CLI 的安装、命令、Agent Skill 与 MCP 使用指南
+---
+
 # Taroify CLI
 
 `@taroify/cli` 是面向开发者和 AI 编码助手的离线组件知识 CLI。它将 Taroify
@@ -24,7 +28,7 @@ npm install -g @taroify/cli
 taroify info Button
 ```
 
-CLI 需要 Node.js 18.18 或更高版本。
+CLI 需要 Node.js 22.12 或更高版本。
 
 ## 按场景搜索
 
