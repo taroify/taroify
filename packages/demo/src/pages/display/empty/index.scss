@@ -5,8 +5,8 @@
   background: $background-color-2;
 
   .#{$demo-prefix}page__content {
-    background: inherit;
     padding: 0 0 20px * $hd 0;
+    background: inherit;
   }
 
   .custom-empty__image {
@@ -15,8 +15,8 @@
   }
 
   .bottom-button {
-    margin-top: 24px * $hd;
     width: 160px * $hd;
     height: 40px * $hd;
+    margin-top: 24px * $hd;
   }
 }

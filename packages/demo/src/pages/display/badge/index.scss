@@ -3,8 +3,8 @@
 @use "../../../styles/prefix" as *;
 
 .badge-demo {
-  background: $background-color-2;
   height: 100%;
+  background: $background-color-2;
 
   .#{$component-prefix}badge-wrapper {
     margin-left: 16px * $hd;

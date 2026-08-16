@@ -1,11 +1,10 @@
 module.exports = {
-  extends: [
-    "stylelint-config-standard",
-    "stylelint-config-sass-guidelines",
-    "stylelint-config-recess-order",
-    "stylelint-config-prettier",
-  ],
+  extends: ["stylelint-config-recommended-scss", "stylelint-config-recess-order"],
   rules: {
+    // Empty double-slash comments are used as visual separators in legacy variables files.
+    "scss/comment-no-empty": null,
+    // The SCSS parser treats the slashes in unquoted URLs as division operators.
+    "scss/operator-no-unspaced": null,
     "selector-no-qualifying-type": [
       true,
       {
@@ -25,8 +24,9 @@ module.exports = {
         ignorePseudoClasses: ["host", "global"],
       },
     ],
-    "selector-class-pattern": [
-      "^[a-z]([a-z0-9-]+)?((__|_)([a-z0-9]+-?)+)?(--([a-z0-9]+-?)+){0,2}$",
+    "selector-class-pattern": null,
+    "scss/selector-class-pattern": [
+      "^[a-z][a-z0-9-]*(?:(?:--|__|_)[a-z0-9-]+)*$",
       {
         resolveNestedSelectors: true,
       },

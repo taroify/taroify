@@ -3,8 +3,8 @@
 @use "../../../styles/prefix" as *;
 
 .uploader-demo {
-  background: $background-color-2;
   overflow-y: auto;
+  background: $background-color-2;
 
   .preview-cover {
     position: absolute;
@@ -12,8 +12,8 @@
     box-sizing: border-box;
     width: 100%;
     padding: 4px * $hd;
-    color: #fff;
     font-size: 12px * $hd;
+    color: #fff;
     text-align: center;
     background: rgba(0, 0, 0, 0.3);
   }

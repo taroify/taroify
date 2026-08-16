@@ -23,8 +23,8 @@
   .#{$demo-prefix}page__content {
     .#{$component-prefix}icon {
       margin: 16px * $hd 0;
-      color: $text-color;
       font-size: 32px  * $hd;
+      color: $text-color;
     }
 
     .#{$component-prefix}badge-wrapper {
@@ -44,10 +44,10 @@
   }
 
   .#{$component-prefix}flex-item {
-    display: inline-block;
     float: none;
-    text-align: center;
+    display: inline-block;
     vertical-align: middle;
+    text-align: center;
     cursor: pointer;
 
     &:active {
@@ -57,12 +57,12 @@
     .icon-name {
       display: block;
       height: 36px * $hd;
-      margin: -4px * $hd 0 4px * $hd;
       padding: 0 5px * $hd;
-      color: $gray-7;
+      margin: -4px * $hd 0 4px * $hd;
       font-size: 12px * $hd;
       line-height: 18px * $hd;
-      word-break: break-word;
+      color: $gray-7;
+      overflow-wrap: break-word;
     }
   }
 }

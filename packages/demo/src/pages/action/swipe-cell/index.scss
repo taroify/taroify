@@ -17,13 +17,13 @@
     }
 
     .custom-card {
-      background: $background-color-2;
       position: relative;
       box-sizing: border-box;
-      padding: 8px * $hd 16px * $hd;
-      color: $text-color;
-      font-size: 12px * $hd;
       display: flex;
+      padding: 8px * $hd 16px * $hd;
+      font-size: 12px * $hd;
+      color: $text-color;
+      background: $background-color-2;
 
       &__thumb {
         position: relative;

@@ -82,6 +82,9 @@ jobs:
       - name: Run linter
         run: pnpm run lint
 
+      - name: Run style linter
+        run: pnpm run lint:style
+
   test:
     if: github.repository == 'taroify/taroify'
     runs-on: ubuntu-latest

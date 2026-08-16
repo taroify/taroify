@@ -4,4 +4,5 @@ dist
 lib
 bundles
 packages/cli/data
+packages/**/publish/**
 *.tsx

@@ -15,8 +15,8 @@
   background-color: $back-top-background;
   border-radius: $border-radius-max;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
-  transition: $animation-duration-base cubic-bezier(0.25, 0.8, 0.5, 1);
   transform: scale(0);
+  transition: $animation-duration-base cubic-bezier(0.25, 0.8, 0.5, 1);
 
   &:active {
     opacity: $active-opacity;

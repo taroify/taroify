@@ -8,10 +8,10 @@
   margin: 0;
   line-height: $button-line-height;
   text-align: center;
+  appearance: none;
   cursor: pointer;
   border-radius: $button-border-radius;
   transition: opacity $button-transition-duration;
-  appearance: none;
 
   &::before {
     position: absolute;

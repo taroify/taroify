@@ -13,11 +13,11 @@
   line-height: inherit;
   color: inherit;
   text-align: left;
+  appearance: none;
   resize: none;
   user-select: auto;
   background: transparent;
   border: 0;
-  appearance: none;
 
   &:focus {
     outline: none

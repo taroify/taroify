@@ -92,8 +92,8 @@
   }
 
   &--vertical {
-    display: block;
     float: none;
+    display: block;
     padding: $step-vertical-padding;
     line-height: $step-vertical-line-height;
 

@@ -5,7 +5,7 @@
   background: $background-color-2;
 
   .#{$demo-prefix}page__content {
-    background: inherit;
     padding: 0 0 20px * $hd 0;
+    background: inherit;
   }
 }

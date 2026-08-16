@@ -10,7 +10,7 @@
   line-height: $notify-line-height;
   color: $notify-color;
   text-align: center;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 
   // allow newline character
   white-space: pre-wrap;

@@ -2,8 +2,8 @@
 @use "@taroify/core/styles/variables" as *;
 
 .image-demo {
-  background: $background-color-2;
   overflow-y: auto;
+  background: $background-color-2;
 
   .#{$component-prefix}flex-item {
     margin-bottom: 10px * $hd;
@@ -12,8 +12,8 @@
   .text {
     display: block;
     margin-top: 5px * $hd;
-    color: $text-color;
     font-size: 14px * $hd;
+    color: $text-color;
     text-align: center;
   }
 }
