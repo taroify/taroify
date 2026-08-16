@@ -1,7 +1,28 @@
 import { loadMeta, readDataFile } from "./data.js"
 import { CliError, ErrorCodes } from "./error.js"
 import { resolveDemo, resolveEntry } from "./resolver.js"
-import type { ApiTable, EntryKind, MetaEntry } from "./types.js"
+import type { ApiTable, Demo, EntryKind, MetaEntry } from "./types.js"
+
+type DemoMetadata = Pick<Demo, "id" | "language" | "title">
+
+export type EntryDemoResult =
+  | {
+      component: string
+      full: true
+      language: string
+      title: string
+      code: string
+    }
+  | {
+      component: string
+      full: false
+      demos: DemoMetadata[]
+    }
+  | ({
+      component: string
+      full: false
+      code: string
+    } & DemoMetadata)
 
 function entrySummary(entry: MetaEntry) {
   return {
@@ -172,7 +193,7 @@ export function getEntryDoc(query: string) {
   }
 }
 
-export function getEntryDemo(query: string, name?: string, full = false) {
+export function getEntryDemo(query: string, name?: string, full = false): EntryDemoResult {
   const { entry } = resolveEntry(loadMeta(), query)
   if (full) {
     if (!entry.demoPage) {

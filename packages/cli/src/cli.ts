@@ -1,4 +1,4 @@
-import commander from "commander"
+import { Command, CommanderError } from "commander"
 import { registerDemoCommand } from "./commands/demo.js"
 import { registerDocCommand } from "./commands/doc.js"
 import { registerInfoCommand } from "./commands/info.js"
@@ -9,8 +9,6 @@ import { registerTokenCommand } from "./commands/token.js"
 import { CliError, ErrorCodes, toCliError } from "./error.js"
 import { printSuccess } from "./format.js"
 import type { OutputFormat } from "./types.js"
-
-const { Command, CommanderError } = commander
 
 declare const __CLI_VERSION__: string
 
@@ -23,7 +21,7 @@ function requestedFormat(argv = process.argv): OutputFormat {
   return explicit === "json" ? "json" : "text"
 }
 
-function commandFormat(command: commander.Command): OutputFormat {
+function commandFormat(command: Command): OutputFormat {
   const format = command.parent?.opts().format ?? command.opts().format
   if (format !== "text" && format !== "json") {
     throw new CliError(
@@ -37,7 +35,7 @@ function commandFormat(command: commander.Command): OutputFormat {
   return format
 }
 
-function execute<T>(command: commander.Command, operation: () => T, renderer: (data: T) => string) {
+function execute<T>(command: Command, operation: () => T, renderer: (data: T) => string) {
   try {
     const format = commandFormat(command)
     printSuccess(format, operation(), renderer)
