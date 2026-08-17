@@ -58,7 +58,7 @@ function usePickerToolbarChildren(children?: ReactNode): PickerToolbarChildren {
   }, [children])
 }
 
-interface PickerToolbarProps extends ViewProps {
+export interface PickerToolbarProps extends ViewProps {
   position?: "bottom"
   children?: ReactNode
 }

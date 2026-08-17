@@ -95,6 +95,33 @@ export type {
 } from "./number-keyboard"
 export { default as PasswordInput } from "./password-input"
 export { default as Picker } from "./picker"
+export type {
+  PickerBaseProps,
+  PickerButtonProps,
+  PickerCancelEventParams,
+  PickerChangeEventParams,
+  PickerClickOptionEventParams,
+  PickerColumn,
+  PickerColumnInstance,
+  PickerColumnProps,
+  PickerColumns,
+  PickerColumnsProps,
+  PickerConfirmEventParams,
+  PickerFieldNames,
+  PickerInstance,
+  PickerOption,
+  PickerOptionData,
+  PickerOptionObject,
+  PickerOptionProps,
+  PickerProps,
+  PickerScrollIntoEventParams,
+  PickerSelectedState,
+  PickerThemeVars,
+  PickerTitleProps,
+  PickerToolbarPosition,
+  PickerToolbarProps,
+  PickerValue,
+} from "./picker"
 export { default as Radio } from "./radio"
 export { default as Rate } from "./rate"
 export { default as Search } from "./search"

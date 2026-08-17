@@ -3,7 +3,11 @@ import { isValidElement, type ReactElement, type ReactNode, useMemo } from "reac
 import Children from "../utils/children"
 import { isTextElement } from "../utils/validate"
 import type { PickerOptionProps } from "./picker-option"
-import type { PickerOptionObject } from "./picker.shared"
+import type { PickerOptionObject, PickerValue } from "./picker.shared"
+
+function toPickerValue(value: ReactNode): PickerValue | undefined {
+  return _.isString(value) || _.isNumber(value) ? value : undefined
+}
 
 function elementToObject(
   element: any,
@@ -17,7 +21,7 @@ function elementToObject(
     const textChildren = isTextElement(children) ? children : undefined
     return {
       index,
-      value: value ?? label ?? textChildren,
+      value: toPickerValue(value ?? label ?? textChildren),
       label: label ?? textChildren,
       children:
         isTextElement(children) || depth === maxDepth
@@ -40,10 +44,16 @@ function mapToOption(
   return elementToObject(nodeOrObject, index, depth, maxDepth)
 }
 
-export function mapToChildrenOptions(children: ReactNode, depth: number, maxDepth: number) {
-  return Children.map<PickerOptionObject | undefined, ReactNode>(children, (child, index) => {
-    return mapToOption(child, index, depth, maxDepth)
-  })
+export function mapToChildrenOptions(
+  children: ReactNode,
+  depth: number,
+  maxDepth: number,
+): PickerOptionObject[] {
+  return (
+    Children.map<PickerOptionObject | undefined, ReactNode>(children, (child, index) => {
+      return mapToOption(child, index, depth, maxDepth)
+    }) ?? []
+  ).filter((option): option is PickerOptionObject => Boolean(option))
 }
 
 interface UsePickerOptionsOptions {

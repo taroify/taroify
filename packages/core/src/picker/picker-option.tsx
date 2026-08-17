@@ -6,11 +6,12 @@ import { type CSSProperties, isValidElement, type ReactNode, useMemo, useContext
 import { prefixClassname } from "../styles"
 import { isTextElement } from "../utils/validate"
 import PickerContext from "./picker.context"
+import type { PickerValue } from "./picker.shared"
 
 export interface PickerOptionProps extends ViewProps {
   className?: string
   style?: CSSProperties
-  value?: any
+  value?: PickerValue
   label?: ReactNode
   disabled?: boolean
   children?: ReactNode
@@ -19,6 +20,7 @@ export interface PickerOptionProps extends ViewProps {
 export default function PickerOption(props: PickerOptionProps) {
   const {
     className,
+    style,
     disabled,
     // @ts-ignore
     index,
@@ -54,6 +56,7 @@ export default function PickerOption(props: PickerOptionProps) {
         className,
       )}
       style={{
+        ...style,
         height: `${optionHeight}px`,
       }}
       children={children}

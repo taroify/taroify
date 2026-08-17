@@ -7,9 +7,31 @@ import PickerTitle from "./picker-title"
 import PickerToolbar from "./picker-toolbar"
 import { PickerColumn } from "./picker.composition"
 
-export type { PickerInstance, PickerProps } from "./picker"
-export type { PickerOptionObject, PickerThemeVars } from "./picker.shared"
+export type { PickerBaseProps, PickerInstance, PickerProps } from "./picker"
+export type {
+  PickerCancelEventParams,
+  PickerChangeEventParams,
+  PickerClickOptionEventParams,
+  PickerColumn,
+  PickerColumnInstance,
+  PickerColumns,
+  PickerConfirmEventParams,
+  PickerFieldNames,
+  PickerOption,
+  PickerOptionData,
+  PickerOptionObject,
+  PickerScrollIntoEventParams,
+  PickerSelectedState,
+  PickerThemeVars,
+  PickerToolbarPosition,
+  PickerValue,
+} from "./picker.shared"
 export type { PickerColumnsProps } from "./picker-columns"
+export type { PickerColumnProps } from "./picker.composition"
+export type { PickerOptionProps } from "./picker-option"
+export type { PickerButtonProps } from "./picker-button"
+export type { PickerTitleProps } from "./picker-title"
+export type { PickerToolbarProps } from "./picker-toolbar"
 export { default as PickerContext } from "./picker.context"
 
 interface PickerInterface extends ForwardRefExoticComponent<PickerProps> {

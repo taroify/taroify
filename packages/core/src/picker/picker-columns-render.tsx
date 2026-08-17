@@ -23,16 +23,38 @@ export interface PickerColumnsRenderProps extends Omit<ViewProps, "children"> {
 
   children?: ReactNode
 
-  onChange?(option: PickerOptionObject, column: PickerOptionObject, emitChange?: boolean): void
+  onChange?(
+    option: PickerOptionObject | undefined,
+    column: PickerOptionObject,
+    emitChange?: boolean,
+  ): void
+
+  onClickOption?(option: PickerOptionObject, column: PickerOptionObject): void
+
+  onScrollInto?(option: PickerOptionObject, column: PickerOptionObject): void
 }
 
 function PickerColumnsRender(props: PickerColumnsRenderProps) {
-  const { className, style, children, readonly, values, siblingCount, onChange, ...restProps } =
-    props
+  const {
+    className,
+    style,
+    children,
+    readonly,
+    values,
+    siblingCount,
+    onChange,
+    onClickOption,
+    onScrollInto,
+    ...restProps
+  } = props
 
-  const { setColumnRefs, clearColumnRefs, optionHeight } = useContext(PickerContext)
+  const { setColumnRefs, optionHeight, swipeDuration, loading, empty, renderEmpty } =
+    useContext(PickerContext)
 
   const columns = usePickerOptions(children)
+  const hasOptions = columns.some(
+    (column) => Array.isArray(column.children) && column.children.length > 0,
+  )
 
   const visibleCount = siblingCount * 2
 
@@ -62,11 +84,8 @@ function PickerColumnsRender(props: PickerColumnsRenderProps) {
 
   const columnsRender = useRendered(() =>
     _.map(columns, (column, columnIndex) => {
-      const { children: options, ...restColumnProps } = column
-      // When rerender, clear columns refs
-      // Prevent leakage and contamination
-      clearColumnRefs?.()
-      //
+      const { children: columnChildren, ...restColumnProps } = column
+      const options = Array.isArray(columnChildren) ? (columnChildren as PickerOptionObject[]) : []
       return (
         <PickerColumn
           ref={setColumnRefs?.(columnIndex)}
@@ -77,6 +96,7 @@ function PickerColumnsRender(props: PickerColumnsRenderProps) {
           {...restColumnProps}
           visibleCount={visibleCount}
           optionHeight={optionHeight}
+          swipeDuration={swipeDuration}
           value={_.get(values, columnIndex)}
           onChange={(option, emitChange) =>
             onChange?.(
@@ -88,10 +108,37 @@ function PickerColumnsRender(props: PickerColumnsRenderProps) {
               emitChange,
             )
           }
+          onClickOption={(option) =>
+            onClickOption?.(option, {
+              ...column,
+              index: columnIndex,
+            })
+          }
+          onScrollInto={(option) =>
+            onScrollInto?.(option, {
+              ...column,
+              index: columnIndex,
+            })
+          }
         />
       )
     }),
   )
+
+  if (!loading && !hasOptions) {
+    const emptyContent = renderEmpty?.() ?? empty
+    if (!_.isUndefined(emptyContent)) {
+      return (
+        <View
+          className={classNames(prefixClassname("picker__empty"), className)}
+          style={rootStyle}
+          {...restProps}
+        >
+          {emptyContent}
+        </View>
+      )
+    }
+  }
 
   return (
     <View
@@ -102,11 +149,18 @@ function PickerColumnsRender(props: PickerColumnsRenderProps) {
       {...restProps}
     >
       {columnsRender}
-      <View className={prefixClassname("picker__mask")} style={maskStyle} />
-      <View
-        className={classNames([HAIRLINE_BORDER_UNSET_TOP_BOTTOM, prefixClassname("picker__frame")])}
-        style={frameStyle}
-      />
+      {hasOptions && (
+        <>
+          <View className={prefixClassname("picker__mask")} style={maskStyle} />
+          <View
+            className={classNames([
+              HAIRLINE_BORDER_UNSET_TOP_BOTTOM,
+              prefixClassname("picker__frame"),
+            ])}
+            style={frameStyle}
+          />
+        </>
+      )}
     </View>
   )
 }

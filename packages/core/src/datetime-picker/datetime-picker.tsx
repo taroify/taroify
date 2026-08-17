@@ -100,6 +100,7 @@ function DatetimePickerElement(
     const selectedValues = pickerRef.current
       ?.getSelectedOptions()
       .map(({ value: selectedValue }) => selectedValue)
+      .filter((selectedValue): selectedValue is string => typeof selectedValue === "string")
     if (selectedValues?.length) {
       return toDate(selectedValues)
     }

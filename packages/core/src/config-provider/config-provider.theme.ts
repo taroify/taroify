@@ -21,6 +21,8 @@ const darkThemeVars: ConfigProviderThemeVars = {
   textLinkColor: "#7aa2d6",
   calendarMonthWatermarkColor: "rgba(100, 101, 102, 0.2)",
   pickerLoadingMaskColor: "rgba(28, 28, 30, 0.9)",
+  pickerMaskColor:
+    "linear-gradient(180deg, rgba(28, 28, 30, 0.9), rgba(28, 28, 30, 0.4)), linear-gradient(0deg, rgba(28, 28, 30, 0.9), rgba(28, 28, 30, 0.4))",
 }
 
 export default darkThemeVars
