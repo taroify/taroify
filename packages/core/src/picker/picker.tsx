@@ -3,7 +3,6 @@ import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
 import * as _ from "lodash"
-// biome-ignore lint/correctness/noUnusedImports: the classic JSX runtime requires React in scope
 import * as React from "react"
 import {
   Children,
@@ -31,38 +30,66 @@ import PickerOption from "./picker-option"
 import {
   DEFAULT_OPTION_HEIGHT,
   DEFAULT_SIBLING_COUNT,
+  DEFAULT_SWIPE_DURATION,
+  type PickerClickOptionEventParams,
   type PickerColumnInstance,
-  type PickerOptionObject,
+  type PickerFieldNames,
   type PickerOptionData,
+  type PickerOptionObject,
+  type PickerScrollIntoEventParams,
+  type PickerSelectedState,
+  type PickerToolbarPosition,
+  type PickerValue,
   validPickerColumn,
 } from "./picker.shared"
 
-function usePickerValues(value?: any): any[] {
+function usePickerValues(value?: PickerValue | PickerValue[]): Array<PickerValue | undefined> {
   return _.isArray(value) ? value : [value]
 }
 
 export interface PickerBaseProps extends ViewProps {
   readonly?: boolean
   loading?: boolean
+  showToolbar?: boolean
+  toolbarPosition?: PickerToolbarPosition
   siblingCount?: number
   optionHeight?: string | number
+  swipeDuration?: string | number
   title?: ReactNode
   confirmText?: ReactNode
   cancelText?: ReactNode
   columns?: PickerOptionData[] | PickerOptionData[][]
-  columnsFieldNames?: { label?: string; value?: string }
+  columnsFieldNames?: PickerFieldNames
+  empty?: ReactNode
+  renderEmpty?(): ReactNode
+  columnsTop?: ReactNode
+  columnsBottom?: ReactNode
   children?: ReactNode
 }
 
 export interface PickerProps extends PickerBaseProps {
-  defaultValue?: string | string[]
-  value?: string | string[]
+  defaultValue?: PickerValue | PickerValue[]
+  value?: PickerValue | PickerValue[]
 
-  onChange?(values: string | string[], option: PickerOptionObject, column: PickerOptionObject): void
+  onChange?(
+    values: PickerValue | PickerValue[],
+    option: PickerOptionObject,
+    column: PickerOptionObject,
+  ): void
 
-  onConfirm?(values: string | string[], option: PickerOptionObject | PickerOptionObject[]): void
+  onConfirm?(
+    values: PickerValue | PickerValue[],
+    option: PickerOptionObject | PickerOptionObject[],
+  ): void
 
-  onCancel?(values: string | string[], option: PickerOptionObject | PickerOptionObject[]): void
+  onCancel?(
+    values: PickerValue | PickerValue[],
+    option: PickerOptionObject | PickerOptionObject[],
+  ): void
+
+  onClickOption?(params: PickerClickOptionEventParams): void
+
+  onScrollInto?(params: PickerScrollIntoEventParams): void
 }
 
 export interface PickerInstance {
@@ -82,6 +109,8 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     className,
     loading,
     readonly,
+    showToolbar = true,
+    toolbarPosition = "top",
     title,
     confirmText = "确认",
     cancelText = "取消",
@@ -89,24 +118,27 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     columnsFieldNames: columnsFieldNamesProp,
     siblingCount = DEFAULT_SIBLING_COUNT,
     optionHeight: optionHeightProp,
+    swipeDuration: swipeDurationProp = DEFAULT_SWIPE_DURATION,
+    empty,
+    renderEmpty,
+    columnsTop,
+    columnsBottom,
     children: childrenProp,
     onChange,
     onCancel,
     onConfirm,
+    onClickOption,
+    onScrollInto,
     ...restProps
   } = props
 
-  const {
-    getRefs: getColumnRefs,
-    setRefs: setColumnRefs,
-    clearRefs: clearColumnRefs,
-  } = useRefs<PickerColumnInstance>()
+  const { getRefs: getColumnRefs, setRefs: setColumnRefs } = useRefs<PickerColumnInstance>()
 
   const { value, setValue } = useUncontrolled({ value: valueProp, defaultValue })
 
   const multiValueRef = useToRef(_.isArray(value))
 
-  const values = usePickerValues(value)
+  const values = usePickerValues(value).filter((item): item is PickerValue => !_.isUndefined(item))
 
   const fieldNames: PickerBaseProps["columnsFieldNames"] = useMemo(() => {
     if (!_.isEmpty(columnsFieldNamesProp) && _.isObject(columnsFieldNamesProp)) {
@@ -115,7 +147,7 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     return defaultFieldNames
   }, [columnsFieldNamesProp])
 
-  const children = useMemo(() => {
+  const { children, columnCount } = useMemo(() => {
     let toolbar: ReactNode = null
     const __children__: ReactNode[] = []
     const columns: ReactNode[] = []
@@ -126,14 +158,17 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
         columns.push(element)
       } else if (isElementOf(child, PickerColumns)) {
         const element = child as ReactElement
-        columns.push(...element.props.children)
+        const columnChildren = element.props.children
+        if (!_.isUndefined(columnChildren) && columnChildren !== null) {
+          columns.push(...(Array.isArray(columnChildren) ? columnChildren : [columnChildren]))
+        }
       } else if (isElementOf(child, PickerToolbar)) {
         toolbar = child
       } else {
         __children__.push(child)
       }
     })
-    if (!toolbar && (title || confirmText || cancelText)) {
+    if (!toolbar && showToolbar && (title || confirmText || cancelText)) {
       toolbar = (
         <PickerToolbar key="-2">
           <PickerButton type="cancel">{cancelText}</PickerButton>
@@ -141,6 +176,9 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
           <PickerButton type="confirm">{confirmText}</PickerButton>
         </PickerToolbar>
       )
+    }
+    if (!showToolbar) {
+      toolbar = null
     }
     if (_.isEmpty(columns) && columnsProp && columnsProp.length > 0) {
       ;(Array.isArray(columnsProp[0]) ? columnsProp : [columnsProp]).forEach((col, i) => {
@@ -159,23 +197,49 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
       })
     }
 
-    __children__.unshift(<PickerColumns key="-1" children={columns} />)
-    __children__.unshift(toolbar)
-    return __children__
-  }, [childrenProp, title, confirmText, cancelText, columnsProp, fieldNames])
+    const pickerColumns = <PickerColumns key="-1" children={columns} />
+    const pickerBody = [
+      <React.Fragment key="columns-top">{columnsTop}</React.Fragment>,
+      pickerColumns,
+      <React.Fragment key="columns-bottom">{columnsBottom}</React.Fragment>,
+    ]
+    if (toolbarPosition === "bottom") {
+      __children__.unshift(...pickerBody, toolbar)
+    } else {
+      __children__.unshift(toolbar, ...pickerBody)
+    }
+    return { children: __children__, columnCount: columns.length }
+  }, [
+    cancelText,
+    childrenProp,
+    columnsBottom,
+    columnsProp,
+    columnsTop,
+    confirmText,
+    fieldNames,
+    showToolbar,
+    title,
+    toolbarPosition,
+  ])
 
-  const valueOptionsRef = useRef<PickerOptionObject[]>([])
+  const valueOptionsRef = useRef<Array<PickerOptionObject | undefined>>([])
+  valueOptionsRef.current.length = columnCount
 
   const optionHeight = useMemo(
     () => (optionHeightProp ? unitToPx(optionHeightProp) : DEFAULT_OPTION_HEIGHT),
     [optionHeightProp],
   )
 
+  const swipeDuration = useMemo(
+    () => Math.max(0, Number(swipeDurationProp) || 0),
+    [swipeDurationProp],
+  )
+
   const setValueOptions = useCallback(
-    (option: PickerOptionObject, unverifiedColumn: PickerOptionObject) => {
+    (option: PickerOptionObject | undefined, unverifiedColumn: PickerOptionObject) => {
       const column = validPickerColumn(unverifiedColumn)
-      // If options is empty, option is undefined
-      if (option && column) {
+      /* istanbul ignore next -- columns rendered by Picker always carry a valid numeric index */
+      if (column) {
         const { index: columnIndex } = column
         valueOptionsRef.current[columnIndex] = option
       }
@@ -200,20 +264,29 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     [getColumnRefs],
   )
 
+  const getSelectedState = useCallback((): PickerSelectedState => {
+    const selectedOptions = valueOptionsRef.current.filter((option): option is PickerOptionObject =>
+      Boolean(option && !option.disabled),
+    )
+    return {
+      selectedValues: selectedOptions.map(({ value: selectedValue }) => selectedValue!),
+      selectedOptions: selectedOptions.map((option) => ({ ...option })),
+      selectedIndexes: selectedOptions.map(({ index }) => index),
+    }
+  }, [])
+
   const handleAction = useCallback(
     (action?: PickerProps["onConfirm"]) => () => {
       stopMomentum()
-      action?.(
-        _.map(valueOptionsRef.current, ({ value }) => value),
-        _.map(valueOptionsRef.current, (valueOption) => ({ ...valueOption })),
-      )
+      const { selectedValues, selectedOptions } = getSelectedState()
+      action?.(selectedValues, selectedOptions)
     },
-    [stopMomentum],
+    [getSelectedState, stopMomentum],
   )
 
   const getSelectedOptions = useCallback(
-    () => _.map(valueOptionsRef.current, (valueOption) => ({ ...valueOption })),
-    [],
+    () => getSelectedState().selectedOptions,
+    [getSelectedState],
   )
 
   useImperativeHandle(
@@ -229,19 +302,51 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
 
   const isMultiValue = useCallback(() => multiValueRef.current, [multiValueRef])
 
+  const handleClickOption = useCallback(
+    (currentOption: PickerOptionObject, unverifiedColumn: PickerOptionObject) => {
+      const column = validPickerColumn(unverifiedColumn)
+      /* istanbul ignore next -- columns rendered by Picker always carry a valid numeric index */
+      if (!column) return
+      onClickOption?.({
+        ...getSelectedState(),
+        columnIndex: column.index,
+        currentOption: { ...currentOption },
+      })
+    },
+    [getSelectedState, onClickOption],
+  )
+
+  const handleScrollInto = useCallback(
+    (currentOption: PickerOptionObject, unverifiedColumn: PickerOptionObject) => {
+      const column = validPickerColumn(unverifiedColumn)
+      /* istanbul ignore next -- columns rendered by Picker always carry a valid numeric index */
+      if (!column) return
+      onScrollInto?.({
+        columnIndex: column.index,
+        currentOption: { ...currentOption },
+      })
+    },
+    [onScrollInto],
+  )
+
   return (
     <PickerContext.Provider
       value={{
         readonly,
+        loading,
         siblingCount,
         optionHeight,
+        swipeDuration,
+        empty,
+        renderEmpty,
         values,
         getValueOptions,
         isMultiValue,
         setValueOptions,
-        clearColumnRefs,
         setColumnRefs,
         onChange: handleChange,
+        onClickOption: handleClickOption,
+        onScrollInto: handleScrollInto,
         onConfirm: handleAction(onConfirm),
         onCancel: handleAction(onCancel),
       }}

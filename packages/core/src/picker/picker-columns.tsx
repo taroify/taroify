@@ -20,20 +20,29 @@ function PickerColumns(props: PickerColumnsProps) {
     isMultiValue,
     setValueOptions,
     onChange,
+    onClickOption,
+    onScrollInto,
   } = useContext(PickerContext)
 
   const onColumnChange = useCallback(
-    (option: PickerOptionObject, unverifiedColumn: PickerOptionObject, emitChange?: boolean) => {
+    (
+      option: PickerOptionObject | undefined,
+      unverifiedColumn: PickerOptionObject,
+      emitChange?: boolean,
+    ) => {
       setValueOptions?.(option, unverifiedColumn)
       const column = validPickerColumn(unverifiedColumn)
-      if (column && emitChange) {
+      if (column && option && emitChange) {
         const { index: columnIndex } = column
-        const newValues = _.map(
-          _.filter(getValueOptions?.(), (newOption) => !_.isUndefined(newOption)),
-          ({ value }) => value,
-        )
+        const valueOptions = getValueOptions?.() ?? []
+        const newValues = valueOptions
+          .filter((newOption): newOption is PickerOptionObject => Boolean(newOption))
+          .map(({ value }) => value!)
         _.set(newValues, columnIndex, option?.value)
-        const aValues = getPickerValue(newValues, isMultiValue?.() || _.size(newValues) > 1)
+        const aValues = getPickerValue(
+          newValues,
+          isMultiValue?.() || valueOptions.length > 1 || _.size(newValues) > 1,
+        )
         onChange?.(aValues, { ...option }, { ...column })
       }
     },
@@ -47,6 +56,8 @@ function PickerColumns(props: PickerColumnsProps) {
       values={values}
       siblingCount={siblingCount}
       onChange={onColumnChange}
+      onClickOption={onClickOption}
+      onScrollInto={onScrollInto}
     />
   )
 }

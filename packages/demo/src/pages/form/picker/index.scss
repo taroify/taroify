@@ -1,7 +1,26 @@
+@use "@taroify/core/styles/variables" as *;
 @use "../../../styles/prefix" as *;
 
 .picker-demo {
   .#{$demo-prefix}block__content {
     padding: 0;
+  }
+
+  &__columns-title,
+  &__columns-hint {
+    box-sizing: border-box;
+    padding: 10px * $hd var(--padding-md, $padding-md);
+  }
+
+  &__columns-title {
+    font-size: var(--font-size-md, $font-size-md);
+    line-height: var(--line-height-md, $line-height-md);
+    color: var(--text-color, $text-color);
+  }
+
+  &__columns-hint {
+    font-size: var(--font-size-sm, $font-size-sm);
+    line-height: var(--line-height-sm, $line-height-sm);
+    color: var(--text-color-2, $text-color-2);
   }
 }

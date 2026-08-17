@@ -1,5 +1,6 @@
 import { Field, Input, Picker, Popup, Toast } from "@taroify/core"
-import { ArrowRight } from "@taroify/icons"
+import { View } from "@tarojs/components"
+import * as React from "react"
 import { useMemo, useState } from "react"
 import Block from "../../../components/block"
 import CustomWrapper from "../../../components/custom-wrapper"
@@ -125,6 +126,47 @@ function LoadingPicker() {
   )
 }
 
+function ToolbarPicker() {
+  return (
+    <Picker
+      title="底部工具栏"
+      toolbarPosition="bottom"
+      columns={[
+        { label: "杭州", value: "Hangzhou" },
+        { label: "宁波", value: "Ningbo" },
+        { label: "温州", value: "Wenzhou" },
+      ]}
+    />
+  )
+}
+
+function EmptyPicker() {
+  return <Picker columns={[]} renderEmpty={() => <View>暂无可选项</View>} />
+}
+
+function PickerWithContent() {
+  const columns = useMemo(
+    () => [
+      { label: "杭州", value: "Hangzhou" },
+      { label: "宁波", value: "Ningbo" },
+      { label: "温州", value: "Wenzhou" },
+    ],
+    [],
+  )
+
+  return (
+    <Picker
+      columns={columns}
+      swipeDuration={800}
+      columnsTop={<View className="picker-demo__columns-title">请选择城市</View>}
+      columnsBottom={
+        <View className="picker-demo__columns-hint">点击选项也可以完成选择</View>
+      }
+      onClickOption={({ currentOption }) => Toast.open(`点击了：${currentOption.label}`)}
+    />
+  )
+}
+
 function PickerPopup() {
   const [value, setValue] = useState("")
   const [openPicker, setOpenPicker] = useState(false)
@@ -149,7 +191,7 @@ function PickerPopup() {
           columns={columns}
           onCancel={() => setOpenPicker(false)}
           onConfirm={(values) => {
-            setValue(values as string)
+            setValue((values as string[])[0])
             setOpenPicker(false)
           }}
         >
@@ -215,6 +257,21 @@ export default function PickerDemo() {
       <Block variant="card" title="加载状态">
         <CustomWrapper>
           <LoadingPicker />
+        </CustomWrapper>
+      </Block>
+      <Block variant="card" title="工具栏位置">
+        <CustomWrapper>
+          <ToolbarPicker />
+        </CustomWrapper>
+      </Block>
+      <Block variant="card" title="空状态">
+        <CustomWrapper>
+          <EmptyPicker />
+        </CustomWrapper>
+      </Block>
+      <Block variant="card" title="选项区域内容">
+        <CustomWrapper>
+          <PickerWithContent />
         </CustomWrapper>
       </Block>
       <Block variant="card" title="搭配弹出层使用">

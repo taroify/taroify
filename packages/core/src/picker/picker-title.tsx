@@ -3,7 +3,7 @@ import * as React from "react"
 import type { ReactNode } from "react"
 import { prefixClassname } from "../styles"
 
-interface PickerTitleProps {
+export interface PickerTitleProps {
   className?: string
   children?: ReactNode
 }
