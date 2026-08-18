@@ -165,7 +165,7 @@ function PickerPopup() {
           columns={columns}
           onCancel={() => setOpen(false)}
           onConfirm={(values) => {
-            setValue((values as string[])[0])
+            setValue(String(values[0] ?? ""))
             setOpen(false)
           }}
         />

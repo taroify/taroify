@@ -204,6 +204,29 @@ describe("<Picker />", () => {
     expect(ref.current?.getSelectedOptions()).toEqual([])
   })
 
+  it("does not emit misaligned values when an earlier column is unavailable", () => {
+    const onChange = jest.fn()
+    const availableColumn = [
+      { label: "选项一", value: "one" },
+      { label: "选项二", value: "two" },
+    ]
+    const { getByText, rerender } = render(
+      <Picker columns={[[], availableColumn]} onChange={onChange} />,
+    )
+
+    fireEvent.click(getByText("选项二"))
+    expect(onChange).not.toHaveBeenCalled()
+
+    rerender(
+      <Picker
+        columns={[[{ label: "不可用", value: "disabled", disabled: true }], availableColumn]}
+        onChange={onChange}
+      />,
+    )
+    fireEvent.click(getByText("选项二"))
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   it("supports manual composition and custom toolbar button inference", () => {
     const onConfirm = jest.fn()
     const onCancel = jest.fn()
@@ -375,6 +398,29 @@ describe("<Picker />", () => {
       [expect.objectContaining({ value: "Wenzhou" })],
     )
     expect(getWrapper(container).style.transitionDuration).toBe("0ms")
+  })
+
+  it("keeps a pending momentum update across an unrelated parent rerender", () => {
+    const now = jest.spyOn(Date, "now")
+    now.mockReturnValueOnce(0).mockReturnValueOnce(10).mockReturnValueOnce(20)
+    const onChange = jest.fn()
+    const { container, rerender } = render(<Picker columns={cities} onChange={onChange} />)
+    const column = getColumn(container)
+
+    touch(column, "touchStart", 0, 0)
+    touch(column, "touchMove", 0, -100)
+    fireEvent.touchEnd(column)
+    expect(getWrapper(container).style.transitionDuration).toBe("800ms")
+
+    rerender(<Picker columns={cities} onChange={onChange} />)
+    expect(getWrapper(container).style.transitionDuration).toBe("800ms")
+
+    fireEvent.transitionEnd(getWrapper(container))
+    expect(onChange).toHaveBeenCalledWith(
+      "Wenzhou",
+      expect.objectContaining({ value: "Wenzhou" }),
+      expect.objectContaining({ index: 0 }),
+    )
   })
 
   it("supports downward momentum and same-index vertical movement", () => {
