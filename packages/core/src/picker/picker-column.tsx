@@ -31,6 +31,7 @@ import {
 const MOMENTUM_LIMIT_TIME = 300
 const MOMENTUM_LIMIT_DISTANCE = 15
 const DEFAULT_DURATION = 200
+const EMPTY_OPTIONS: PickerOptionObject[] = []
 
 export function findEnabledIndex(options: PickerOptionObject[], index: number) {
   if (!options.length) return -1
@@ -89,7 +90,7 @@ const PickerColumn = forwardRef<PickerColumnInstance, PickerColumnProps>(
       visibleCount = DEFAULT_SIBLING_COUNT * 2,
       optionHeight = DEFAULT_OPTION_HEIGHT,
       swipeDuration = DEFAULT_SWIPE_DURATION,
-      children: options = [],
+      children: options = EMPTY_OPTIONS,
       onChange,
       onClickOption,
       onScrollInto,
@@ -102,6 +103,8 @@ const PickerColumn = forwardRef<PickerColumnInstance, PickerColumnProps>(
 
     const optionsRef = useRef(options)
     optionsRef.current = options
+    const onChangeRef = useRef(onChange)
+    onChangeRef.current = onChange
     const wrapperRef = useRef<HTMLElement | null>(null)
     const movingRef = useRef(false)
     const startOffsetRef = useRef(0)
@@ -149,7 +152,7 @@ const PickerColumn = forwardRef<PickerColumnInstance, PickerColumnProps>(
             enabledIndex !== activeIndexRef.current || option?.value !== activeValueRef.current
           activeIndexRef.current = enabledIndex
           activeValueRef.current = option?.value
-          onChange?.(option, emitChange && changed)
+          onChangeRef.current?.(option, emitChange && changed)
         }
 
         if (movingRef.current && offset !== activeOffsetRef.current) {
@@ -159,7 +162,7 @@ const PickerColumn = forwardRef<PickerColumnInstance, PickerColumnProps>(
         }
         setActiveOffset(offset)
       },
-      [onChange, optionHeight, setActiveOffset],
+      [optionHeight, setActiveOffset],
     )
 
     const stopMomentum = useCallback(() => {
@@ -173,9 +176,9 @@ const PickerColumn = forwardRef<PickerColumnInstance, PickerColumnProps>(
       movingRef.current = false
       transitionEndTriggerRef.current = undefined
       setCurrentDuration(0)
-      const valueIndex = optionsRef.current.findIndex((option) => option.value === value)
+      const valueIndex = options.findIndex((option) => option.value === value)
       setIndex(valueIndex)
-    }, [options, optionHeight, setCurrentDuration, setIndex, value])
+    }, [options, setCurrentDuration, setIndex, value])
 
     const momentum = useCallback(
       (distance: number, duration: number) => {

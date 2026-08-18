@@ -77,15 +77,9 @@ export interface PickerProps extends PickerBaseProps {
     column: PickerOptionObject,
   ): void
 
-  onConfirm?(
-    values: PickerValue | PickerValue[],
-    option: PickerOptionObject | PickerOptionObject[],
-  ): void
+  onConfirm?(values: PickerValue[], option: PickerOptionObject[]): void
 
-  onCancel?(
-    values: PickerValue | PickerValue[],
-    option: PickerOptionObject | PickerOptionObject[],
-  ): void
+  onCancel?(values: PickerValue[], option: PickerOptionObject[]): void
 
   onClickOption?(params: PickerClickOptionEventParams): void
 

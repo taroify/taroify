@@ -35,9 +35,11 @@ function PickerColumns(props: PickerColumnsProps) {
       if (column && option && emitChange) {
         const { index: columnIndex } = column
         const valueOptions = getValueOptions?.() ?? []
-        const newValues = valueOptions
-          .filter((newOption): newOption is PickerOptionObject => Boolean(newOption))
-          .map(({ value }) => value!)
+        const hasIncompleteColumn = valueOptions.some(
+          (valueOption) => !valueOption || _.isUndefined(valueOption.value),
+        )
+        if (hasIncompleteColumn) return
+        const newValues = valueOptions.map((valueOption) => valueOption!.value!)
         _.set(newValues, columnIndex, option?.value)
         const aValues = getPickerValue(
           newValues,
