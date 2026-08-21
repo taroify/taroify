@@ -394,8 +394,8 @@ importers:
         specifier: 4.2.1
         version: 4.2.1(@tarojs/components@4.2.1(@tarojs/helper@4.2.1(@swc/helpers@0.5.23))(@types/react@18.2.0)(html-webpack-plugin@5.6.8(@rspack/core@2.1.6(@swc/helpers@0.5.23))(webpack@5.91.0(postcss@8.5.26)))(postcss@8.5.26)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(postcss@8.5.26)))(webpack@5.91.0(postcss@8.5.26)))(@tarojs/helper@4.2.1(@swc/helpers@0.5.23))(@tarojs/shared@4.2.1)(@types/react@18.2.0)(html-webpack-plugin@5.6.8(@rspack/core@2.1.6(@swc/helpers@0.5.23))(webpack@5.91.0(postcss@8.5.26)))(postcss@8.5.26)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(postcss@8.5.26)))(webpack@5.91.0(postcss@8.5.26))
       '@vant/area-data':
-        specifier: ^1.2.1
-        version: 1.5.2
+        specifier: ^2.0.0
+        version: 2.1.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
@@ -539,8 +539,8 @@ importers:
   packages/hooks:
     dependencies:
       '@vant/area-data':
-        specifier: ^1.2.1
-        version: 1.5.2
+        specifier: ^2.0.0
+        version: 2.1.0
     devDependencies:
       '@tarojs/components':
         specifier: 3.6.23
@@ -4258,8 +4258,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vant/area-data@1.5.2':
-    resolution: {integrity: sha512-Gtxgt6Rjgopt6234ANpO0bBsSwtjZ23lBlVDHIy8Mi2NJqyoj1vgVWY0dri8/2LCZAWzQ6EnwRrUVViUZ0cvMA==}
+  '@vant/area-data@2.1.0':
+    resolution: {integrity: sha512-wx9PrUX7wSUJiFcz8UrcvZfTjV6sTc+7SHcbjGQQzEcv5y+EwOo5uV4ZKdfrR5Hzcw4MA08LQdvXPSEb4nWbug==}
 
   '@vant/touch-emulator@1.5.0':
     resolution: {integrity: sha512-/L2W/pehJLHGftSIiG31E0P8nibeA+SBcNptdyRymukM9zQ4Pn5Ku7Cndx5oXsY5SE9uyHaJ4M9oj+q2AROHhQ==}
@@ -16101,7 +16101,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@vant/area-data@1.5.2': {}
+  '@vant/area-data@2.1.0': {}
 
   '@vant/touch-emulator@1.5.0': {}
 
