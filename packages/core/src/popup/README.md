@@ -115,18 +115,60 @@ function beforeClose(action: PopupCloseAction) {
 
 ### 禁止滚动穿透
 
+`lock` 默认开启，用于阻止遮罩层和弹出层内容区域的滑动穿透。如果弹出层内容需要滚动，可以根据高度是否固定选择以下方案。
+
+#### 固定高度滚动
+
+使用 `ScrollView` 时，需要通过 `scrollY` 开启纵向滚动，并为滚动区域设置明确高度。该方案适用于 H5 和小程序。
+
 ```tsx
-<Popup lock>
-  <View>无法滑动</View>
+<Popup
+  open={open}
+  lock
+  placement="bottom"
+  style={{ height: "70vh", overflow: "hidden" }}
+>
+  <ScrollView scrollY style={{ height: "100%" }}>
+    <LongContent />
+  </ScrollView>
 </Popup>
 ```
 
-如果需要内容支持溢出滚动，则需要包裹一层 `ScrollView` 组件。
+#### 自适应高度滚动
+
+在微信小程序中，如果需要内容较少时自适应高度、超过最大高度后滚动，可以设置 `catchMove={false}` 允许弹出层内容滚动，并通过 `PageMeta` 阻止底层页面滚动。
 
 ```tsx
-<Popup lock>
-  <ScrollView scrollY>可以滑动</ScrollView>
-</Popup>
+import { PageMeta } from "@tarojs/components"
+
+function Page() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <PageMeta pageStyle={open ? "overflow: hidden;" : ""} />
+
+      <Popup
+        open={open}
+        lock
+        catchMove={false}
+        placement="bottom"
+        style={{ maxHeight: "70vh" }}
+        onClose={setOpen}
+      >
+        <LongContent />
+      </Popup>
+    </>
+  )
+}
+```
+
+`PageMeta` 需要 Taro 3.6.19 及以上版本，应作为页面内的第一个节点，并在页面配置中开启 `enablePageMeta`：
+
+```ts
+export default definePageConfig({
+  enablePageMeta: true,
+})
 ```
 
 ## API
@@ -141,6 +183,7 @@ function beforeClose(action: PopupCloseAction) {
 | duration | 动画时长，单位毫秒 | _number_ | `300` |
 | rounded | 是否显示圆角 | _boolean_ | `false` |
 | lock | 是否锁定背景滚动 | _boolean_ | `true` |
+| catchMove | 是否拦截弹出层内容区域的触摸移动事件，设置为 `false` 后可使用普通 `View` 的溢出滚动 | _boolean_ | `lock` |
 | backdrop <Tag tag="v1.0.2" /> | 是否显示遮罩层，或传入遮罩层配置 | _boolean \| Omit&lt;PopupBackdropProps, "open"&gt;_ | `true` |
 | closeOnClickBackdrop <Tag tag="v1.0.2" /> | 点击遮罩层时是否关闭弹出层 | _boolean_ | `true` |
 | closeable <Tag tag="v1.0.2" /> | 是否显示关闭图标 | _boolean_ | `false` |
