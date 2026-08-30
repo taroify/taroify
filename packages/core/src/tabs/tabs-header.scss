@@ -76,6 +76,18 @@
     box-sizing: content-box;
     height: 100%;
 
+    .#{$component-prefix}badge {
+      &--top-left,
+      &--top-right {
+        top: var(--padding-base, $padding-base);
+      }
+
+      &--bottom-left,
+      &--bottom-right {
+        bottom: var(--padding-base, $padding-base);
+      }
+    }
+
     .#{$component-prefix}tabs__tab {
       color: $tabs-active-color;
       border-right: var(--border-width-base, $border-width-base) solid $tabs-active-color;

@@ -19,12 +19,14 @@ describe("<Badge />", () => {
 
     const badge = container.querySelector(`.${prefixClassname("badge__badge")}`) as HTMLElement
 
-    expect(badge).toHaveClass(
-      "custom-badge",
-      prefixClassname("badge--content"),
-      prefixClassname("badge--top-right"),
-    )
+    expect(badge).toHaveClass("custom-badge", prefixClassname("badge--content"))
     expect(badge).not.toHaveClass(prefixClassname("badge--fixed"))
+    expect(badge).not.toHaveClass(
+      prefixClassname("badge--top-left"),
+      prefixClassname("badge--top-right"),
+      prefixClassname("badge--bottom-left"),
+      prefixClassname("badge--bottom-right"),
+    )
     expect(badge).toHaveAttribute("id", "message-count")
     expect(badge).toHaveAttribute("data-testid", "badge")
     expect(badge).toHaveStyle({ backgroundColor: "rgb(0, 0, 255)" })
@@ -84,7 +86,11 @@ describe("<Badge />", () => {
   it.each<BadgePosition>(["top-left", "top-right", "bottom-left", "bottom-right"])(
     "renders at the %s position",
     (position) => {
-      const { container } = render(<Badge content={1} position={position} />)
+      const { container } = render(
+        <Badge content={1} position={position}>
+          目标元素
+        </Badge>,
+      )
 
       expect(container.querySelector(`.${prefixClassname("badge__badge")}`)).toHaveClass(
         prefixClassname(`badge--${position}`),
