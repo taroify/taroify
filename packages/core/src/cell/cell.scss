@@ -87,7 +87,7 @@
 
   &__value {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     font-size: $cell-value-font-size;
     color: $cell-value-color;
     text-align: right;
