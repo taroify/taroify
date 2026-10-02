@@ -1,0 +1,5 @@
+@forward "../styles/prefix";
+@forward "../styles/variables";
+@use "../styles/variables" as *;
+
+$picker-group-background-color: var(--background-color-2, $background-color-2);
