@@ -100,6 +100,7 @@ export type ConfigProviderThemeVars = ConfigProviderBaseThemeVars &
   import("../pagination").PaginationThemeVars &
   import("../password-input").PasswordInputThemeVars &
   import("../picker").PickerThemeVars &
+  import("../picker-group").PickerGroupThemeVars &
   import("../popup").PopupThemeVars &
   import("../progress").ProgressThemeVars &
   import("../pull-refresh").PullRefreshThemeVars &

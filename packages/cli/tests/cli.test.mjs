@@ -22,7 +22,7 @@ function json(result) {
 test("list and search return structured results", () => {
   const list = run(["list", "--category", "form"])
   assert.equal(list.status, 0)
-  assert.equal(json(list).data.total, 18)
+  assert.equal(json(list).data.total, 19)
 
   const search = run(["search", "上传"])
   assert.equal(search.status, 0)
