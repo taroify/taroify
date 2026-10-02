@@ -1,0 +1,13 @@
+@use "./variables" as *;
+
+.#{$component-prefix}picker-group {
+  background-color: var(--picker-group-background-color, $picker-group-background-color);
+
+  &__tabs {
+    margin-top: var(--padding-base, $padding-base);
+  }
+
+  &__tab-title {
+    margin-right: var(--padding-md, $padding-md);
+  }
+}

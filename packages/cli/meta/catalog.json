@@ -2,13 +2,13 @@
   "schemaVersion": "1.0.0",
   "libraryVersion": "1.0.6",
   "statistics": {
-    "entries": 73,
-    "components": 71,
+    "entries": 74,
+    "components": 72,
     "guides": 1,
     "hooks": 1,
-    "apiTables": 211,
-    "demos": 485,
-    "componentTokens": 799,
+    "apiTables": 214,
+    "demos": 491,
+    "componentTokens": 800,
     "globalTokens": 60
   },
   "categories": [
@@ -43,6 +43,7 @@
         "number-keyboard",
         "password-input",
         "picker",
+        "picker-group",
         "area-picker",
         "radio",
         "rate",
@@ -7192,6 +7193,215 @@
       "source": {
         "docs": "packages/core/src/picker/README.md",
         "demo": "packages/demo/src/pages/form/picker/index.tsx"
+      }
+    },
+    "picker-group": {
+      "id": "picker-group",
+      "name": "PickerGroup",
+      "title": "PickerGroup 选择器组",
+      "description": "选择器组",
+      "aliases": [
+        "picker-group",
+        "PickerGroup",
+        "PickerGroup 选择器组"
+      ],
+      "kind": "component",
+      "packageName": "@taroify/core",
+      "version": "1.0.6",
+      "category": {
+        "id": "form",
+        "name": "表单组件"
+      },
+      "importStatement": "import { PickerGroup } from \"@taroify/core\"",
+      "api": {
+        "tables": [
+          {
+            "name": "PickerGroup Props",
+            "kind": "props",
+            "headers": [
+              "参数",
+              "说明",
+              "类型",
+              "默认值"
+            ],
+            "rows": [
+              {
+                "name": "tabs",
+                "description": "标签标题，与选择器子组件顺序对应",
+                "type": "ReactNode[]",
+                "defaultValue": "[]",
+                "extra": []
+              },
+              {
+                "name": "title",
+                "description": "工具栏标题",
+                "type": "ReactNode",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "showToolbar",
+                "description": "是否显示组工具栏；子工具栏始终隐藏",
+                "type": "boolean",
+                "defaultValue": "true",
+                "extra": []
+              },
+              {
+                "name": "nextStepText",
+                "description": "下一步按钮文字，非空时启用分步选择",
+                "type": "ReactNode",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "confirmText",
+                "description": "确认按钮文字",
+                "type": "ReactNode",
+                "defaultValue": "确认",
+                "extra": []
+              },
+              {
+                "name": "cancelText",
+                "description": "取消按钮文字",
+                "type": "ReactNode",
+                "defaultValue": "取消",
+                "extra": []
+              },
+              {
+                "name": "defaultActiveTab",
+                "description": "初始选中标签的索引，从 0 开始",
+                "type": "number",
+                "defaultValue": "0",
+                "extra": []
+              },
+              {
+                "name": "activeTab",
+                "description": "当前选中标签的索引，受控模式",
+                "type": "number",
+                "defaultValue": "-",
+                "extra": []
+              }
+            ]
+          },
+          {
+            "name": "PickerGroup Events",
+            "kind": "events",
+            "headers": [
+              "事件名",
+              "说明",
+              "回调参数"
+            ],
+            "rows": [
+              {
+                "name": "onConfirm",
+                "description": "点击确认时触发；下一步不会触发",
+                "type": "results: PickerGroupConfirmEventParams",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onCancel",
+                "description": "点击取消时触发",
+                "type": "-",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onActiveTabChange",
+                "description": "点击标签或下一步请求切换时触发",
+                "type": "activeTab: number",
+                "defaultValue": "",
+                "extra": []
+              }
+            ]
+          },
+          {
+            "name": "PickerGroupConfirmEventParams",
+            "kind": "events",
+            "headers": [
+              "参数",
+              "说明",
+              "类型"
+            ],
+            "rows": [
+              {
+                "name": "selectedValues",
+                "description": "当前选中的各列值",
+                "type": "PickerValue[]",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "selectedOptions",
+                "description": "当前选中的各列选项",
+                "type": "PickerOptionObject[]",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "selectedIndexes",
+                "description": "当前选中的各列选项索引",
+                "type": "number[]",
+                "defaultValue": "",
+                "extra": []
+              }
+            ]
+          }
+        ]
+      },
+      "demos": [
+        {
+          "id": "demo1",
+          "title": "选择日期时间",
+          "language": "tsx",
+          "code": "import { DatetimePicker, PickerGroup, Toast } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [date, setDate] = useState(new Date(2026, 9, 2))\n  const [time, setTime] = useState(new Date(2026, 9, 2, 12, 30))\n\n  return (\n    <>\n      <Toast id=\"toast\" />\n      <PickerGroup\n        title=\"预约时间\"\n        tabs={[\"选择日期\", \"选择时间\"]}\n        onConfirm={([dateResult, timeResult]) => {\n          Toast.open(\n            `${dateResult.selectedValues.join(\"/\")} ${timeResult.selectedValues.join(\":\")}`,\n          )\n        }}\n        onCancel={() => Toast.open(\"取消选择\")}\n      >\n        <DatetimePicker type=\"date\" value={date} onChange={setDate} />\n        <DatetimePicker type=\"hour-minute\" value={time} onChange={setTime} />\n      </PickerGroup>\n    </>\n  )\n}"
+        },
+        {
+          "id": "demo2",
+          "title": "下一步按钮",
+          "language": "tsx",
+          "code": "<PickerGroup title=\"预约时间\" tabs={[\"选择日期\", \"选择时间\"]} nextStepText=\"下一步\">\n  <DatetimePicker type=\"date\" />\n  <DatetimePicker type=\"hour-minute\" />\n</PickerGroup>"
+        },
+        {
+          "id": "demo3",
+          "title": "选择日期范围",
+          "language": "tsx",
+          "code": "import { DatetimePicker, PickerGroup } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [start, setStart] = useState(new Date(2026, 9, 2))\n\n  return (\n    <PickerGroup title=\"日期范围\" tabs={[\"开始日期\", \"结束日期\"]}>\n      <DatetimePicker type=\"date\" value={start} onChange={setStart} />\n      <DatetimePicker type=\"date\" min={start} defaultValue={new Date(2026, 9, 3)} />\n    </PickerGroup>\n  )\n}"
+        },
+        {
+          "id": "demo4",
+          "title": "选择时间范围",
+          "language": "tsx",
+          "code": "<PickerGroup title=\"时间范围\" tabs={[\"开始时间\", \"结束时间\"]}>\n  <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 9)} />\n  <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 18)} />\n</PickerGroup>"
+        },
+        {
+          "id": "demo5",
+          "title": "受控模式",
+          "language": "tsx",
+          "code": "import { Button, DatetimePicker, PickerGroup } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [activeTab, setActiveTab] = useState(0)\n\n  return (\n    <>\n      <Button onClick={() => setActiveTab(activeTab === 0 ? 1 : 0)}>切换标签</Button>\n      <PickerGroup\n        tabs={[\"选择日期\", \"选择时间\"]}\n        activeTab={activeTab}\n        onActiveTabChange={setActiveTab}\n        nextStepText=\"下一步\"\n      >\n        <DatetimePicker type=\"date\" />\n        <DatetimePicker type=\"hour-minute\" />\n      </PickerGroup>\n    </>\n  )\n}"
+        },
+        {
+          "id": "demo6",
+          "title": "自定义工具栏",
+          "language": "tsx",
+          "code": "<PickerGroup tabs={[\"开始日期\", \"结束日期\"]}>\n  <PickerGroup.Toolbar>\n    <PickerGroup.Button type=\"cancel\">返回</PickerGroup.Button>\n    <PickerGroup.Title>日期范围</PickerGroup.Title>\n    <PickerGroup.Button type=\"confirm\">提交</PickerGroup.Button>\n  </PickerGroup.Toolbar>\n  <DatetimePicker type=\"date\" />\n  <DatetimePicker type=\"date\" />\n</PickerGroup>"
+        }
+      ],
+      "demoPage": "import {\n  AreaPicker,\n  Button,\n  DatetimePicker,\n  Field,\n  Input,\n  Picker,\n  PickerGroup,\n  type PickerGroupConfirmEventParams,\n  Popup,\n  SafeArea,\n  Toast,\n} from \"@taroify/core\"\nimport { areaList } from \"@vant/area-data\"\nimport * as React from \"react\"\nimport { useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport CustomWrapper from \"../../../components/custom-wrapper\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nconst min = new Date(2026, 0, 1)\nconst max = new Date(2030, 11, 31, 23, 59, 59)\nconst initialDate = new Date(2026, 9, 2, 12, 30)\nconst periods = [\n  { label: \"上午配送\", value: \"AM\" },\n  { label: \"下午配送\", value: \"PM\" },\n]\n\nfunction showResult(results: PickerGroupConfirmEventParams) {\n  Toast.open(results.map(({ selectedValues }) => selectedValues.join(\" / \")).join(\"\\n\"))\n}\n\nfunction DateTimeGroup({ nextStepText }: { nextStepText?: string }) {\n  return (\n    <PickerGroup\n      title=\"预约时间\"\n      tabs={[\"选择日期\", \"选择时间\"]}\n      nextStepText={nextStepText}\n      onConfirm={showResult}\n      onCancel={() => Toast.open(\"取消选择\")}\n    >\n      <DatetimePicker type=\"date\" defaultValue={initialDate} min={min} max={max} />\n      <DatetimePicker type=\"hour-minute\" defaultValue={initialDate} />\n    </PickerGroup>\n  )\n}\n\nfunction DateRangeGroup() {\n  const [start, setStart] = useState(initialDate)\n  return (\n    <PickerGroup title=\"日期范围\" tabs={[\"开始日期\", \"结束日期\"]} onConfirm={showResult}>\n      <DatetimePicker type=\"date\" value={start} onChange={setStart} min={min} max={max} />\n      <DatetimePicker type=\"date\" defaultValue={new Date(2026, 9, 3)} min={start} max={max} />\n    </PickerGroup>\n  )\n}\n\nfunction TimeRangeGroup() {\n  return (\n    <PickerGroup title=\"时间范围\" tabs={[\"开始时间\", \"结束时间\"]} onConfirm={showResult}>\n      <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 9)} />\n      <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 18)} />\n    </PickerGroup>\n  )\n}\n\nfunction ControlledGroup() {\n  const [activeTab, setActiveTab] = useState(0)\n  return (\n    <>\n      <Button block onClick={() => setActiveTab(activeTab === 0 ? 1 : 0)}>\n        切换标签，当前为 {activeTab + 1}\n      </Button>\n      <PickerGroup\n        tabs={[\"选择地区\", \"配送时段\"]}\n        activeTab={activeTab}\n        onActiveTabChange={setActiveTab}\n        nextStepText=\"下一步\"\n        onConfirm={showResult}\n      >\n        <AreaPicker areaList={areaList} defaultValue={[\"330000\", \"330100\", \"330102\"]} />\n        <Picker columns={periods} />\n      </PickerGroup>\n    </>\n  )\n}\n\nfunction CustomToolbarGroup() {\n  return (\n    <PickerGroup tabs={[\"开始时间\", \"结束时间\"]} onConfirm={showResult}>\n      <PickerGroup.Toolbar>\n        <PickerGroup.Button type=\"cancel\">返回</PickerGroup.Button>\n        <PickerGroup.Title>自定义工具栏</PickerGroup.Title>\n        <PickerGroup.Button type=\"confirm\">提交</PickerGroup.Button>\n      </PickerGroup.Toolbar>\n      <DatetimePicker type=\"hour-minute\" defaultValue={initialDate} />\n      <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 18)} />\n    </PickerGroup>\n  )\n}\n\nfunction PopupGroup() {\n  const [open, setOpen] = useState(false)\n  const [value, setValue] = useState(\"\")\n  return (\n    <>\n      <Field label=\"预约时间\" isLink onClick={() => setOpen(true)}>\n        <Input readonly value={value} placeholder=\"选择日期和时间\" />\n      </Field>\n      <Popup open={open} onClose={setOpen} rounded placement=\"bottom\">\n        <Popup.Backdrop />\n        <PickerGroup\n          title=\"预约时间\"\n          tabs={[\"选择日期\", \"选择时间\"]}\n          nextStepText=\"下一步\"\n          onCancel={() => setOpen(false)}\n          onConfirm={([date, time]) => {\n            setValue(`${date.selectedValues.join(\"/\")} ${time.selectedValues.join(\":\")}`)\n            setOpen(false)\n          }}\n        >\n          <DatetimePicker type=\"date\" defaultValue={initialDate} min={min} max={max} />\n          <DatetimePicker type=\"hour-minute\" defaultValue={initialDate} />\n        </PickerGroup>\n        <SafeArea position=\"bottom\" />\n      </Popup>\n    </>\n  )\n}\n\nexport default function PickerGroupDemo() {\n  return (\n    <Page title=\"PickerGroup 选择器组\" className=\"picker-group-demo\">\n      <Toast id=\"toast\" />\n      <Block variant=\"card\" title=\"选择日期时间\">\n        <CustomWrapper>\n          <DateTimeGroup />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"下一步按钮\">\n        <CustomWrapper>\n          <DateTimeGroup nextStepText=\"下一步\" />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"选择日期范围\">\n        <CustomWrapper>\n          <DateRangeGroup />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"选择时间范围\">\n        <CustomWrapper>\n          <TimeRangeGroup />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"受控模式与地区选择\">\n        <CustomWrapper>\n          <ControlledGroup />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"自定义工具栏\">\n        <CustomWrapper>\n          <CustomToolbarGroup />\n        </CustomWrapper>\n      </Block>\n      <Block variant=\"card\" title=\"搭配弹出层使用\">\n        <CustomWrapper>\n          <PopupGroup />\n        </CustomWrapper>\n      </Block>\n    </Page>\n  )\n}\n",
+      "tokens": [
+        {
+          "cssVar": "--picker-group-background-color",
+          "themeKey": "pickerGroupBackgroundColor",
+          "defaultValue": "var(--background-color-2)",
+          "description": "选择器组背景色"
+        }
+      ],
+      "docs": {
+        "zhCN": "---\ntitle: PickerGroup 选择器组\ndescription: 使用 Taroify PickerGroup 组合多个选择器，通过统一工具栏、标签切换和下一步按钮完成日期时间、日期范围与地区选择，支持受控标签和自定义工具栏。\n---\n\n# PickerGroup 选择器组\n\n### 介绍\n\n该组件从 `v1.1.0` 开始提供。\n\n组合多个选择器，在一次交互中完成多个值的选择。支持 Picker、DatetimePicker、AreaPicker，以及内部使用 Picker 的自定义组件。\n\n每个标签页对应一个选择器，`tabs` 与子组件按顺序一一对应。支持数组、Fragment 和条件渲染；动态增删时请同步更新 `tabs`，并为子组件提供稳定的 `key`。\n\n### 引入\n\n```tsx\nimport { PickerGroup } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 选择日期时间\n\nPickerGroup 统一渲染工具栏，并自动隐藏子选择器的工具栏（包括自定义工具栏）。将标题、确认、取消设置在组上，子组件的 `value`、`onChange`、`min`、`max` 等属性仍正常使用。\n\n```tsx\nimport { DatetimePicker, PickerGroup, Toast } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [date, setDate] = useState(new Date(2026, 9, 2))\n  const [time, setTime] = useState(new Date(2026, 9, 2, 12, 30))\n\n  return (\n    <>\n      <Toast id=\"toast\" />\n      <PickerGroup\n        title=\"预约时间\"\n        tabs={[\"选择日期\", \"选择时间\"]}\n        onConfirm={([dateResult, timeResult]) => {\n          Toast.open(\n            `${dateResult.selectedValues.join(\"/\")} ${timeResult.selectedValues.join(\":\")}`,\n          )\n        }}\n        onCancel={() => Toast.open(\"取消选择\")}\n      >\n        <DatetimePicker type=\"date\" value={date} onChange={setDate} />\n        <DatetimePicker type=\"hour-minute\" value={time} onChange={setTime} />\n      </PickerGroup>\n    </>\n  )\n}\n```\n\nTaroify 的日期、时间选择由 DatetimePicker 提供：`date` 选择年月日，`hour-minute` 选择时分，`time` 选择时分秒。\n\n### 下一步按钮\n\n设置 `nextStepText` 后，非最后一个标签页显示“下一步”，点击切换到下一页；最后一页显示确认按钮。用户仍然可以直接点击标签切换。\n\n```tsx\n<PickerGroup title=\"预约时间\" tabs={[\"选择日期\", \"选择时间\"]} nextStepText=\"下一步\">\n  <DatetimePicker type=\"date\" />\n  <DatetimePicker type=\"hour-minute\" />\n</PickerGroup>\n```\n\n### 选择日期范围\n\n放置两个日期选择器，并将开始日期作为结束日期的 `min`。范围约束由业务设置，PickerGroup 不自动建立子选择器之间的联动。\n\n```tsx\nimport { DatetimePicker, PickerGroup } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [start, setStart] = useState(new Date(2026, 9, 2))\n\n  return (\n    <PickerGroup title=\"日期范围\" tabs={[\"开始日期\", \"结束日期\"]}>\n      <DatetimePicker type=\"date\" value={start} onChange={setStart} />\n      <DatetimePicker type=\"date\" min={start} defaultValue={new Date(2026, 9, 3)} />\n    </PickerGroup>\n  )\n}\n```\n\n### 选择时间范围\n\n```tsx\n<PickerGroup title=\"时间范围\" tabs={[\"开始时间\", \"结束时间\"]}>\n  <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 9)} />\n  <DatetimePicker type=\"hour-minute\" defaultValue={new Date(2026, 9, 2, 18)} />\n</PickerGroup>\n```\n\n### 受控模式\n\n默认由组件管理选中标签，可用 `defaultActiveTab` 设置初始索引。传入 `activeTab` 后为受控模式，需要在 `onActiveTabChange` 中更新索引，点击标签和下一步都会触发该回调。\n\n```tsx\nimport { Button, DatetimePicker, PickerGroup } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [activeTab, setActiveTab] = useState(0)\n\n  return (\n    <>\n      <Button onClick={() => setActiveTab(activeTab === 0 ? 1 : 0)}>切换标签</Button>\n      <PickerGroup\n        tabs={[\"选择日期\", \"选择时间\"]}\n        activeTab={activeTab}\n        onActiveTabChange={setActiveTab}\n        nextStepText=\"下一步\"\n      >\n        <DatetimePicker type=\"date\" />\n        <DatetimePicker type=\"hour-minute\" />\n      </PickerGroup>\n    </>\n  )\n}\n```\n\n### 自定义工具栏\n\n使用组合组件自定义工具栏，Button 的 `type` 决定触发确认或取消。自定义确认按钮的文字由业务控制；设置 `nextStepText` 时，其点击行为仍然遵循“下一步 / 确认”的规则。\n\n```tsx\n<PickerGroup tabs={[\"开始日期\", \"结束日期\"]}>\n  <PickerGroup.Toolbar>\n    <PickerGroup.Button type=\"cancel\">返回</PickerGroup.Button>\n    <PickerGroup.Title>日期范围</PickerGroup.Title>\n    <PickerGroup.Button type=\"confirm\">提交</PickerGroup.Button>\n  </PickerGroup.Toolbar>\n  <DatetimePicker type=\"date\" />\n  <DatetimePicker type=\"date\" />\n</PickerGroup>\n```\n\n### 确认与取消\n\n确认会先停止各子选择器的惯性滚动，再按标签顺序收集结果。即使尚未访问某个标签页，也会返回其当前选中项或默认选中项。建议使用组级 `onConfirm` 的参数读取最终结果，避免在滚动结束前读取业务状态。\n\n每项结果包含底层 Picker 的 `selectedValues`、`selectedOptions`、`selectedIndexes`。DatetimePicker 在组级结果中返回各列的字符串值（如 `[\"2026\", \"10\", \"02\"]`），其自身的 `onChange` 和 `onConfirm` 仍然使用 `Date`。组确认也会触发子选择器的 `onConfirm`，通常只需在组上处理提交。\n\n取消仅触发组级 `onCancel`，不触发各子选择器的取消事件，也不自动回滚选中值或关闭 Popup。需要取消还原时，请由业务维护临时值，并在确认后保存。\n\n## API\n\n### PickerGroup Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| tabs | 标签标题，与选择器子组件顺序对应 | ReactNode[] | `[]` |\n| title | 工具栏标题 | ReactNode | - |\n| showToolbar | 是否显示组工具栏；子工具栏始终隐藏 | boolean | `true` |\n| nextStepText | 下一步按钮文字，非空时启用分步选择 | ReactNode | - |\n| confirmText | 确认按钮文字 | ReactNode | `确认` |\n| cancelText | 取消按钮文字 | ReactNode | `取消` |\n| defaultActiveTab | 初始选中标签的索引，从 0 开始 | number | `0` |\n| activeTab | 当前选中标签的索引，受控模式 | number | - |\n\n支持 View 的 `className`、`style` 等属性。\n\n### PickerGroup Events\n\n| 事件名 | 说明 | 回调参数 |\n| --- | --- | --- |\n| onConfirm | 点击确认时触发；下一步不会触发 | results: PickerGroupConfirmEventParams |\n| onCancel | 点击取消时触发 | - |\n| onActiveTabChange | 点击标签或下一步请求切换时触发 | activeTab: number |\n\n### PickerGroupConfirmEventParams\n\n类型为 `PickerSelectedState[]`，每项对应一个标签页，字段如下：\n\n| 参数 | 说明 | 类型 |\n| --- | --- | --- |\n| selectedValues | 当前选中的各列值 | PickerValue[] |\n| selectedOptions | 当前选中的各列选项 | PickerOptionObject[] |\n| selectedIndexes | 当前选中的各列选项索引 | number[] |\n\n空选择器或全部禁用的选择器返回空数组字段。每个标签页应包含一个底层 Picker，缺少选择器的标签页也返回空结果。\n\n### 类型定义\n\n```tsx\nimport type {\n  PickerGroupProps,\n  PickerGroupConfirmEventParams,\n  PickerGroupThemeVars,\n} from \"@taroify/core\"\n```\n\n## 主题定制\n\n### 样式变量\n\n| 名称 | 默认值 | 描述 |\n| --- | --- | --- |\n| --picker-group-background-color | `var(--background-color-2)` | 选择器组背景色 |\n\n工具栏复用 Picker 的样式变量，标签页复用 Tabs 的样式变量。ConfigProvider 支持通过 `pickerGroupBackgroundColor` 设置选择器组背景色。\n"
+      },
+      "source": {
+        "docs": "packages/core/src/picker-group/README.md",
+        "demo": "packages/demo/src/pages/form/picker-group/index.tsx"
       }
     },
     "area-picker": {

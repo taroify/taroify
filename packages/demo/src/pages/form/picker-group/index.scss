@@ -1,0 +1,7 @@
+@use "../../../styles/prefix" as *;
+
+.picker-group-demo {
+  .#{$demo-prefix}block__content {
+    padding: 0;
+  }
+}

@@ -126,6 +126,12 @@ export const componentManifest = [
     demoPath: "pages/form/picker/index",
   },
   {
+    slug: "picker-group",
+    name: "PickerGroup",
+    title: "PickerGroup 选择器组",
+    demoPath: "pages/form/picker-group/index",
+  },
+  {
     slug: "area-picker",
     name: "AreaPicker",
     title: "AreaPicker 省市区选择器",

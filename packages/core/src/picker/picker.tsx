@@ -11,11 +11,14 @@ import {
   type ReactElement,
   type ReactNode,
   useCallback,
+  useContext,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
 } from "react"
 import Loading from "../loading"
+import PickerGroupContext from "../picker-group/picker-group.context"
 import { prefixClassname } from "../styles"
 import { useRefs, useToRef } from "../utils/state"
 import { isElementOf } from "../utils/validate"
@@ -126,6 +129,8 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     ...restProps
   } = props
 
+  const group = useContext(PickerGroupContext)
+
   const { getRefs: getColumnRefs, setRefs: setColumnRefs } = useRefs<PickerColumnInstance>()
 
   const { value, setValue } = useUncontrolled({ value: valueProp, defaultValue })
@@ -171,7 +176,7 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
         </PickerToolbar>
       )
     }
-    if (!showToolbar) {
+    if (!showToolbar || group) {
       toolbar = null
     }
     if (_.isEmpty(columns) && columnsProp && columnsProp.length > 0) {
@@ -211,6 +216,7 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     columnsTop,
     confirmText,
     fieldNames,
+    group,
     showToolbar,
     title,
     toolbarPosition,
@@ -272,8 +278,9 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
   const handleAction = useCallback(
     (action?: PickerProps["onConfirm"]) => () => {
       stopMomentum()
-      const { selectedValues, selectedOptions } = getSelectedState()
-      action?.(selectedValues, selectedOptions)
+      const state = getSelectedState()
+      action?.(state.selectedValues, state.selectedOptions)
+      return state
     },
     [getSelectedState, stopMomentum],
   )
@@ -283,13 +290,19 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
     [getSelectedState],
   )
 
+  const confirm = useMemo(() => handleAction(onConfirm), [handleAction, onConfirm])
+
+  useEffect(() => group?.register({ confirm, stopMomentum }), [group, confirm, stopMomentum])
+
   useImperativeHandle(
     ref,
     () => ({
-      confirm: handleAction(onConfirm),
+      confirm() {
+        confirm()
+      },
       getSelectedOptions,
     }),
-    [getSelectedOptions, handleAction, onConfirm],
+    [confirm, getSelectedOptions],
   )
 
   const getValueOptions = useCallback(() => valueOptionsRef.current, [])
@@ -341,7 +354,7 @@ function PickerElement(props: PickerProps, ref: ForwardedRef<PickerInstance>) {
         onChange: handleChange,
         onClickOption: handleClickOption,
         onScrollInto: handleScrollInto,
-        onConfirm: handleAction(onConfirm),
+        onConfirm: confirm,
         onCancel: handleAction(onCancel),
       }}
     >

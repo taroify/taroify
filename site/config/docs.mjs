@@ -91,5 +91,6 @@ export const guideSidebarItems = [
 ]
 
 export const componentSidebarTags = {
+  "picker-group": "v1.1.0",
   tour: "v1.0.0",
 }
