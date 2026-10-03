@@ -7,8 +7,8 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 211,
-    "demos": 485,
-    "componentTokens": 799,
+    "demos": 491,
+    "componentTokens": 804,
     "globalTokens": 60
   },
   "categories": [
@@ -7773,35 +7773,35 @@
             "rows": [
               {
                 "name": "defaultValue",
-                "description": "默认当前分值",
+                "description": "非受控模式的初始分值",
                 "type": "number",
-                "defaultValue": "-",
+                "defaultValue": "0",
                 "extra": []
               },
               {
                 "name": "value",
-                "description": "当前分值",
+                "description": "受控模式的当前分值，需配合 onChange 更新",
                 "type": "number",
                 "defaultValue": "-",
                 "extra": []
               },
               {
                 "name": "count",
-                "description": "图标总数",
+                "description": "图标总数；向下取整，无效数量按 0 处理",
                 "type": "number | string",
                 "defaultValue": "5",
                 "extra": []
               },
               {
                 "name": "size",
-                "description": "图标大小，默认单位为px",
+                "description": "图标大小，数字单位为 px",
                 "type": "number | string",
                 "defaultValue": "20px",
                 "extra": []
               },
               {
                 "name": "gutter",
-                "description": "图标间距，默认单位为px",
+                "description": "图标间距，数字单位为 px",
                 "type": "number | string",
                 "defaultValue": "4px",
                 "extra": []
@@ -7809,15 +7809,36 @@
               {
                 "name": "icon",
                 "description": "选中时的图标",
-                "type": "string",
+                "type": "ReactNode",
                 "defaultValue": "<Star />",
                 "extra": []
               },
               {
                 "name": "emptyIcon",
                 "description": "未选中时的图标",
-                "type": "string",
+                "type": "ReactNode",
                 "defaultValue": "<StarOutlined />",
+                "extra": []
+              },
+              {
+                "name": "color",
+                "description": "选中颜色，未设置时沿用主题",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "emptyColor",
+                "description": "未选中颜色，未设置时沿用主题",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "disabledColor",
+                "description": "禁用颜色，未设置时沿用主题",
+                "type": "string",
+                "defaultValue": "-",
                 "extra": []
               },
               {
@@ -7828,8 +7849,22 @@
                 "extra": []
               },
               {
+                "name": "clearable",
+                "description": "是否允许再次点击当前分值后清空",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "wrap",
+                "description": "是否允许在容器内换行",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
                 "name": "readonly",
-                "description": "是否为只读状态，只读状态下无法修改评分",
+                "description": "是否只读，无法通过点击或滑动修改评分",
                 "type": "boolean",
                 "defaultValue": "false",
                 "extra": []
@@ -7843,7 +7878,7 @@
               },
               {
                 "name": "touchable",
-                "description": "是否可以通过滑动手势选择评分",
+                "description": "是否允许滑动评分，不影响点击",
                 "type": "boolean",
                 "defaultValue": "true",
                 "extra": []
@@ -7861,8 +7896,15 @@
             "rows": [
               {
                 "name": "onChange",
-                "description": "当前分值变化时触发的事件",
-                "type": "value :number",
+                "description": "用户操作使当前分值变化时触发",
+                "type": "value: number",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClick",
+                "description": "点击评分区域时触发，滑动不触发",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               }
@@ -7875,61 +7917,128 @@
           "id": "demo1",
           "title": "基础用法",
           "language": "tsx",
-          "code": "<Rate value={3} />"
+          "code": "<Rate defaultValue={3} />"
         },
         {
           "id": "demo2",
-          "title": "自定义图标",
+          "title": "基础用法",
           "language": "tsx",
-          "code": "<Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />"
+          "code": "import { Rate } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [value, setValue] = useState(3)\n  return <Rate value={value} onChange={setValue} />\n}"
         },
         {
           "id": "demo3",
-          "title": "自定义样式",
+          "title": "自定义图标",
           "language": "tsx",
-          "code": "<Rate className=\"custom-color\" defaultValue={3} allowHalf size={25} emptyIcon={<Star />} />"
+          "code": "import { Rate } from \"@taroify/core\"\nimport { Like, LikeOutlined } from \"@taroify/icons\"\n\n<Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />"
         },
         {
           "id": "demo4",
+          "title": "自定义样式",
+          "language": "tsx",
+          "code": "<Rate className=\"custom-color\" defaultValue={3} size=\"25px\" gutter=\"8px\" />"
+        },
+        {
+          "id": "demo5",
           "title": "自定义样式",
           "language": "scss",
           "code": ".custom-color {\n  --rate-icon-empty-color: #eee;\n  --rate-icon-full-color: #ffd21e;\n}"
         },
         {
-          "id": "demo5",
-          "title": "半星",
-          "language": "tsx",
-          "code": "<Rate defaultValue={3} allowHalf />"
-        },
-        {
           "id": "demo6",
-          "title": "自定义数量",
+          "title": "便捷颜色属性",
           "language": "tsx",
-          "code": "<Rate defaultValue={3} count={6} />"
+          "code": "<Rate defaultValue={3} color=\"#ffd21e\" emptyColor=\"#eee\" />\n<Rate defaultValue={3} disabled disabledColor=\"#c8c9cc\" />"
         },
         {
           "id": "demo7",
+          "title": "半星",
+          "language": "tsx",
+          "code": "<Rate defaultValue={2.5} allowHalf />"
+        },
+        {
+          "id": "demo8",
+          "title": "自定义数量",
+          "language": "tsx",
+          "code": "<Rate defaultValue={3} count=\"6\" />"
+        },
+        {
+          "id": "demo9",
+          "title": "可清空",
+          "language": "tsx",
+          "code": "<Rate defaultValue={3} clearable />\n<Rate defaultValue={2.5} allowHalf clearable />"
+        },
+        {
+          "id": "demo10",
+          "title": "禁用滑动",
+          "language": "tsx",
+          "code": "<Rate defaultValue={3} touchable={false} />"
+        },
+        {
+          "id": "demo11",
+          "title": "多行布局",
+          "language": "tsx",
+          "code": "<Rate defaultValue={3.5} count={10} allowHalf wrap style={{ width: \"150px\" }} />"
+        },
+        {
+          "id": "demo12",
           "title": "禁用状态",
           "language": "tsx",
           "code": "<Rate defaultValue={3} disabled />"
         },
         {
-          "id": "demo8",
+          "id": "demo13",
           "title": "只读状态",
           "language": "tsx",
           "code": "<Rate defaultValue={3} readonly />"
         },
         {
-          "id": "demo9",
+          "id": "demo14",
           "title": "只读状态显示小数",
           "language": "tsx",
-          "code": "<Rate defaultValue={3.3} readonly allowHalf />"
+          "code": "<Rate value={3.3} readonly allowHalf />"
+        },
+        {
+          "id": "demo15",
+          "title": "监听评分变化",
+          "language": "tsx",
+          "code": "import { Rate, Toast } from \"@taroify/core\"\n\n<>\n  <Toast id=\"toast\" />\n  <Rate defaultValue={3} onChange={(value) => Toast.open(`当前评分：${value}`)} />\n</>"
         }
       ],
-      "demoPage": "import { Rate } from \"@taroify/core\"\nimport { Like, LikeOutlined, Star } from \"@taroify/icons\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function RateDemo() {\n  return (\n    <Page title=\"Rate 评分\" className=\"rate-demo\">\n      <Block title=\"基础用法\">\n        <Rate defaultValue={3} />\n      </Block>\n      <Block title=\"自定义图标\">\n        <Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />\n      </Block>\n      <Block title=\"自定义样式\">\n        <Rate className=\"custom-color\" defaultValue={3} allowHalf size={25} emptyIcon={<Star />} />\n      </Block>\n      <Block title=\"半星\">\n        <Rate defaultValue={3} allowHalf />\n      </Block>\n      <Block title=\"自定义数量\">\n        <Rate defaultValue={3} count={6} />\n      </Block>\n      <Block title=\"禁用状态\">\n        <Rate defaultValue={3} disabled />\n      </Block>\n      <Block title=\"只读状态\">\n        <Rate defaultValue={3} readonly />\n      </Block>\n      <Block title=\"只读状态显示小数\">\n        <Rate defaultValue={3.3} readonly allowHalf />\n      </Block>\n    </Page>\n  )\n}\n",
-      "tokens": [],
+      "demoPage": "import { Field, Form, Rate, type RateProps, Toast } from \"@taroify/core\"\nimport { Like, LikeOutlined, Star } from \"@taroify/icons\"\nimport { View } from \"@tarojs/components\"\nimport * as React from \"react\"\nimport { useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction InteractiveRate({ defaultValue = 3, ...props }: RateProps) {\n  const [value, setValue] = useState(defaultValue)\n  return (\n    <>\n      <Rate {...props} value={value} onChange={setValue} />\n      <View className=\"rate-demo__value\">当前评分：{value}</View>\n    </>\n  )\n}\n\nfunction EventRate() {\n  const [clicks, setClicks] = useState(0)\n  const [changes, setChanges] = useState(0)\n  return (\n    <>\n      <Rate\n        id=\"rate-events\"\n        defaultValue={3}\n        onClick={() => setClicks((count) => count + 1)}\n        onChange={() => setChanges((count) => count + 1)}\n      />\n      <View className=\"rate-demo__value\">\n        点击次数：{clicks}，评分变化：{changes}\n      </View>\n    </>\n  )\n}\n\nexport default function RateDemo() {\n  return (\n    <Page title=\"Rate 评分\" className=\"rate-demo\">\n      <Toast id=\"toast\" />\n      <Block title=\"基础用法\">\n        <InteractiveRate id=\"rate-basic\" />\n      </Block>\n      <Block title=\"自定义图标\">\n        <Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />\n      </Block>\n      <Block title=\"自定义样式\">\n        <Rate className=\"custom-color\" defaultValue={3} allowHalf size={25} emptyIcon={<Star />} />\n      </Block>\n      <Block title=\"便捷颜色属性\">\n        <Rate id=\"rate-colors\" defaultValue={3} color=\"#ffd21e\" emptyColor=\"#eee\" />\n      </Block>\n      <Block title=\"半星\">\n        <InteractiveRate id=\"rate-half\" defaultValue={2.5} allowHalf />\n      </Block>\n      <Block title=\"自定义数量与字符串尺寸\">\n        <Rate defaultValue={3} count=\"6\" size=\"48rpx\" gutter=\"12rpx\" />\n      </Block>\n      <Block title=\"可清空\">\n        <InteractiveRate id=\"rate-clearable\" defaultValue={2.5} allowHalf clearable />\n      </Block>\n      <Block title=\"禁用滑动，保留点击\">\n        <InteractiveRate id=\"rate-click-only\" touchable={false} />\n      </Block>\n      <Block title=\"多行布局\">\n        <InteractiveRate\n          id=\"rate-wrap\"\n          count={10}\n          defaultValue={3.5}\n          wrap\n          allowHalf\n          style={{ width: \"150px\" }}\n        />\n      </Block>\n      <Block title=\"点击与滑动事件\">\n        <EventRate />\n      </Block>\n      <Block title=\"禁用状态\">\n        <Rate defaultValue={3} disabled disabledColor=\"#c8c9cc\" />\n      </Block>\n      <Block title=\"只读状态\">\n        <Rate defaultValue={3} readonly />\n      </Block>\n      <Block title=\"只读状态显示小数\">\n        <Rate value={3.3} readonly allowHalf />\n      </Block>\n      <Block title=\"搭配表单使用\">\n        <Form defaultValues={{ score: 3 }}>\n          <Field label=\"评分\" name=\"score\">\n            <Rate clearable />\n          </Field>\n        </Form>\n      </Block>\n    </Page>\n  )\n}\n",
+      "tokens": [
+        {
+          "cssVar": "--rate-icon-size",
+          "themeKey": "rateIconSize",
+          "defaultValue": "20px * $hd",
+          "description": "图标大小"
+        },
+        {
+          "cssVar": "--rate-icon-gutter",
+          "themeKey": "rateIconGutter",
+          "defaultValue": "var(--padding-base)",
+          "description": "图标间距"
+        },
+        {
+          "cssVar": "--rate-icon-empty-color",
+          "themeKey": "rateIconEmptyColor",
+          "defaultValue": "var(--gray-5)",
+          "description": "未选中颜色"
+        },
+        {
+          "cssVar": "--rate-icon-full-color",
+          "themeKey": "rateIconFullColor",
+          "defaultValue": "var(--danger-color)",
+          "description": "选中颜色"
+        },
+        {
+          "cssVar": "--rate-icon-disabled-color",
+          "themeKey": "rateIconDisabledColor",
+          "defaultValue": "var(--gray-5)",
+          "description": "禁用颜色"
+        }
+      ],
       "docs": {
-        "zhCN": "# Rate 评分\n\n### 介绍\n\n用于对事物进行评级操作。\n\n### 引入\n\n```tsx\nimport { Rate } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n通过 `value` 来绑定当前评分值。\n\n```tsx\n<Rate value={3} />\n```\n\n### 自定义图标\n\n通过 `fullIcon` 属性设置选中时的图标，`voidIcon` 属性设置未选中时的图标。\n\n```tsx\n<Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />\n```\n\n### 自定义样式\n\n通过 `size` 属性设置图标大小，`css` 设置选中时的颜色，`emptyIcon` 设置未选中时的颜色。\n\n```tsx\n <Rate className=\"custom-color\" defaultValue={3} allowHalf size={25} emptyIcon={<Star />} />\n```\n\n```scss\n.custom-color {\n  --rate-icon-empty-color: #eee;\n  --rate-icon-full-color: #ffd21e;\n}\n```\n\n### 半星\n\n设置 `allowHalf` 属性后可以选中半星。\n\n```tsx\n<Rate defaultValue={3} allowHalf />\n```\n\n### 自定义数量\n\n通过 `count` 属性设置评分总数。\n\n```tsx\n<Rate defaultValue={3} count={6} />\n```\n\n### 禁用状态\n\n通过 `disabled` 属性来禁用评分。\n\n```tsx\n<Rate defaultValue={3} disabled />\n```\n\n### 只读状态\n\n通过 `readonly` 属性将评分设置为只读状态。\n\n```tsx\n<Rate defaultValue={3} readonly />\n```\n\n### 只读状态显示小数\n\n设置 `readonly` 和 `allowHalf` 属性后，Rate 组件可以展示任意小数结果。\n\n```tsx\n<Rate defaultValue={3.3} readonly allowHalf />\n```\n\n## API\n\n### Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| defaultValue | 默认当前分值 | _number_ | - |\n| value | 当前分值 | _number_ | - |\n| count | 图标总数 | _number \\| string_ | `5` |\n| size | 图标大小，默认单位为`px` | _number \\| string_ | `20px` |\n| gutter | 图标间距，默认单位为`px` | _number \\| string_ | `4px` |\n| icon | 选中时的图标 | _string_ | `<Star />` |\n| emptyIcon | 未选中时的图标 | _string_ | `<StarOutlined />` |\n| allowHalf | 是否允许半选 | _boolean_ | `false` |\n| readonly | 是否为只读状态，只读状态下无法修改评分 | _boolean_ | `false` |\n| disabled | 是否禁用评分 | _boolean_ | `false` |\n| touchable | 是否可以通过滑动手势选择评分 | _boolean_ | `true` |\n\n### Events\n\n| 事件名 | 说明                     | 回调参数 |\n| ------ | ------------------------ | -------- |\n| onChange | 当前分值变化时触发的事件 | _value :number_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                       | 默认值                   | 描述  |\n|--------------------------|-----------------------|-----|\n| rate-icon-size           | _20px * $hd_          | -   |\n| rate-icon-gutter         | _var(--padding-base)_ | -   |\n| rate-icon-empty-color    | _var(--gray-5)_       | -   |\n| rate-icon-full-color     | _var(--danger-color)_ | -   |\n| rate-icon-disabled-color | _var(--gray-5)_       | -   |\n"
+        "zhCN": "---\ntitle: Rate 评分\ndescription: 使用 Taroify Rate 实现受控或非受控评分，支持半星、只读小数、再次点击清空、滑动评分与多行布局，并通过颜色属性和 CSS 变量定制样式。\n---\n\n# Rate 评分\n\n### 介绍\n\n用于对事物进行评级操作。\n\n### 引入\n\n```tsx\nimport { Rate } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n使用 `defaultValue` 设置非受控组件的初始评分，后续点击和滑动由组件管理。\n\n```tsx\n<Rate defaultValue={3} />\n```\n\n通过 `value` 和 `onChange` 使用受控模式，评分变化时需要更新 `value`。只传入固定的 `value` 不会自动修改评分。\n\n```tsx\nimport { Rate } from \"@taroify/core\"\nimport { useState } from \"react\"\n\nfunction Example() {\n  const [value, setValue] = useState(3)\n  return <Rate value={value} onChange={setValue} />\n}\n```\n\n### 自定义图标\n\n通过 `icon` 设置选中图标，`emptyIcon` 设置未选中图标，支持 React 节点。自定义图标组件需要将收到的 `className`、`style` 和 `size` 应用到图标上，以保持尺寸和半星裁切正常。\n\n```tsx\nimport { Rate } from \"@taroify/core\"\nimport { Like, LikeOutlined } from \"@taroify/icons\"\n\n<Rate defaultValue={3} icon={<Like />} emptyIcon={<LikeOutlined />} />\n```\n\n### 自定义样式\n\n`size` 设置图标大小，`gutter` 设置图标间距；数字的单位为 `px`，也支持 `px`、`rpx` 等字符串尺寸。\n\n负数和无法解析的尺寸会回退到主题默认值；`gutter={0}` 可以移除间距。\n\n```tsx\n<Rate className=\"custom-color\" defaultValue={3} size=\"25px\" gutter=\"8px\" />\n```\n\n```scss\n.custom-color {\n  --rate-icon-empty-color: #eee;\n  --rate-icon-full-color: #ffd21e;\n}\n```\n\n### 便捷颜色属性 <Tag tag=\"v1.1.0\" />\n\n通过 `color`、`emptyColor` 和 `disabledColor` 设置选中、未选中和禁用颜色。未传时继续使用原有 CSS 变量与 ConfigProvider 主题；`style` 中显式设置的同名 CSS 变量优先。\n\n```tsx\n<Rate defaultValue={3} color=\"#ffd21e\" emptyColor=\"#eee\" />\n<Rate defaultValue={3} disabled disabledColor=\"#c8c9cc\" />\n```\n\n### 半星\n\n设置 `allowHalf` 后，点击图标左半边选择半星，右半边选择整星。图标间距不参与半星宽度计算。\n\n```tsx\n<Rate defaultValue={2.5} allowHalf />\n```\n\n### 自定义数量\n\n`count` 设置评分总数，支持数字和数字字符串。数量向下取整；负数、非数字和非有限数按 `0` 处理，不渲染评分项。\n\n```tsx\n<Rate defaultValue={3} count=\"6\" />\n```\n\n### 可清空 <Tag tag=\"v1.1.0\" />\n\n设置 `clearable` 后，再次点击当前分值可重置为 `0`，支持整星和半星。滑动经过当前分值不会清空；拖动结束后的兼容点击也不会误触发清空。\n\n```tsx\n<Rate defaultValue={3} clearable />\n<Rate defaultValue={2.5} allowHalf clearable />\n```\n\n### 禁用滑动\n\n`touchable={false}` 只关闭滑动评分，仍可点击选择。使用 `disabled` 或 `readonly` 可以同时关闭点击与滑动。\n\n```tsx\n<Rate defaultValue={3} touchable={false} />\n```\n\n### 多行布局 <Tag tag=\"v1.1.0\" />\n\n默认保持单行。设置 `wrap` 并限制宽度后，评分项会自动换行；点击与滑动按所在行计算分值。滑动超出上下边界时使用最近的一行，超出左右边界时使用该行的首尾分值。\n\n组件仅处理横向评分手势，纵向手势保留给页面滚动。可以从某行开始横向拖动，再移到其他行。\n\n```tsx\n<Rate defaultValue={3.5} count={10} allowHalf wrap style={{ width: \"150px\" }} />\n```\n\n### 禁用状态\n\n```tsx\n<Rate defaultValue={3} disabled />\n```\n\n### 只读状态\n\n```tsx\n<Rate defaultValue={3} readonly />\n```\n\n### 只读状态显示小数\n\n同时设置 `readonly` 和 `allowHalf` 后，可以展示任意小数结果。\n\n```tsx\n<Rate value={3.3} readonly allowHalf />\n```\n\n### 监听评分变化\n\n`onChange` 只在用户选择不同的分值或清空时触发。`onClick` 对应实际点击，不随滑动重复触发。\n\n```tsx\nimport { Rate, Toast } from \"@taroify/core\"\n\n<>\n  <Toast id=\"toast\" />\n  <Rate defaultValue={3} onChange={(value) => Toast.open(`当前评分：${value}`)} />\n</>\n```\n\n### v1.1.0 行为调整\n\n- `touchable={false}` 现在允许点击评分；需要完全禁止编辑时请使用 `disabled` 或 `readonly`。\n- 滑动评分不再调用 `onClick`；请通过 `onChange` 监听评分变化。\n- `count=\"5\"` 正确显示五个评分项，`size` 和 `gutter` 的类型补齐字符串支持。\n- 超出范围的评分仅在展示时限制到 `0` 至 `count`，非有限数展示为 `0`，不会因为初始化、属性更新或数量变化而主动触发 `onChange`。\n- `clearable` 和 `wrap` 默认关闭，颜色属性未设置时保持原有主题。\n\n## API\n\n### Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| defaultValue | 非受控模式的初始分值 | _number_ | `0` |\n| value | 受控模式的当前分值，需配合 onChange 更新 | _number_ | - |\n| count | 图标总数；向下取整，无效数量按 0 处理 | _number \\| string_ | `5` |\n| size | 图标大小，数字单位为 px | _number \\| string_ | `20px` |\n| gutter | 图标间距，数字单位为 px | _number \\| string_ | `4px` |\n| icon | 选中时的图标 | _ReactNode_ | `<Star />` |\n| emptyIcon | 未选中时的图标 | _ReactNode_ | `<StarOutlined />` |\n| color <Tag tag=\"v1.1.0\" /> | 选中颜色，未设置时沿用主题 | _string_ | - |\n| emptyColor <Tag tag=\"v1.1.0\" /> | 未选中颜色，未设置时沿用主题 | _string_ | - |\n| disabledColor <Tag tag=\"v1.1.0\" /> | 禁用颜色，未设置时沿用主题 | _string_ | - |\n| allowHalf | 是否允许半选 | _boolean_ | `false` |\n| clearable <Tag tag=\"v1.1.0\" /> | 是否允许再次点击当前分值后清空 | _boolean_ | `false` |\n| wrap <Tag tag=\"v1.1.0\" /> | 是否允许在容器内换行 | _boolean_ | `false` |\n| readonly | 是否只读，无法通过点击或滑动修改评分 | _boolean_ | `false` |\n| disabled | 是否禁用评分 | _boolean_ | `false` |\n| touchable | 是否允许滑动评分，不影响点击 | _boolean_ | `true` |\n\n支持 View 的 `className`、`style` 和触摸事件等属性。\n\n### Events\n\n| 事件名 | 说明 | 回调参数 |\n| --- | --- | --- |\n| onChange | 用户操作使当前分值变化时触发 | _value: number_ |\n| onClick | 点击评分区域时触发，滑动不触发 | _event: ITouchEvent_ |\n\n### 类型定义 <Tag tag=\"v1.1.0\" />\n\n```tsx\nimport type { RateProps, RateThemeVars } from \"@taroify/core\"\n```\n\n## 主题定制\n\n### 样式变量\n\n组件提供以下 CSS 变量，可配合 [ConfigProvider](/components/config-provider/) 使用。\n\n| 名称 | 默认值 | 描述 |\n| --- | --- | --- |\n| --rate-icon-size | _20px * $hd_ | 图标大小 |\n| --rate-icon-gutter | _var(--padding-base)_ | 图标间距 |\n| --rate-icon-empty-color | _var(--gray-5)_ | 未选中颜色 |\n| --rate-icon-full-color | _var(--danger-color)_ | 选中颜色 |\n| --rate-icon-disabled-color | _var(--gray-5)_ | 禁用颜色 |\n"
       },
       "source": {
         "docs": "packages/core/src/rate/README.md",

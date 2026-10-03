@@ -29,11 +29,11 @@ export function getClientCoordinates(event: ITouchEvent | MouseEvent): ClientCoo
   // @ts-ignore
   const { clientX, clientY, detail = {}, touches = [] } = event
 
-  if (clientX && clientY) {
+  if (clientX !== undefined && clientY !== undefined) {
     return {
       clientX,
       clientY,
     }
   }
-  return touches[0] || { clientX: detail.x || detail.clientX, clientY: detail.y || detail.clientY }
+  return touches[0] || { clientX: detail.x ?? detail.clientX, clientY: detail.y ?? detail.clientY }
 }

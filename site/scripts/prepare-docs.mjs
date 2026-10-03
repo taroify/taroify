@@ -68,6 +68,10 @@ function withRspressImports(content) {
   if (imports.length === 0) {
     return content
   }
+  const frontmatter = content.match(/^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/)?.[0] || ""
+  if (frontmatter) {
+    return `${frontmatter}\n${imports.join("\n")}\n${content.slice(frontmatter.length)}`
+  }
   return `${imports.join("\n")}\n\n${content}`
 }
 

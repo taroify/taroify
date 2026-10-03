@@ -179,7 +179,7 @@
 }
 .taroify-cell__value {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   font-size: var(--cell-value-font-size, inherit);
   color: var(--cell-value-color, var(--gray-6, #969799));
   text-align: right;
@@ -820,6 +820,12 @@
 .taroify-tabs__nav--card {
   box-sizing: content-box;
   height: 100%;
+}
+.taroify-tabs__nav--card .taroify-badge--top-left, .taroify-tabs__nav--card .taroify-badge--top-right {
+  top: var(--padding-base, 4px);
+}
+.taroify-tabs__nav--card .taroify-badge--bottom-left, .taroify-tabs__nav--card .taroify-badge--bottom-right {
+  bottom: var(--padding-base, 4px);
 }
 .taroify-tabs__nav--card .taroify-tabs__tab {
   color: var(--tabs-active-color, var(--primary-color, #1989fa));

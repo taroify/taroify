@@ -2,6 +2,7 @@ import { cloneIconElement } from "@taroify/icons/utils"
 import { View } from "@tarojs/components"
 import type { ViewProps } from "@tarojs/components/types/View"
 import classNames from "classnames"
+// biome-ignore lint/correctness/noUnusedImports: the classic JSX runtime requires React in scope
 import * as React from "react"
 import { type CSSProperties, useContext } from "react"
 import { prefixClassname } from "../styles"
@@ -15,7 +16,7 @@ interface RateItemProps extends ViewProps {
   value: number
   half?: boolean
   disabled?: boolean
-  size?: number
+  size?: number | string
   status: RateStatus
 }
 
@@ -34,32 +35,34 @@ function RateItem(props: RateItemProps) {
       }}
       {...restProps}
     >
-      {
-        //
-        cloneIconElement(full ? icon : emptyIcon, {
-          size,
-          className: classNames(prefixClassname("rate__icon"), {
-            [prefixClassname("rate__icon--disabled")]: disabled,
-            [prefixClassname("rate__icon--full")]: full,
-          }),
-        })
-      }
-      {
-        //
-        half &&
-          cloneIconElement(icon, {
-            style: { width: `${value}em` },
+      <View className={prefixClassname("rate__item-content")}>
+        {
+          //
+          cloneIconElement(full ? icon : emptyIcon, {
             size,
-            className: classNames(
-              prefixClassname("rate__icon"),
-              prefixClassname("rate__icon--half"),
-              {
-                [prefixClassname("rate__icon--disabled")]: disabled,
-                [prefixClassname("rate__icon--full")]: !empty,
-              },
-            ),
+            className: classNames(prefixClassname("rate__icon"), {
+              [prefixClassname("rate__icon--disabled")]: disabled,
+              [prefixClassname("rate__icon--full")]: full,
+            }),
           })
-      }
+        }
+        {
+          //
+          half &&
+            cloneIconElement(icon, {
+              style: { width: `${value}em` },
+              size,
+              className: classNames(
+                prefixClassname("rate__icon"),
+                prefixClassname("rate__icon--half"),
+                {
+                  [prefixClassname("rate__icon--disabled")]: disabled,
+                  [prefixClassname("rate__icon--full")]: !empty,
+                },
+              ),
+            })
+        }
+      </View>
     </View>
   )
 }
