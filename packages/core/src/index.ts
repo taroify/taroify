@@ -130,6 +130,7 @@ export type {
 } from "./picker"
 export { default as Radio } from "./radio"
 export { default as Rate } from "./rate"
+export type { RateProps, RateThemeVars } from "./rate"
 export { default as Search } from "./search"
 export { default as Slider } from "./slider"
 export { default as Signature } from "./signature"

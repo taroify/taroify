@@ -3,6 +3,12 @@
 @use "../../../styles/prefix" as *;
 
 .rate-demo {
+  &__value {
+    margin-top: 8px * $hd;
+    font-size: 14px * $hd;
+    color: var(--text-color-2, $text-color-2);
+  }
+
   .custom-color {
     --rate-icon-empty-color: #eee;
     --rate-icon-full-color: #ffd21e;

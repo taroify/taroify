@@ -5,13 +5,22 @@
   cursor: pointer;
   user-select: none;
 
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
   &__item {
     position: relative;
+    flex-shrink: 0;
     pointer-events: none;
 
     &:not(:last-child) {
       padding-right: $rate-icon-gutter;
     }
+  }
+
+  &__item-content {
+    position: relative;
   }
 
   &  &__icon {
