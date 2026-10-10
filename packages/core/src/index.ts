@@ -95,6 +95,12 @@ export type {
 } from "./number-keyboard"
 export { default as PasswordInput } from "./password-input"
 export { default as Picker } from "./picker"
+export { default as PickerGroup } from "./picker-group"
+export type {
+  PickerGroupConfirmEventParams,
+  PickerGroupProps,
+  PickerGroupThemeVars,
+} from "./picker-group"
 export type {
   PickerBaseProps,
   PickerButtonProps,

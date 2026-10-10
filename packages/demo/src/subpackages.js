@@ -115,6 +115,11 @@ const subpackages = [
         path: "picker/index",
       },
       {
+        title: "PickerGroup 选择器组",
+        name: "PickerGroup",
+        path: "picker-group/index",
+      },
+      {
         title: "AreaPicker 省市区选择器",
         name: "AreaPicker",
         path: "area-picker/index",
