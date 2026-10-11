@@ -109,7 +109,8 @@ const CalendarMonth = forwardRef<CalendarMonthInstance, CalendarMonthProps>(
     )
 
     const offset = useMemo(() => {
-      const realDay = monthValue.getDay()
+      const firstDay = new Date(monthValue.getFullYear(), monthValue.getMonth(), 1)
+      const realDay = firstDay.getDay()
       if (firstDayOfWeek) {
         return (realDay + 7 - firstDayOfWeek) % 7
       }
