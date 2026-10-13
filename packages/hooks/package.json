@@ -29,7 +29,7 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@vant/area-data": "^1.2.1"
+    "@vant/area-data": "^2.0.0"
   },
   "devDependencies": {
     "@tarojs/components": "3.6.23",
