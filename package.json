@@ -69,7 +69,7 @@
     "jest-environment-jsdom": "^30.4.1",
     "jest-transform-css": "^6.0.0",
     "lefthook": "^2.0.0",
-    "lerna": "^9.0.7",
+    "lerna": "^10.0.0",
     "lodash": "^4.17.21",
     "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-gfm": "^3.1.0",
