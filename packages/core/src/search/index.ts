@@ -1,2 +1,3 @@
 export { default } from "./search"
-export type { SearchThemeVars } from "./search.shared"
+export type { SearchProps } from "./search"
+export type { SearchInstance, SearchShape, SearchThemeVars } from "./search.shared"

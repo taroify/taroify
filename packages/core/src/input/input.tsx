@@ -63,6 +63,8 @@ export function resolveOnChange<
   onChange(e as unknown as BaseEventOrig<E2>)
 }
 
+export type InputClear = (event: ITouchEvent) => void
+
 export interface InputProps extends TaroInputProps {
   placeholderClassName?: string
   readonly?: boolean
@@ -72,6 +74,8 @@ export interface InputProps extends TaroInputProps {
   clearable?: boolean
   clearIcon?: ReactNode
   clearTrigger?: InputClearTrigger
+  /** @internal */
+  clearRef?: React.Ref<InputClear>
   formatter?: InputFormatter
   formatTrigger?: InputFormatTrigger
   min?: number
@@ -96,6 +100,7 @@ function Input(props: InputProps) {
     clearable,
     clearTrigger = "focus",
     clearIcon = <Clear />,
+    clearRef,
     formatter,
     formatTrigger = "onChange",
     min,
@@ -139,20 +144,29 @@ function Input(props: InputProps) {
   }
 
   const allowClear = useMemo(() => {
-    if (clearable && !disabled) {
+    if (clearable && !disabled && !readonly) {
       const hasValue = !_.isEmpty(value)
       const trigger = clearTrigger === "always" || (clearTrigger === "focus" && focused)
       return hasValue && trigger
     }
     return false
-  }, [clearTrigger, clearable, disabled, focused, value])
+  }, [clearTrigger, clearable, disabled, focused, readonly, value])
+
+  const clearValue = (event: ITouchEvent, onClearClick?: InputProps["onClear"]) => {
+    if (disabled || readonly) {
+      return
+    }
+    resolveOnChange(event, onChange, "")
+    resolveOnChange(event, onInput, "")
+    onClearClick?.(event)
+    setValue("")
+  }
+
+  React.useImperativeHandle(clearRef, () => clearValue)
 
   const handleClear = (event: ITouchEvent) => {
     preventDefault(event, true)
-    resolveOnChange(event, onChange, "")
-    resolveOnChange(event, onInput, "")
-    onClear?.(event)
-    setValue("")
+    clearValue(event, onClear)
   }
 
   const handleFocus = (event: BaseEventOrig<TaroInputProps.inputForceEventDetail>) => {

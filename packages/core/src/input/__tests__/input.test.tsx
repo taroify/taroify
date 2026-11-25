@@ -1,8 +1,9 @@
 import { act, fireEvent, render } from "@testing-library/react"
+import type { ITouchEvent } from "@tarojs/components"
 import type { BaseEventOrig } from "@tarojs/components/types/common"
 import type { InputProps as TaroInputProps } from "@tarojs/components/types/Input"
 import * as React from "react"
-import Input, { resolveOnChange } from "../input"
+import Input, { type InputClear, resolveOnChange } from "../input"
 import type { NativeInputProps } from "../native-input"
 
 let mockNativeInputProps: NativeInputProps
@@ -261,6 +262,33 @@ describe("<Input />", () => {
 
     rerender(<Input value="value" clearable clearTrigger="always" disabled />)
     expect(container.querySelector(".taroify-input__clear")).toBeNull()
+  })
+
+  it("removes the clear control when an input becomes readonly", () => {
+    const onChange = jest.fn()
+    const onClear = jest.fn()
+    const clearRef = React.createRef<InputClear>()
+    const { container, rerender } = render(
+      <Input value="value" clearable clearTrigger="always" onChange={onChange} onClear={onClear} />,
+    )
+    expect(container.querySelector(".taroify-input__clear")).not.toBeNull()
+
+    rerender(
+      <Input
+        value="value"
+        clearable
+        clearTrigger="always"
+        clearRef={clearRef}
+        readonly
+        onChange={onChange}
+        onClear={onClear}
+      />,
+    )
+    expect(container.querySelector(".taroify-input__clear")).toBeNull()
+    act(() => clearRef.current?.({ type: "click" } as ITouchEvent))
+    expect(mockNativeInputProps.value).toBe("value")
+    expect(onChange).not.toHaveBeenCalled()
+    expect(onClear).not.toHaveBeenCalled()
   })
 
   it("should resolve clear, replacement and unchanged events", () => {
