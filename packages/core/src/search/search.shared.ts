@@ -1,5 +1,10 @@
 export type SearchShape = "square" | "rounded" | "round"
 
+export interface SearchInstance {
+  focus(): void
+  blur(): void
+}
+
 export type SearchThemeVars = {
   searchPadding?: string
   searchBackgroundColor?: string

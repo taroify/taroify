@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 214,
-    "demos": 497,
+    "demos": 498,
     "componentTokens": 805,
     "globalTokens": 60
   },
@@ -8287,7 +8287,42 @@
             "rows": [
               {
                 "name": "label",
-                "description": "搜索框左侧文本",
+                "description": "搜索框内左侧标签，H5 设置 inputId 时关联输入框",
+                "type": "ReactNode",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "left",
+                "description": "搜索框外左侧内容",
+                "type": "ReactNode",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "id",
+                "description": "外层容器的 ID",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "inputId",
+                "description": "内部输入框的 ID",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "name",
+                "description": "原生输入框的表单字段名",
+                "type": "string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "autoComplete",
+                "description": "原生输入框的自动完成设置，仅 H5",
                 "type": "string",
                 "defaultValue": "-",
                 "extra": []
@@ -8336,7 +8371,7 @@
               },
               {
                 "name": "readonly",
-                "description": "是否将输入框设为只读状态，只读状态下无法输入内容",
+                "description": "是否只读，只读时禁止编辑和清空",
                 "type": "boolean",
                 "defaultValue": "false",
                 "extra": []
@@ -8359,6 +8394,20 @@
                 "name": "action",
                 "description": "是否在搜索框右侧显示取消按钮",
                 "type": "boolean | ReactNode",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "actionText",
+                "description": "默认取消按钮的文案，action 为 true 时生效",
+                "type": "string",
+                "defaultValue": "取消",
+                "extra": []
+              },
+              {
+                "name": "clearOnCancel",
+                "description": "点击默认取消按钮时是否清空可编辑的输入框",
+                "type": "boolean",
                 "defaultValue": "false",
                 "extra": []
               },
@@ -8395,6 +8444,20 @@
                 "description": "显示清除图标的时机，always 表示输入框不为空时展示，focus 表示输入框聚焦且不为空时展示",
                 "type": "string",
                 "defaultValue": "focus",
+                "extra": []
+              },
+              {
+                "name": "formatter",
+                "description": "输入内容格式化函数",
+                "type": "(value: string) => string",
+                "defaultValue": "-",
+                "extra": []
+              },
+              {
+                "name": "formatTrigger",
+                "description": "格式化时机，可选值为 onChange、onBlur",
+                "type": "string",
+                "defaultValue": "onChange",
                 "extra": []
               },
               {
@@ -8446,21 +8509,42 @@
               {
                 "name": "onBlur",
                 "description": "输入框失去焦点时触发",
-                "type": "event: BaseEventOrig<InputProps.inputForceEventDetail>",
+                "type": "event: BaseEventOrig<InputProps.inputValueEventDetail>",
                 "defaultValue": "",
                 "extra": []
               },
               {
                 "name": "onClear",
                 "description": "点击清除按钮后触发",
-                "type": "event: event: ITouchEvent",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               },
               {
                 "name": "onCancel",
                 "description": "点击取消按钮时触发",
-                "type": "event: event: ITouchEvent",
+                "type": "event: ITouchEvent",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClickInput",
+                "description": "点击输入区域时触发",
+                "type": "event: ITouchEvent",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClickLeftIcon",
+                "description": "点击左侧图标时触发",
+                "type": "event: ITouchEvent",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClickRightIcon",
+                "description": "点击右侧图标时触发",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               }
@@ -8479,7 +8563,7 @@
           "id": "demo2",
           "title": "事件监听",
           "language": "tsx",
-          "code": "function SearchWithEvents() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        取消\n      </Toast>\n      <Search\n        value={value}\n        placeholder=\"请输入搜索关键词\"\n        action\n        onChange={(e) => setValue(e.detail.value)}\n        onCancel={() => setOpen(true)}\n      />\n    </>\n  )\n}"
+          "code": "function SearchWithEvents() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        取消\n      </Toast>\n      <Search\n        value={value}\n        placeholder=\"请输入搜索关键词\"\n        action\n        onChange={(e) => setValue(e.detail.value)}\n        onSearch={(e) => console.log(e.detail.value)}\n        onCancel={() => setOpen(true)}\n      />\n    </>\n  )\n}"
         },
         {
           "id": "demo3",
@@ -8510,6 +8594,12 @@
           "title": "自定义按钮",
           "language": "tsx",
           "code": "function CustomSearch() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        搜索\n      </Toast>\n      <Search\n        value={value}\n        label=\"地址\"\n        placeholder=\"请输入搜索关键词\"\n        action={<View onClick={() => setOpen(true)}>搜索</View>}\n        onChange={(e) => setValue(e.detail.value)}\n      />\n    </>\n  )\n}"
+        },
+        {
+          "id": "demo8",
+          "title": "格式化输入与关联标签",
+          "language": "tsx",
+          "code": "<Search\n  id=\"product-search\"\n  inputId=\"product-code\"\n  label=\"商品编号\"\n  name=\"code\"\n  autoComplete=\"off\"\n  formatter={(value) => value.trim().toUpperCase()}\n  formatTrigger=\"onBlur\"\n/>"
         }
       ],
       "demoPage": "import { Search, Toast } from \"@taroify/core\"\nimport { View } from \"@tarojs/components\"\nimport { useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction BasicSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n\nfunction SearchWithEvents() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        取消\n      </Toast>\n      <Search\n        value={value}\n        placeholder=\"请输入搜索关键词\"\n        action\n        onChange={(e) => setValue(e.detail.value)}\n        onCancel={() => setOpen(true)}\n      />\n    </>\n  )\n}\n\nfunction InputCenterSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      inputAlign=\"center\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n\nfunction DisabledSearch() {\n  return <Search disabled placeholder=\"请输入搜索关键词\" />\n}\n\nfunction BackgroundSearch() {\n  return <Search className=\"background\" shape=\"rounded\" placeholder=\"请输入搜索关键词\" />\n}\n\nfunction CustomSearch() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        搜索\n      </Toast>\n      <Search\n        value={value}\n        label=\"地址\"\n        placeholder=\"请输入搜索关键词\"\n        action={<View onClick={() => setOpen(true)}>搜索</View>}\n        onChange={(e) => setValue(e.detail.value)}\n      />\n    </>\n  )\n}\n\nexport default function SearchDemo() {\n  return (\n    <Page title=\"Search 搜索\" className=\"search-demo\">\n      <Block title=\"基础用法\">\n        <BasicSearch />\n      </Block>\n      <Block title=\"事件监听\">\n        <SearchWithEvents />\n      </Block>\n      <Block title=\"搜索框内容对齐\">\n        <InputCenterSearch />\n      </Block>\n      <Block title=\"禁用搜索框\">\n        <DisabledSearch />\n      </Block>\n      <Block title=\"自定义背景色\">\n        <BackgroundSearch />\n      </Block>\n      <Block title=\"自定义按钮\">\n        <CustomSearch />\n      </Block>\n    </Page>\n  )\n}\n",
@@ -8630,7 +8720,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Search 搜索\n\n### 介绍\n\n用于搜索场景的输入框组件。\n\n### 引入\n\n```tsx\nimport { Search } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`value` 用于控制搜索框中的文字，`onChange` 可以获得改变的值。\n\n```tsx\nfunction BasicSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n```\n\n### 事件监听\n\nSearch 组件提供了 `onSearch` 和 `onCancel` 事件，`onSearch` 事件在点击键盘上的搜索/回车按钮后触发，`onCancel` 事件在点击搜索框右侧取消按钮时触发。\n\n```tsx\nfunction SearchWithEvents() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        取消\n      </Toast>\n      <Search\n        value={value}\n        placeholder=\"请输入搜索关键词\"\n        action\n        onChange={(e) => setValue(e.detail.value)}\n        onCancel={() => setOpen(true)}\n      />\n    </>\n  )\n}\n```\n\n### 搜索框内容对齐\n\n通过 `inputAlign` 属性设置搜索框内容的对齐方式，可选值为 `center`、`right`。\n\n```tsx\nfunction InputCenterSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      inputAlign=\"center\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n```\n\n### 禁用搜索框\n\n通过 `disabled` 属性禁用搜索框。\n\n```tsx\n<Search disabled placeholder=\"请输入搜索关键词\" />\n```\n\n### 自定义背景色\n\n通过 `className` 属性可以设置搜索框外部的背景色，通过 `shape=\"rounded\"` 属性设置搜索框的形状。\n\n```tsx\n<Search className=\"background\" shape=\"rounded\" disabled placeholder=\"请输入搜索关键词\" />\n```\n\n```scss\n.background {\n  --search-background-color: #4fc08d;\n}\n```\n\n### 自定义按钮\n\n使用 `action` 插槽可以自定义右侧按钮的内容。使用插槽后，`cancel` 事件将不再触发。\n\n```tsx\nfunction CustomSearch() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        搜索\n      </Toast>\n      <Search\n        value={value}\n        label=\"地址\"\n        placeholder=\"请输入搜索关键词\"\n        action={<View onClick={() => setOpen(true)}>搜索</View>}\n        onChange={(e) => setValue(e.detail.value)}\n      />\n    </>\n  )\n}\n```\n\n## API\n\n### Props\n\n| 参数                              | 说明                                                                                          | 类型                                                                                  | 默认值       |\n| --------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------ |\n| label                             | 搜索框左侧文本                                                                                | _string_                                                                              | -            |\n| shape                             | 搜索框形状，可选值为 `square` `rounded`                                                       | _string_                                                                              | -            |\n| maxlength                         | 输入的最大字符数                                                                              | _number \\| string_                                                                    | -            |\n| placeholder                       | 占位提示文字                                                                                  | _string_                                                                              | -            |\n| autoFocus                         | 自动聚焦，iOS 系统不支持该属性                                                                | _boolean_                                                                             | `false`      |\n| focus                             | 获取焦点                                                                                      | _boolean_                                                                             | `false`      |\n| disabled                          | 是否禁用输入框                                                                                | _boolean_                                                                             | `false`      |\n| readonly                          | 是否将输入框设为只读状态，只读状态下无法输入内容                                              | _boolean_                                                                             | `false`      |\n| icon                              | 输入框左侧图标                                                                                | _ReactNode_                                                                           | `<Search />` |\n| rightIcon                         | 输入框右侧图标                                                                                | _ReactNode_                                                                           | -            |\n| action                            | 是否在搜索框右侧显示取消按钮                                                                  | _boolean \\| ReactNode_                                                                | `false`      |\n| inputAlign                        | 输入框内容对齐方式，可选值为 `center` `right`                                                 | _string_                                                                              | `left`       |\n| inputColor                        | 输入框内容颜色，可选值为 `primary` `info` `success` `warning` `danger`                        | _string_                                                                              | -            |\n| clearable                         | 是否启用清除图标，点击清除图标后会清空输入框                                                  | _boolean_                                                                             | `true`       |\n| clearIcon                         | 清除图标                                                                                      | _string_                                                                              | `<Clear />`  |\n| clearTrigger                      | 显示清除图标的时机，`always` 表示输入框不为空时展示，<br>`focus` 表示输入框聚焦且不为空时展示 | _string_                                                                              | `focus`      |\n| feedback                          | 提示文案，为空时不展示                                                                        | _string \\| [FormFeedbackProps](/components/form/#formfeedback-props) \\| ReactElement_ | -            |\n| enableNative | 使用原生键盘（仅支付宝小程序）                                                                | _boolean_                                                                             | `true`       |\n\n### Events\n\n| 事件名   | 说明                 | 回调参数                                                 |\n| -------- | -------------------- | -------------------------------------------------------- |\n| onSearch | 确定搜索时触发       | _event: BaseEventOrig<InputProps.inputValueEventDetail>_ |\n| onChange | 输入框内容变化时触发 | _event: BaseEventOrig<InputProps.inputEventDetail>_      |\n| onFocus  | 输入框获得焦点时触发 | _event: BaseEventOrig<InputProps.inputForceEventDetail>_ |\n| onBlur   | 输入框失去焦点时触发 | _event: BaseEventOrig<InputProps.inputForceEventDetail>_ |\n| onClear  | 点击清除按钮后触发   | _event: event: ITouchEvent_                              |\n| onCancel | 点击取消按钮时触发   | _event: event: ITouchEvent_                              |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                    | 默认值                                    | 描述 |\n| --------------------------------------- | ----------------------------------------- | ---- |\n| --search-padding                        | _10px \\* $hd var(--padding-sm)_           | -    |\n| --search-background-color               | _var(--white)_                            | -    |\n| --search-content-padding-left           | _var(--padding-sm)_                       | -    |\n| --search-content-background-color       | _var(--gray-1)_                           | -    |\n| --search-content-border-radius          | _var(--border-radius-sm)_                 | -    |\n| --search-content-square-border-radius   | _0_                                       | -    |\n| --search-content-rounded-border-radius  | _var(--border-radius-max)_                | -    |\n| --search-input-height                   | _34px \\* $hd_                             | -    |\n| --search-label-padding                  | _0 5px \\* $hd_                            | -    |\n| --search-label-color                    | _var(--text-color)_                       | -    |\n| --search-label-font-size                | _var(--font-size-md)_                     | -    |\n| --search-label-line-height              | _var(--search-input-height)_              | -    |\n| --search-field-padding                  | _5px * $hd var(--padding-xs) 5px * $hd 0_ | -    |\n| --search-left-icon-color                | _var(--gray-6)_                           | -    |\n| --search-action-padding                 | _0 var(--padding-xs)_                     | -    |\n| --search-action-color                   | _var(--text-color)_                       | -    |\n| --search-action-line-height             | _var(--search-input-height)_              | -    |\n| --search-action-font-size               | _var(--font-size-md)_                     | -    |\n| --search-action-active-background-color | _var(--active-color)_                     | -    |\n"
+        "zhCN": "# Search 搜索\n\n### 介绍\n\n用于搜索场景的输入框组件。\n\n### 引入\n\n```tsx\nimport { Search } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n`value` 用于控制搜索框中的文字，`onChange` 可以获得改变的值。\n\n```tsx\nfunction BasicSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n```\n\n### 事件监听\n\nSearch 组件提供了 `onSearch` 和 `onCancel` 事件，`onSearch` 事件在点击键盘上的搜索/回车按钮后触发，`onCancel` 事件在点击搜索框右侧取消按钮时触发。\n\n```tsx\nfunction SearchWithEvents() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        取消\n      </Toast>\n      <Search\n        value={value}\n        placeholder=\"请输入搜索关键词\"\n        action\n        onChange={(e) => setValue(e.detail.value)}\n        onSearch={(e) => console.log(e.detail.value)}\n        onCancel={() => setOpen(true)}\n      />\n    </>\n  )\n}\n```\n\n### 搜索框内容对齐\n\n通过 `inputAlign` 属性设置搜索框内容的对齐方式，可选值为 `center`、`right`。\n\n```tsx\nfunction InputCenterSearch() {\n  const [value, setValue] = useState(\"\")\n  return (\n    <Search\n      value={value}\n      placeholder=\"请输入搜索关键词\"\n      inputAlign=\"center\"\n      onChange={(e) => setValue(e.detail.value)}\n    />\n  )\n}\n```\n\n### 禁用搜索框\n\n通过 `disabled` 属性禁用搜索框。\n\n```tsx\n<Search disabled placeholder=\"请输入搜索关键词\" />\n```\n\n### 自定义背景色\n\n通过 `className` 属性可以设置搜索框外部的背景色，通过 `shape=\"rounded\"` 属性设置搜索框的形状。\n\n```tsx\n<Search className=\"background\" shape=\"rounded\" disabled placeholder=\"请输入搜索关键词\" />\n```\n\n```scss\n.background {\n  --search-background-color: #4fc08d;\n}\n```\n\n### 自定义按钮\n\n设置 `action` 为 `true` 时，使用 `actionText` 自定义取消文案。启用 `clearOnCancel` 后，可编辑的输入框会在触发 `onCancel` 前通过 `onChange` 通知清空，受控用法需在 `onChange` 中更新 `value`。\n\n将自定义内容传给 `action` 时，由自定义内容处理点击事件。\n\n```tsx\nfunction CustomSearch() {\n  const [value, setValue] = useState(\"\")\n  const [open, setOpen] = useState(false)\n  return (\n    <>\n      <Toast open={open} onClose={() => setOpen(false)}>\n        搜索\n      </Toast>\n      <Search\n        value={value}\n        label=\"地址\"\n        placeholder=\"请输入搜索关键词\"\n        action={<View onClick={() => setOpen(true)}>搜索</View>}\n        onChange={(e) => setValue(e.detail.value)}\n      />\n    </>\n  )\n}\n```\n\n### 格式化输入与关联标签\n\n设置 `formatter` 转换输入内容，设置 `formatTrigger=\"onBlur\"` 可在失焦时转换。H5 上同时设置 `label` 和 `inputId`，点击标签即可聚焦内部输入框。\n\n```tsx\n<Search\n  id=\"product-search\"\n  inputId=\"product-code\"\n  label=\"商品编号\"\n  name=\"code\"\n  autoComplete=\"off\"\n  formatter={(value) => value.trim().toUpperCase()}\n  formatTrigger=\"onBlur\"\n/>\n```\n\n## API\n\n### Props\n\n| 参数                              | 说明                                                                                          | 类型                                                                                  | 默认值       |\n| --------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------ |\n| label | 搜索框内左侧标签，H5 设置 `inputId` 时关联输入框 | _ReactNode_ | - |\n| left | 搜索框外左侧内容 | _ReactNode_ | - |\n| id | 外层容器的 ID | _string_ | - |\n| inputId | 内部输入框的 ID | _string_ | - |\n| name | 原生输入框的表单字段名 | _string_ | - |\n| autoComplete | 原生输入框的自动完成设置，仅 H5 | _string_ | - |\n| shape                             | 搜索框形状，可选值为 `square` `rounded`                                                       | _string_                                                                              | -            |\n| maxlength                         | 输入的最大字符数                                                                              | _number \\| string_                                                                    | -            |\n| placeholder                       | 占位提示文字                                                                                  | _string_                                                                              | -            |\n| autoFocus                         | 自动聚焦，iOS 系统不支持该属性                                                                | _boolean_                                                                             | `false`      |\n| focus                             | 获取焦点                                                                                      | _boolean_                                                                             | `false`      |\n| disabled                          | 是否禁用输入框                                                                                | _boolean_                                                                             | `false`      |\n| readonly | 是否只读，只读时禁止编辑和清空 | _boolean_ | `false` |\n| icon                              | 输入框左侧图标                                                                                | _ReactNode_                                                                           | `<Search />` |\n| rightIcon                         | 输入框右侧图标                                                                                | _ReactNode_                                                                           | -            |\n| action                            | 是否在搜索框右侧显示取消按钮                                                                  | _boolean \\| ReactNode_                                                                | `false`      |\n| actionText | 默认取消按钮的文案，`action` 为 `true` 时生效 | _string_ | `取消` |\n| clearOnCancel | 点击默认取消按钮时是否清空可编辑的输入框 | _boolean_ | `false` |\n| inputAlign                        | 输入框内容对齐方式，可选值为 `center` `right`                                                 | _string_                                                                              | `left`       |\n| inputColor                        | 输入框内容颜色，可选值为 `primary` `info` `success` `warning` `danger`                        | _string_                                                                              | -            |\n| clearable                         | 是否启用清除图标，点击清除图标后会清空输入框                                                  | _boolean_                                                                             | `true`       |\n| clearIcon                         | 清除图标                                                                                      | _string_                                                                              | `<Clear />`  |\n| clearTrigger                      | 显示清除图标的时机，`always` 表示输入框不为空时展示，<br>`focus` 表示输入框聚焦且不为空时展示 | _string_                                                                              | `focus`      |\n| formatter | 输入内容格式化函数 | _(value: string) => string_ | - |\n| formatTrigger | 格式化时机，可选值为 `onChange`、`onBlur` | _string_ | `onChange` |\n| feedback                          | 提示文案，为空时不展示                                                                        | _string \\| [FormFeedbackProps](/components/form/#formfeedback-props) \\| ReactElement_ | -            |\n| enableNative | 使用原生键盘（仅支付宝小程序）                                                                | _boolean_                                                                             | `true`       |\n\n### Events\n\n| 事件名   | 说明                 | 回调参数                                                 |\n| -------- | -------------------- | -------------------------------------------------------- |\n| onSearch | 确定搜索时触发       | _event: BaseEventOrig<InputProps.inputValueEventDetail>_ |\n| onChange | 输入框内容变化时触发 | _event: BaseEventOrig<InputProps.inputEventDetail>_      |\n| onFocus  | 输入框获得焦点时触发 | _event: BaseEventOrig<InputProps.inputForceEventDetail>_ |\n| onBlur | 输入框失去焦点时触发 | _event: BaseEventOrig<InputProps.inputValueEventDetail>_ |\n| onClear | 点击清除按钮后触发 | _event: ITouchEvent_ |\n| onCancel | 点击取消按钮时触发 | _event: ITouchEvent_ |\n| onClickInput | 点击输入区域时触发 | _event: ITouchEvent_ |\n| onClickLeftIcon | 点击左侧图标时触发 | _event: ITouchEvent_ |\n| onClickRightIcon | 点击右侧图标时触发 | _event: ITouchEvent_ |\n\n### 实例方法\n\n通过 `ref` 调用 `focus()` 和 `blur()`。在小程序中，传入 `focus` 属性时由该属性控制焦点。\n\n```tsx\nimport { Search, type SearchInstance } from \"@taroify/core\"\nimport { useRef } from \"react\"\n\nfunction FocusableSearch() {\n  const searchRef = useRef<SearchInstance>(null)\n  return <Search ref={searchRef} onSearch={() => searchRef.current?.blur()} />\n}\n```\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                    | 默认值                                    | 描述 |\n| --------------------------------------- | ----------------------------------------- | ---- |\n| --search-padding                        | _10px \\* $hd var(--padding-sm)_           | -    |\n| --search-background-color               | _var(--white)_                            | -    |\n| --search-content-padding-left           | _var(--padding-sm)_                       | -    |\n| --search-content-background-color       | _var(--gray-1)_                           | -    |\n| --search-content-border-radius          | _var(--border-radius-sm)_                 | -    |\n| --search-content-square-border-radius   | _0_                                       | -    |\n| --search-content-rounded-border-radius  | _var(--border-radius-max)_                | -    |\n| --search-input-height                   | _34px \\* $hd_                             | -    |\n| --search-label-padding                  | _0 5px \\* $hd_                            | -    |\n| --search-label-color                    | _var(--text-color)_                       | -    |\n| --search-label-font-size                | _var(--font-size-md)_                     | -    |\n| --search-label-line-height              | _var(--search-input-height)_              | -    |\n| --search-field-padding                  | _5px * $hd var(--padding-xs) 5px * $hd 0_ | -    |\n| --search-left-icon-color                | _var(--gray-6)_                           | -    |\n| --search-action-padding                 | _0 var(--padding-xs)_                     | -    |\n| --search-action-color                   | _var(--text-color)_                       | -    |\n| --search-action-line-height             | _var(--search-input-height)_              | -    |\n| --search-action-font-size               | _var(--font-size-md)_                     | -    |\n| --search-action-active-background-color | _var(--active-color)_                     | -    |\n"
       },
       "source": {
         "docs": "packages/core/src/search/README.md",
