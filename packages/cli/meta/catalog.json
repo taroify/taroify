@@ -7,7 +7,7 @@
     "guides": 1,
     "hooks": 1,
     "apiTables": 214,
-    "demos": 498,
+    "demos": 501,
     "componentTokens": 805,
     "globalTokens": 60
   },
@@ -8759,16 +8759,16 @@
             "rows": [
               {
                 "name": "defaultValue",
-                "description": "当前进度百分比，在双滑块模式下为数组格式",
+                "description": "非受控模式的初始值",
                 "type": "number | [number, number]",
-                "defaultValue": "0",
+                "defaultValue": "min 或 [min, max]",
                 "extra": []
               },
               {
                 "name": "value",
-                "description": "当前进度百分比，在双滑块模式下为数组格式",
+                "description": "受控模式的当前值",
                 "type": "number | [number, number]",
-                "defaultValue": "0",
+                "defaultValue": "-",
                 "extra": []
               },
               {
@@ -8802,6 +8802,13 @@
               {
                 "name": "range",
                 "description": "是否开启双滑块模式",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "reverse",
+                "description": "是否反转轨道的值方向",
                 "type": "boolean",
                 "defaultValue": "false",
                 "extra": []
@@ -8845,6 +8852,13 @@
                 "type": "number | string",
                 "defaultValue": "24px",
                 "extra": []
+              },
+              {
+                "name": "children",
+                "description": "自定义滑块节点，支持渲染函数",
+                "type": "ReactNode | ((props: SliderThumbRenderProps) => ReactNode)",
+                "defaultValue": "-",
+                "extra": []
               }
             ]
           },
@@ -8859,8 +8873,22 @@
             "rows": [
               {
                 "name": "onChange",
-                "description": "进度变化且结束拖动后触发",
-                "type": "value: number",
+                "description": "拖动、点击轨道或键盘操作使数值变化时实时触发",
+                "type": "value: number | [number, number]",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onDragStart",
+                "description": "触摸滑块并开始移动时触发",
+                "type": "event: ITouchEvent",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onDragEnd",
+                "description": "结束或取消拖动时触发",
+                "type": "event: ITouchEvent",
                 "defaultValue": "",
                 "extra": []
               }
@@ -8895,42 +8923,60 @@
         },
         {
           "id": "demo5",
+          "title": "只读",
+          "language": "tsx",
+          "code": "<Slider readonly defaultValue={50} />"
+        },
+        {
+          "id": "demo6",
           "title": "指定步长",
           "language": "tsx",
           "code": "<Slider step={10} defaultValue={50} />"
         },
         {
-          "id": "demo6",
+          "id": "demo7",
           "title": "自定义样式",
           "language": "tsx",
           "code": "<Slider className=\"custom-color\" size={4} defaultValue={50} />"
         },
         {
-          "id": "demo7",
+          "id": "demo8",
           "title": "自定义样式",
           "language": "scss",
           "code": ".custom-color {\n  --slider-active-background-color: #ee0a24;\n}"
         },
         {
-          "id": "demo8",
-          "title": "自定义按钮",
+          "id": "demo9",
+          "title": "自定义按钮渲染函数",
           "language": "tsx",
-          "code": "function StyledThumbSlider() {\n  const [value, setValue] = useState(50)\n  return (\n    <Slider className=\"custom-color\" value={value} onChange={setValue}>\n      <Slider.Thumb>\n        <View className=\"custom-thumb\">{value}</View>\n      </Slider.Thumb>\n    </Slider>\n  )\n}"
+          "code": "function StyledThumbSlider() {\n  return (\n    <Slider className=\"custom-color\" defaultValue={50}>\n      <Slider.Thumb>\n        {({ value, dragging }) => (\n          <View className=\"custom-thumb\">{dragging ? `${value}%` : value}</View>\n        )}\n      </Slider.Thumb>\n    </Slider>\n  )\n}"
         },
         {
-          "id": "demo9",
-          "title": "自定义按钮",
+          "id": "demo10",
+          "title": "自定义按钮渲染函数",
           "language": "scss",
           "code": ".custom-color {\n  --slider-active-background-color: #ee0a24;\n}\n\n.custom-thumb {\n  width: 26px * 2;\n  color: #fff;\n  font-size: 10px * 2;\n  line-height: 18px * 2;\n  text-align: center;\n  background-color: var(--slider-active-background-color);\n  border-radius: 100px * 2;\n}"
         },
         {
-          "id": "demo10",
+          "id": "demo11",
           "title": "垂直方向",
           "language": "tsx",
           "code": "<Slider orientation=\"vertical\" defaultValue={50} />\n<Slider\n  style={{ marginLeft: \"100px\" }}\n  range\n  orientation=\"vertical\"\n  defaultValue={[20, 60]}\n/>"
+        },
+        {
+          "id": "demo12",
+          "title": "反向",
+          "language": "tsx",
+          "code": "<Slider reverse defaultValue={50} />"
+        },
+        {
+          "id": "demo13",
+          "title": "H5 键盘操作",
+          "language": "tsx",
+          "code": "<Slider range defaultValue={[20, 60]}>\n  <Slider.Thumb ariaLabel=\"最低价格\" />\n  <Slider.Thumb ariaLabel=\"最高价格\" />\n</Slider>"
         }
       ],
-      "demoPage": "import { Slider } from \"@taroify/core\"\nimport { View } from \"@tarojs/components\"\nimport { useState } from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction StyledThumbSlider() {\n  const [value, setValue] = useState(50)\n  return (\n    <Slider className=\"custom-color\" value={value} onChange={setValue}>\n      <Slider.Thumb>\n        <View className=\"custom-thumb\">{value}</View>\n      </Slider.Thumb>\n    </Slider>\n  )\n}\n\nexport default function SliderDemo() {\n  return (\n    <Page title=\"Slider 滑块\" className=\"slider-demo\">\n      <Block title=\"基础用法\">\n        <Slider defaultValue={50} />\n      </Block>\n      <Block title=\"双滑块\">\n        <Slider range defaultValue={[20, 60]} />\n      </Block>\n      <Block title=\"指定选择范围\">\n        <Slider min={-50} max={50} defaultValue={0} />\n      </Block>\n      <Block title=\"禁用\">\n        <Slider disabled defaultValue={50} />\n      </Block>\n      <Block title=\"指定步长\">\n        <Slider step={10} defaultValue={50} />\n      </Block>\n      <Block title=\"自定义样式\">\n        <Slider className=\"custom-color\" size={4} defaultValue={50} />\n      </Block>\n      <Block title=\"自定义按钮\">\n        <StyledThumbSlider />\n      </Block>\n      <Block title=\"自定义样式\" className=\"vertical-slider\">\n        <Slider orientation=\"vertical\" defaultValue={50} />\n        <Slider\n          style={{ marginLeft: \"100px\" }}\n          range\n          orientation=\"vertical\"\n          defaultValue={[20, 60]}\n        />\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Slider } from \"@taroify/core\"\nimport { View } from \"@tarojs/components\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nfunction StyledThumbSlider() {\n  return (\n    <Slider className=\"custom-color\" defaultValue={50}>\n      <Slider.Thumb>\n        {({ value, dragging }) => (\n          <View className=\"custom-thumb\">{dragging ? `${value}%` : value}</View>\n        )}\n      </Slider.Thumb>\n    </Slider>\n  )\n}\n\nexport default function SliderDemo() {\n  return (\n    <Page title=\"Slider 滑块\" className=\"slider-demo\">\n      <Block title=\"基础用法\">\n        <Slider defaultValue={50} />\n      </Block>\n      <Block title=\"双滑块\">\n        <Slider range defaultValue={[20, 60]} />\n      </Block>\n      <Block title=\"指定选择范围\">\n        <Slider min={-50} max={50} defaultValue={0} />\n      </Block>\n      <Block title=\"禁用\">\n        <Slider disabled defaultValue={50} />\n      </Block>\n      <Block title=\"只读\">\n        <Slider readonly defaultValue={50} />\n      </Block>\n      <Block title=\"反向\">\n        <Slider reverse defaultValue={50} />\n      </Block>\n      <Block title=\"指定步长\">\n        <Slider step={10} defaultValue={50} />\n      </Block>\n      <Block title=\"自定义样式\">\n        <Slider className=\"custom-color\" size={4} defaultValue={50} />\n      </Block>\n      <Block title=\"自定义按钮\">\n        <StyledThumbSlider />\n      </Block>\n      <Block title=\"垂直方向\" className=\"vertical-slider\">\n        <Slider orientation=\"vertical\" defaultValue={50} />\n        <Slider\n          style={{ marginLeft: \"100px\" }}\n          range\n          orientation=\"vertical\"\n          defaultValue={[20, 60]}\n        />\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--slider-border-radius",
@@ -9000,7 +9046,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Slider 滑块\n\n### 介绍\n\n滑动输入条，用于在给定的范围内选择一个值。\n\n### 引入\n\n```tsx\nimport { Slider } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n```tsx\n<Slider defaultValue={50} />\n```\n\n### 双滑块\n\n添加 `range` 属性就可以开启双滑块模式，确保 `value` 的值是一个数组。\n\n```tsx\n<Slider range defaultValue={[20, 60]} />\n```\n\n### 指定选择范围\n\n```tsx\n<Slider min={-50} max={50} defaultValue={0} />\n```\n\n### 禁用\n\n```tsx\n<Slider disabled defaultValue={50} />\n```\n\n### 指定步长\n\n```tsx\n<Slider step={10} defaultValue={50} />\n```\n\n### 自定义样式\n\n```tsx\n<Slider className=\"custom-color\" size={4} defaultValue={50} />\n```\n\n```scss\n.custom-color {\n  --slider-active-background-color: #ee0a24;\n}\n```\n\n### 自定义按钮\n\n```tsx\nfunction StyledThumbSlider() {\n  const [value, setValue] = useState(50)\n  return (\n    <Slider className=\"custom-color\" value={value} onChange={setValue}>\n      <Slider.Thumb>\n        <View className=\"custom-thumb\">{value}</View>\n      </Slider.Thumb>\n    </Slider>\n  )\n}\n```\n\n```scss\n.custom-color {\n  --slider-active-background-color: #ee0a24;\n}\n\n.custom-thumb {\n  width: 26px * 2;\n  color: #fff;\n  font-size: 10px * 2;\n  line-height: 18px * 2;\n  text-align: center;\n  background-color: var(--slider-active-background-color);\n  border-radius: 100px * 2;\n}\n```\n\n### 垂直方向\n\n设置 `orientation=\"vertical\"` 属性后，滑块会垂直展示，且高度为 100% 父元素高度。\n\n```tsx\n<Slider orientation=\"vertical\" defaultValue={50} />\n<Slider\n  style={{ marginLeft: \"100px\" }}\n  range\n  orientation=\"vertical\"\n  defaultValue={[20, 60]}\n/>\n```\n\n## API\n\n### Slider Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| defaultValue | 当前进度百分比，在双滑块模式下为数组格式 | _number \\| [number, number]_ | `0` |\n| value | 当前进度百分比，在双滑块模式下为数组格式 | _number \\| [number, number]_ | `0` |\n| max | 最大值 | _number \\| string_ | `100` |\n| min | 最小值 | _number \\| string_ | `0` |\n| step | 步长 | _number \\| string_ | `1` |\n| size | 进度条高度，默认单位为 `px` | _number \\| string_ | `2px` |\n| range | 是否开启双滑块模式 | _boolean_ | `false` |\n| disabled | 是否禁用滑块 | _boolean_ | `false` |\n| readonly | 是否为只读状态，只读状态下无法修改滑块的值 | _boolean_ | `false` |\n| orientation | 滑块按钮展示方向，`vertical` 为垂直展示 | _SliderOrientation_ | `horizontal` |\n\n### Slider.Thumb Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| size | 滑块按钮大小，默认单位为 `px` |_number \\| string_ | `24px` |\n\n### Slider Events\n\n| 事件名      | 说明           | 回调参数            |\n|----------|--------------|-----------------|\n| onChange | 进度变化且结束拖动后触发 | _value: number_ |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                 | 默认值                                        | 描述  |\n|------------------------------------|--------------------------------------------|-----|\n| --slider-border-radius             | _var(--border-radius-max)_                 | -   |\n| --slider-active-background-color   | _var(--blue)_                              | -   |\n| --slider-inactive-background-color | _var(--gray-3)_                            | -   |\n| --slider-disabled-opacity          | _var(--disabled-opacity)_                  | -   |\n| --slider-track-height              | _2px * $hd_                                | -   |\n| --slider-track-transition-duration | _var(--animation-duration-fast)_           | -   |\n| --slider-thumb-width               | _24px * $hd_                               | -   |\n| --slider-thumb-height              | _24px * $hd_                               | -   |\n| --slider-thumb-border-radius       | _50%_                                      | -   |\n| --slider-thumb-background-color    | _var(--white)_                             | -   |\n| --slider-thumb-box-shadow          | _0 1px * $hd 2px * $hd rgba(0, 0, 0, 0.5)_ | -   |\n"
+        "zhCN": "# Slider 滑块\n\n### 介绍\n\n滑动输入条，用于在给定的范围内选择一个值。\n\n### 引入\n\n```tsx\nimport { Slider } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n```tsx\n<Slider defaultValue={50} />\n```\n\n### 双滑块\n\n添加 `range` 开启双滑块模式，使用 `[最小值, 最大值]` 传入和接收区间。未提供初始值时，默认选中整个区间。拖动越过另一个滑块后，回调仍按数值从小到大返回。\n\n```tsx\n<Slider range defaultValue={[20, 60]} />\n```\n\n### 指定选择范围\n\n```tsx\n<Slider min={-50} max={50} defaultValue={0} />\n```\n\n### 禁用\n\n```tsx\n<Slider disabled defaultValue={50} />\n```\n\n### 只读 <Tag tag=\"v1.1.0\" />\n\n`readonly` 保留滑块的正常外观，并禁止通过用户交互修改值。\n\n```tsx\n<Slider readonly defaultValue={50} />\n```\n\n### 指定步长\n\n```tsx\n<Slider step={10} defaultValue={50} />\n```\n\n### 自定义样式\n\n```tsx\n<Slider className=\"custom-color\" size={4} defaultValue={50} />\n```\n\n```scss\n.custom-color {\n  --slider-active-background-color: #ee0a24;\n}\n```\n\n### 自定义按钮渲染函数 <Tag tag=\"v1.1.0\" />\n\n```tsx\nfunction StyledThumbSlider() {\n  return (\n    <Slider className=\"custom-color\" defaultValue={50}>\n      <Slider.Thumb>\n        {({ value, dragging }) => (\n          <View className=\"custom-thumb\">{dragging ? `${value}%` : value}</View>\n        )}\n      </Slider.Thumb>\n    </Slider>\n  )\n}\n```\n\n```scss\n.custom-color {\n  --slider-active-background-color: #ee0a24;\n}\n\n.custom-thumb {\n  width: 26px * 2;\n  color: #fff;\n  font-size: 10px * 2;\n  line-height: 18px * 2;\n  text-align: center;\n  background-color: var(--slider-active-background-color);\n  border-radius: 100px * 2;\n}\n```\n\n### 垂直方向\n\n设置 `orientation=\"vertical\"` 属性后，滑块会垂直展示，且高度为 100% 父元素高度。\n\n```tsx\n<Slider orientation=\"vertical\" defaultValue={50} />\n<Slider\n  style={{ marginLeft: \"100px\" }}\n  range\n  orientation=\"vertical\"\n  defaultValue={[20, 60]}\n/>\n```\n\n### 反向 <Tag tag=\"v1.1.0\" />\n\n`reverse` 使值在水平方向上从右向左增大，在垂直方向上从下向上增大。\n\n```tsx\n<Slider reverse defaultValue={50} />\n```\n\n### H5 键盘操作 <Tag tag=\"v1.1.0\" />\n\n使用 Tab 将焦点移到滑块。向右键和向上键增大数值，向左键和向下键减小数值，Home 和 End 分别跳到当前滑块可选的最小值和最大值。双滑块可分别聚焦，键盘操作时每个滑块以另一个滑块的当前值为界。\n\n可用 `ariaLabel` 或 `aria-labelledby` 为各滑块提供业务名称，并用 `aria-valuetext` 描述当前数值的单位。\n\n```tsx\n<Slider range defaultValue={[20, 60]}>\n  <Slider.Thumb ariaLabel=\"最低价格\" />\n  <Slider.Thumb ariaLabel=\"最高价格\" />\n</Slider>\n```\n\n## API\n\n### Slider Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| defaultValue | 非受控模式的初始值 | _number \\| [number, number]_ | `min` 或 `[min, max]` <Tag tag=\"v1.1.0\" /> |\n| value | 受控模式的当前值 | _number \\| [number, number]_ | - |\n| max | 最大值 | _number \\| string_ | `100` |\n| min | 最小值 | _number \\| string_ | `0` |\n| step | 步长 | _number \\| string_ | `1` |\n| size | 进度条高度，默认单位为 `px` | _number \\| string_ | `2px` |\n| range | 是否开启双滑块模式 | _boolean_ | `false` |\n| reverse <Tag tag=\"v1.1.0\" /> | 是否反转轨道的值方向 | _boolean_ | `false` |\n| disabled | 是否禁用滑块 | _boolean_ | `false` |\n| readonly <Tag tag=\"v1.1.0\" /> | 是否为只读状态，只读状态下无法修改滑块的值 | _boolean_ | `false` |\n| orientation | 滑块按钮展示方向，`vertical` 为垂直展示 | _SliderOrientation_ | `horizontal` |\n\n### Slider.Thumb Props\n\n| 参数 | 说明 | 类型 | 默认值 |\n| --- | --- | --- | --- |\n| size | 滑块按钮大小，默认单位为 `px` |_number \\| string_ | `24px` |\n| children | 自定义滑块节点，支持渲染函数 <Tag tag=\"v1.1.0\" /> | _ReactNode \\| ((props: SliderThumbRenderProps) => ReactNode)_ | - |\n\n渲染函数收到当前滑块的 `value`、`dragging` 和 `index`。双滑块的 `index` 为 `0` 或 `1`，分别对应区间最小值和最大值。单滑块的 `index` 为 `undefined`。\n\n### Slider Events\n\n| 事件名      | 说明           | 回调参数            |\n|----------|--------------|-----------------|\n| onChange | 拖动、点击轨道或键盘操作使数值变化时实时触发 | _value: number \\| [number, number]_ |\n| onDragStart <Tag tag=\"v1.1.0\" /> | 触摸滑块并开始移动时触发 | _event: ITouchEvent_ |\n| onDragEnd <Tag tag=\"v1.1.0\" /> | 结束或取消拖动时触发 | _event: ITouchEvent_ |\n\n### 类型定义 <Tag tag=\"v1.1.0\" />\n\n```tsx\nimport type { SliderProps, SliderThumbProps, SliderThumbRenderProps } from \"@taroify/core\"\n```\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                                 | 默认值                                        | 描述  |\n|------------------------------------|--------------------------------------------|-----|\n| --slider-border-radius             | _var(--border-radius-max)_                 | -   |\n| --slider-active-background-color   | _var(--blue)_                              | -   |\n| --slider-inactive-background-color | _var(--gray-3)_                            | -   |\n| --slider-disabled-opacity          | _var(--disabled-opacity)_                  | -   |\n| --slider-track-height              | _2px * $hd_                                | -   |\n| --slider-track-transition-duration | _var(--animation-duration-fast)_           | -   |\n| --slider-thumb-width               | _24px * $hd_                               | -   |\n| --slider-thumb-height              | _24px * $hd_                               | -   |\n| --slider-thumb-border-radius       | _50%_                                      | -   |\n| --slider-thumb-background-color    | _var(--white)_                             | -   |\n| --slider-thumb-box-shadow          | _0 1px * $hd 2px * $hd rgba(0, 0, 0, 0.5)_ | -   |\n"
       },
       "source": {
         "docs": "packages/core/src/slider/README.md",

@@ -2,6 +2,7 @@ import SliderComponent, { type SliderProps } from "./slider"
 import SliderThumb from "./slider-thumb"
 
 export type { SliderProps } from "./slider"
+export type { SliderThumbProps, SliderThumbRenderProps } from "./slider-thumb"
 
 export type { SliderThemeVars } from "./slider.shared"
 

@@ -20,10 +20,10 @@
   }
 
   &__track {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
-    background-color:$slider-active-background-color;
+    background-color: $slider-active-background-color;
     border-radius: inherit;
     transition: all $slider-track-transition-duration;
   }
@@ -50,6 +50,27 @@
       left: 0;
       cursor: grab;
       transform: translate3d(-50%, -50%, 0);
+    }
+
+    &-wrapper:focus-visible,
+    &-wrapper-left:focus-visible,
+    &-wrapper-right:focus-visible {
+      outline: 2px solid $slider-active-background-color;
+      outline-offset: 2px;
+    }
+  }
+
+  &--dragging &__track {
+    transition: none;
+  }
+
+  &--readonly {
+    cursor: default;
+
+    .#{$component-prefix}slider__thumb-wrapper,
+    .#{$component-prefix}slider__thumb-wrapper-left,
+    .#{$component-prefix}slider__thumb-wrapper-right {
+      cursor: default;
     }
   }
 
