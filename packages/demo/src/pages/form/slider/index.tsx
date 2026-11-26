@@ -1,16 +1,16 @@
 import { Slider } from "@taroify/core"
 import { View } from "@tarojs/components"
-import { useState } from "react"
 import Block from "../../../components/block"
 import Page from "../../../components/page"
 import "./index.scss"
 
 function StyledThumbSlider() {
-  const [value, setValue] = useState(50)
   return (
-    <Slider className="custom-color" value={value} onChange={setValue}>
+    <Slider className="custom-color" defaultValue={50}>
       <Slider.Thumb>
-        <View className="custom-thumb">{value}</View>
+        {({ value, dragging }) => (
+          <View className="custom-thumb">{dragging ? `${value}%` : value}</View>
+        )}
       </Slider.Thumb>
     </Slider>
   )
@@ -31,6 +31,12 @@ export default function SliderDemo() {
       <Block title="禁用">
         <Slider disabled defaultValue={50} />
       </Block>
+      <Block title="只读">
+        <Slider readonly defaultValue={50} />
+      </Block>
+      <Block title="反向">
+        <Slider reverse defaultValue={50} />
+      </Block>
       <Block title="指定步长">
         <Slider step={10} defaultValue={50} />
       </Block>
@@ -40,7 +46,7 @@ export default function SliderDemo() {
       <Block title="自定义按钮">
         <StyledThumbSlider />
       </Block>
-      <Block title="自定义样式" className="vertical-slider">
+      <Block title="垂直方向" className="vertical-slider">
         <Slider orientation="vertical" defaultValue={50} />
         <Slider
           style={{ marginLeft: "100px" }}
