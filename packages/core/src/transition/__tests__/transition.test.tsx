@@ -1,9 +1,20 @@
 import { render } from "@testing-library/react"
-import * as React from "react"
+import { createElement, type ReactNode, type RefObject } from "react"
 import Transition from "../transition"
 
+// Each case selects a platform and React version for the current render.
 let mockInWechat = false
-let mockCSSTransitionProps: any
+let mockReactVersion = "18.2.0"
+// Capture the ref so the test can compare it to the rendered child.
+let mockNodeRef: RefObject<HTMLElement> | undefined
+
+jest.mock("react", () => ({
+  __esModule: true,
+  ...jest.requireActual<typeof import("react")>("react"),
+  get version() {
+    return mockReactVersion
+  },
+}))
 
 jest.mock("../../utils/base", () => ({
   get inWechat() {
@@ -12,38 +23,32 @@ jest.mock("../../utils/base", () => ({
 }))
 
 jest.mock("react-transition-group", () => ({
-  CSSTransition: (props: any) => {
-    mockCSSTransitionProps = props
-    return props.children
+  CSSTransition: ({
+    children,
+    nodeRef,
+  }: {
+    children: ReactNode
+    nodeRef?: RefObject<HTMLElement>
+  }) => {
+    mockNodeRef = nodeRef
+    return children
   },
 }))
 
 describe("<Transition />", () => {
-  it("does not pass nodeRef in WeChat Mini Program", () => {
-    mockInWechat = true
+  it.each([
+    { inWechat: true, version: "18.2.0", usesNodeRef: false },
+    { inWechat: true, version: "19.0.0", usesNodeRef: true },
+    { inWechat: false, version: "18.2.0", usesNodeRef: true },
+  ])(
+    "sets nodeRef=$usesNodeRef on React $version (WeChat: $inWechat)",
+    ({ inWechat, version, usesNodeRef }) => {
+      mockInWechat = inWechat
+      mockReactVersion = version
 
-    render(
-      <Transition>
-        <div />
-      </Transition>,
-    )
+      const { container } = render(createElement(Transition, null, createElement("div")))
 
-    expect(mockCSSTransitionProps.nodeRef).toBeUndefined()
-  })
-
-  it("keeps passing nodeRef outside WeChat Mini Program", () => {
-    mockInWechat = false
-
-    render(
-      <Transition>
-        <div />
-      </Transition>,
-    )
-
-    expect(mockCSSTransitionProps.nodeRef).toEqual(
-      expect.objectContaining({
-        current: expect.any(HTMLElement),
-      }),
-    )
-  })
+      expect(mockNodeRef?.current).toBe(usesNodeRef ? container.firstChild : undefined)
+    },
+  )
 })

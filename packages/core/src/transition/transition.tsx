@@ -82,6 +82,8 @@ export default function Transition(props: TransitionProps) {
   const [enter, setEnter] = useState(false)
   const [exited, setExited] = useState(false)
   const ref = useRef(null)
+  // React 18's prop-type check expects nodeRef to contain a DOM Element.
+  const useNodeRef = !inWechat || Number.parseInt(React.version, 10) >= 19
 
   const setRef = (value) => {
     ref.current = value
@@ -90,7 +92,7 @@ export default function Transition(props: TransitionProps) {
   return (
     <CSSTransition
       in={inProp}
-      nodeRef={inWechat ? undefined : ref}
+      nodeRef={useNodeRef ? ref : undefined}
       mountOnEnter={mountOnEnter}
       unmountOnExit={unmountOnExit}
       timeout={timeout}
