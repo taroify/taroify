@@ -12,10 +12,18 @@
     background-color: $signature-content-background;
     border: $signature-content-border;
     border-radius: $signature-border-radius;
+  }
 
-    canvas {
-      width: 100%;
-      height: 100%;
-    }
+  &__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__toolbar {
+    display: flex;
+    gap: $padding-xs;
+    justify-content: flex-end;
+    margin-top: $padding-xs;
   }
 }

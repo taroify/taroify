@@ -1,72 +1,92 @@
-import { useEffect, useState, useMemo, type RefObject } from "react"
-import { getEnv, nextTick, createSelectorQuery, getWindowInfo } from "@tarojs/taro"
-import { getRect } from "../utils/dom/rect"
+import { createSelectorQuery, getEnv, getWindowInfo, nextTick } from "@tarojs/taro"
+import { type RefObject, useEffect, useState } from "react"
+import { getRect, type Rect } from "../utils/dom/rect"
 import useMemoizedFn from "./use-memoized-fn"
 
-type UseCanvasOptions = {
-  onLoaded?: (canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => void
+type CanvasSize = Pick<Rect, "width" | "height">
+
+interface UseCanvasOptions {
+  onLoaded?(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D, size: CanvasSize): void
 }
 
-function useCanvas(canvasId: string, canvasRef: RefObject<any>, options: UseCanvasOptions = {}) {
-  const [loaded, setLoaded] = useState(false)
-  const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
-  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null)
-  const ratio = useMemo(() => getWindowInfo().pixelRatio || 1, [])
-  const { onLoaded: onLoadedProp } = options
-  const onLoaded = useMemoizedFn((a: HTMLCanvasElement, b: CanvasRenderingContext2D) =>
-    onLoadedProp?.(a, b),
+export function sizeCanvas(
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  size: CanvasSize,
+) {
+  const ratio = getWindowInfo().pixelRatio || 1
+  canvas.width = Math.floor(size.width * ratio)
+  canvas.height = Math.floor(size.height * ratio)
+  ctx.scale(ratio, ratio)
+}
+
+async function findCanvas(canvasId: string, canvasRef: RefObject<any>) {
+  if (getEnv() === "WEB") {
+    return canvasRef.current?.firstElementChild as HTMLCanvasElement | undefined
+  }
+
+  await new Promise<void>((resolve) => nextTick(resolve))
+  return new Promise<HTMLCanvasElement | undefined>((resolve) =>
+    createSelectorQuery()
+      .select(`#${canvasId}`)
+      .fields({ node: true })
+      .exec(([result]) => resolve(result?.node)),
+  )
+}
+
+interface CanvasState {
+  canvas: HTMLCanvasElement | null
+  ctx: CanvasRenderingContext2D | null
+  failed: boolean
+}
+
+const initialState: CanvasState = { canvas: null, ctx: null, failed: false }
+
+function useCanvas(canvasId: string, canvasRef: RefObject<any>, options?: UseCanvasOptions) {
+  const [{ canvas, ctx, failed }, setState] = useState(initialState)
+  const onLoaded = useMemoizedFn(
+    (node: HTMLCanvasElement, context: CanvasRenderingContext2D, size: CanvasSize) =>
+      options?.onLoaded?.(node, context, size),
   )
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const env = getEnv()
+    let cancelled = false
     let retry = 0
-    const setData = async (_canvas: HTMLCanvasElement | null) => {
-      if (_canvas) {
-        const canvasRectRef = await getRect(canvasRef)
-        _canvas.width = Math.floor((canvasRectRef.width || _canvas.width) * ratio)
-        _canvas.height = Math.floor((canvasRectRef.height || _canvas.height) * ratio)
-      }
-      const _ctx = _canvas?.getContext("2d")
-      if (_ctx) {
-        _ctx.scale(ratio, ratio)
-        setCanvas(_canvas)
-        setCtx(_ctx)
-        setLoaded(true)
-        onLoaded(_canvas!, _ctx)
-      } else {
-        setTimeout(
-          () => {
-            if (retry++ < 5) {
-              init()
-              console.log("[Taroify] canvas: init again")
-            } else {
-              console.error("[Taroify] canvas: init fail")
-            }
-          },
-          100 * 2 ** retry,
-        )
-      }
-    }
+    let timer: ReturnType<typeof setTimeout>
+    setState(initialState)
 
-    const init = () => {
-      if (env === "WEB") {
-        setData(((canvasRef.current?.children as unknown as HTMLCanvasElement[]) || [])[0])
+    async function init() {
+      try {
+        const node = await findCanvas(canvasId, canvasRef)
+        const context = node?.getContext?.("2d")
+        if (node && context) {
+          const rect = await getRect(canvasRef)
+          if (cancelled) return
+          const size = { width: rect.width || node.width, height: rect.height || node.height }
+          sizeCanvas(node, context, size)
+          setState({ canvas: node, ctx: context, failed: false })
+          onLoaded(node, context, size)
+          return
+        }
+      } catch {
+        // A platform can throw while the native canvas is still being attached.
+      }
+      if (cancelled) return
+      if (retry < 5) {
+        timer = setTimeout(init, 100 * 2 ** retry++)
       } else {
-        nextTick(() => {
-          createSelectorQuery()
-            .select(`#${canvasId}`)
-            .fields({ node: true })
-            .exec((res) => {
-              setData(res[0]?.node)
-            })
-        })
+        setState({ ...initialState, failed: true })
       }
     }
 
     init()
-  }, [canvasId, canvasRef])
-  return [canvas, ctx, loaded] as const
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [canvasId, canvasRef, onLoaded])
+
+  return [canvas, ctx, canvas !== null, failed] as const
 }
 
 export default useCanvas
