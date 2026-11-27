@@ -6,8 +6,8 @@
     "components": 72,
     "guides": 1,
     "hooks": 1,
-    "apiTables": 214,
-    "demos": 501,
+    "apiTables": 215,
+    "demos": 502,
     "componentTokens": 805,
     "globalTokens": 60
   },
@@ -9113,9 +9113,51 @@
               },
               {
                 "name": "canvasId",
-                "description": "canvas id",
+                "description": "画布节点 ID",
                 "type": "string",
-                "defaultValue": "taroify-canvas",
+                "defaultValue": "自动生成",
+                "extra": []
+              },
+              {
+                "name": "historySize",
+                "description": "最多可撤销的笔数，超过上限的笔迹仍保留。设为 0 可关闭撤销",
+                "type": "number",
+                "defaultValue": "20",
+                "extra": []
+              },
+              {
+                "name": "showToolbar",
+                "description": "显示画布下方的操作栏",
+                "type": "boolean",
+                "defaultValue": "false",
+                "extra": []
+              },
+              {
+                "name": "clearButtonText",
+                "description": "清空按钮文案",
+                "type": "string",
+                "defaultValue": "清空",
+                "extra": []
+              },
+              {
+                "name": "undoButtonText",
+                "description": "撤销按钮文案",
+                "type": "string",
+                "defaultValue": "撤销",
+                "extra": []
+              },
+              {
+                "name": "confirmButtonText",
+                "description": "确认按钮文案",
+                "type": "string",
+                "defaultValue": "确认",
+                "extra": []
+              },
+              {
+                "name": "tips",
+                "description": "画布初始化重试失败后显示的内容",
+                "type": "ReactNode",
+                "defaultValue": "当前环境不支持签名",
                 "extra": []
               }
             ]
@@ -9145,8 +9187,68 @@
               },
               {
                 "name": "onSigning",
-                "description": "签名过程中触发",
+                "description": "绘制笔迹时触发",
+                "type": "event: CanvasTouchEvent",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onSubmit",
+                "description": "点击确认或调用 submit() 时触发",
+                "type": "result: SignatureResult",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "onClear",
+                "description": "点击清空或调用 clear() 时触发",
                 "type": "-",
+                "defaultValue": "",
+                "extra": []
+              }
+            ]
+          },
+          {
+            "name": "Signature 实例方法",
+            "kind": "instance",
+            "headers": [
+              "方法",
+              "说明",
+              "返回值"
+            ],
+            "rows": [
+              {
+                "name": "getImage",
+                "description": "同步读取当前签名",
+                "type": "SignatureResult",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "submit",
+                "description": "画布就绪后，读取当前签名并触发 onSubmit",
+                "type": "void",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "clear",
+                "description": "清空所有笔迹与撤销记录，恢复画布背景",
+                "type": "void",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "undo",
+                "description": "撤销最近一笔，到达历史上限后再次调用会保留现有笔迹",
+                "type": "void",
+                "defaultValue": "",
+                "extra": []
+              },
+              {
+                "name": "resize",
+                "description": "重新测量并重绘，容器宽高为零时保留原画布",
+                "type": "Promise<void>",
                 "defaultValue": "",
                 "extra": []
               }
@@ -9159,28 +9261,34 @@
           "id": "demo1",
           "title": "基础用法",
           "language": "tsx",
-          "code": "import { Signature, SignatureInstance, Flex, Button } from \"@taroify/core\"\n\nfunction BasicSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return (\n    <>\n      <Signature ref={ref} />\n      <Flex justify=\"end\">\n        <Button\n          size=\"small\"\n          onClick={() => {\n            ref.current?.clear()\n          }}\n          style={{ marginRight: \"1rem\" }}\n        >\n          取消\n        </Button>\n        <Button\n          size=\"small\"\n          color=\"primary\"\n          onClick={() => {\n            console.log(ref.current?.getImage())\n          }}\n        >\n          确认\n        </Button>\n      </Flex>\n    </>\n  )\n}"
+          "code": "import { Signature } from \"@taroify/core\"\nimport { Image } from \"@tarojs/components\"\nimport { useState } from \"react\"\n\nfunction BasicSignature() {\n  const [image, setImage] = useState(\"\")\n  return (\n    <>\n      <Signature\n        showToolbar\n        onSubmit={(result) => setImage(result.image)}\n        onClear={() => setImage(\"\")}\n      />\n      {image && <Image src={image} mode=\"widthFix\" />}\n    </>\n  )\n}"
         },
         {
           "id": "demo2",
+          "title": "自定义操作及重绘",
+          "language": "tsx",
+          "code": "import { Button, Signature, type SignatureInstance } from \"@taroify/core\"\nimport { useRef } from \"react\"\n\nfunction CustomSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return (\n    <>\n      <Signature ref={ref} historySize={5} />\n      <Button onClick={() => ref.current?.undo()}>撤销上一笔</Button>\n    </>\n  )\n}"
+        },
+        {
+          "id": "demo3",
           "title": "自定义颜色",
           "language": "tsx",
           "code": "<Signature penColor=\"#ff0000\" />"
         },
         {
-          "id": "demo3",
+          "id": "demo4",
           "title": "自定义线宽",
           "language": "tsx",
           "code": "<Signature lineWidth={6} />"
         },
         {
-          "id": "demo4",
+          "id": "demo5",
           "title": "自定义背景颜色",
           "language": "tsx",
           "code": "<Signature backgroundColor=\"#eee\" />"
         }
       ],
-      "demoPage": "import { useRef } from \"react\"\nimport { Signature, SignatureInstance, Flex, Button } from \"@taroify/core\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\n\nfunction BasicSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return <>\n    <Signature ref={ref} />\n    <Flex justify=\"end\">\n      <Button size=\"small\" onClick={() => { ref.current?.clear() }} style={{ marginRight: \"1rem\" }}>取消</Button>\n      <Button size=\"small\" color=\"primary\" onClick={() => { console.log(ref.current?.getImage()) }}>确认</Button>\n    </Flex>\n  </>\n}\n\nfunction PenColorSignature() {\n  return <Signature penColor=\"#ff0000\" />\n}\n\nfunction LineWidthSignature() {\n  return <Signature lineWidth={6} />\n}\n\nfunction BackgroundColorSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return <>\n    <Signature ref={ref} backgroundColor=\"#eee\"  />\n    <Flex justify=\"end\">\n      <Button size=\"small\" onClick={() => { ref.current?.clear() }} style={{ marginRight: \"1rem\" }}>取消</Button>\n      <Button size=\"small\" color=\"primary\" onClick={() => { console.log(ref.current?.getImage()) }}>确认</Button>\n    </Flex>\n  </>\n}\n\n\nexport default function SignatureDemo() {\n  return (\n    <Page title=\"Signature 签名\" className=\"signature-demo\">\n      <Block title=\"基础用法\">\n        <BasicSignature />\n      </Block>\n      <Block title=\"自定义颜色\">\n        <PenColorSignature />\n      </Block>\n      <Block title=\"自定义线宽\">\n        <LineWidthSignature />\n      </Block>\n      <Block title=\"自定义背景颜色\">\n        <BackgroundColorSignature />\n      </Block>\n    </Page>\n  )\n}\n",
+      "demoPage": "import { Signature } from \"@taroify/core\"\nimport { Image } from \"@tarojs/components\"\nimport * as React from \"react\"\nimport Block from \"../../../components/block\"\nimport Page from \"../../../components/page\"\nimport \"./index.scss\"\n\nexport default function SignatureDemo() {\n  const [image, setImage] = React.useState(\"\")\n  return (\n    <Page title=\"Signature 签名\" className=\"signature-demo\">\n      <Block title=\"基础用法\">\n        <Signature\n          showToolbar\n          onSubmit={(result) => setImage(result.image)}\n          onClear={() => setImage(\"\")}\n        />\n        {image && <Image src={image} mode=\"widthFix\" />}\n      </Block>\n      <Block title=\"自定义颜色\">\n        <Signature penColor=\"#ff0000\" />\n      </Block>\n      <Block title=\"自定义线宽\">\n        <Signature lineWidth={6} />\n      </Block>\n      <Block title=\"自定义背景颜色\">\n        <Signature backgroundColor=\"#eee\" showToolbar />\n      </Block>\n    </Page>\n  )\n}\n",
       "tokens": [
         {
           "cssVar": "--signature-padding",
@@ -9214,7 +9322,7 @@
         }
       ],
       "docs": {
-        "zhCN": "# Signature 签名\n\n### 介绍\n\n用于签名场景的组件，基于 Canvas 实现。\n\n请升级 `taroify` 到 >= `v0.1.1-alpha.2` 版本来使用该组件。\n\n### 引入\n\n```ts\nimport { Signature } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\nCanvas 实例提供两个方法\n\n- `getImage`\n  - `image`：签名对应的图片，为 base64 字符串格式。若签名为空，则返回空字符串。\n  - `canvas`：Canvas 元素。\n- `clear`：清空\n\n```tsx\nimport { Signature, SignatureInstance, Flex, Button } from \"@taroify/core\"\n\nfunction BasicSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return (\n    <>\n      <Signature ref={ref} />\n      <Flex justify=\"end\">\n        <Button\n          size=\"small\"\n          onClick={() => {\n            ref.current?.clear()\n          }}\n          style={{ marginRight: \"1rem\" }}\n        >\n          取消\n        </Button>\n        <Button\n          size=\"small\"\n          color=\"primary\"\n          onClick={() => {\n            console.log(ref.current?.getImage())\n          }}\n        >\n          确认\n        </Button>\n      </Flex>\n    </>\n  )\n}\n```\n\n### 自定义颜色\n\n通过 `penColor` 来自定义笔触颜色。\n\n```tsx\n<Signature penColor=\"#ff0000\" />\n```\n\n### 自定义线宽\n\n通过 `lineWidth` 来自定义线条宽度。\n\n```tsx\n<Signature lineWidth={6} />\n```\n\n### 自定义背景颜色\n\n通过 `backgroundColor` 来自定义背景颜色。\n\n```tsx\n<Signature backgroundColor=\"#eee\" />\n```\n\n## API\n\n### Signature Props\n\n| 参数            | 说明               | 类型     | 默认值           |\n| --------------- | ------------------ | -------- | ---------------- |\n| type            | 导出图片类型       | _string_ | `png`            |\n| penColor        | 笔触颜色，默认黑色 | _string_ | `#000`           |\n| lineWidth       | 线条宽度           | _number_ | `3`              |\n| backgroundColor | 背景颜色           | _string_ | -                |\n| canvasId        | canvas id          | _string_ | `taroify-canvas` |\n\n### Signature Events\n\n| 事件名    | 说明           | 回调参数 |\n| --------- | -------------- | -------- |\n| onStart   | 开始签名时触发 | -        |\n| onEnd     | 结束签名时触发 | -        |\n| onSigning | 签名过程中触发 | -        |\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                           | 默认值                      | 描述         |\n| ------------------------------ | --------------------------- | ------------ |\n| --signature-padding            | _var(--van-padding-xs)_     | -            |\n| --signature-content-height     | _200px_                     | 画布高度     |\n| --signature-content-background | _var(--background-color-2)_ | 画布背景色   |\n| --signature-content-border     | _1px dotted #dadada_        | 画布边框样式 |\n| --signature-border-radius      | _8px_                       | 画布圆角     |\n"
+        "zhCN": "# Signature 签名\n\n### 介绍\n\n用于签名场景的组件，基于 Canvas 实现。\n\n请升级 `taroify` 到 >= `v0.1.1-alpha.2` 版本来使用该组件。\n\n### 引入\n\n```ts\nimport { Signature } from \"@taroify/core\"\n```\n\n## 代码演示\n\n### 基础用法\n\n默认只显示画布。传入 `showToolbar` 显示清空、撤销和确认按钮。点击确认后，`onSubmit` 收到签名图片和 Canvas 节点。\n\n```tsx\nimport { Signature } from \"@taroify/core\"\nimport { Image } from \"@tarojs/components\"\nimport { useState } from \"react\"\n\nfunction BasicSignature() {\n  const [image, setImage] = useState(\"\")\n  return (\n    <>\n      <Signature\n        showToolbar\n        onSubmit={(result) => setImage(result.image)}\n        onClear={() => setImage(\"\")}\n      />\n      {image && <Image src={image} mode=\"widthFix\" />}\n    </>\n  )\n}\n```\n\n### 自定义操作及重绘\n\n通过实例方法连接自己的按钮。弹层打开、横竖屏切换或容器尺寸变化后，可调用 `await ref.current?.resize()` 重新测量画布。笔迹以左上角为原点等比缩放，重绘后仍可撤销。\n\n```tsx\nimport { Button, Signature, type SignatureInstance } from \"@taroify/core\"\nimport { useRef } from \"react\"\n\nfunction CustomSignature() {\n  const ref = useRef<SignatureInstance>(null)\n  return (\n    <>\n      <Signature ref={ref} historySize={5} />\n      <Button onClick={() => ref.current?.undo()}>撤销上一笔</Button>\n    </>\n  )\n}\n```\n\n### 自定义颜色\n\n通过 `penColor` 来自定义笔触颜色。\n\n```tsx\n<Signature penColor=\"#ff0000\" />\n```\n\n### 自定义线宽\n\n通过 `lineWidth` 来自定义线条宽度。\n\n```tsx\n<Signature lineWidth={6} />\n```\n\n### 自定义背景颜色\n\n通过 `backgroundColor` 来自定义背景颜色。\n\n```tsx\n<Signature backgroundColor=\"#eee\" />\n```\n\n## API\n\n### Signature Props\n\n| 参数            | 说明               | 类型     | 默认值           |\n| --------------- | ------------------ | -------- | ---------------- |\n| type            | 导出图片类型       | _string_ | `png`            |\n| penColor        | 笔触颜色，默认黑色 | _string_ | `#000`           |\n| lineWidth       | 线条宽度           | _number_ | `3`              |\n| backgroundColor | 背景颜色           | _string_ | -                |\n| canvasId        | 画布节点 ID | _string_ | 自动生成 |\n| historySize     | 最多可撤销的笔数，超过上限的笔迹仍保留。设为 0 可关闭撤销 | _number_ | `20` |\n| showToolbar     | 显示画布下方的操作栏 | _boolean_ | `false` |\n| clearButtonText | 清空按钮文案 | _string_ | `清空` |\n| undoButtonText  | 撤销按钮文案 | _string_ | `撤销` |\n| confirmButtonText | 确认按钮文案 | _string_ | `确认` |\n| tips | 画布初始化重试失败后显示的内容 | _ReactNode_ | `当前环境不支持签名` |\n\n### Signature Events\n\n| 事件名    | 说明           | 回调参数 |\n| --------- | -------------- | -------- |\n| onStart   | 开始签名时触发 | -        |\n| onEnd     | 结束签名时触发 | -        |\n| onSigning | 绘制笔迹时触发 | _event: CanvasTouchEvent_ |\n| onSubmit | 点击确认或调用 `submit()` 时触发 | _result: SignatureResult_ |\n| onClear | 点击清空或调用 `clear()` 时触发 | - |\n\n### Signature 实例方法\n\n| 方法 | 说明 | 返回值 |\n| --- | --- | --- |\n| getImage | 同步读取当前签名 | _SignatureResult_ |\n| submit | 画布就绪后，读取当前签名并触发 `onSubmit` | _void_ |\n| clear | 清空所有笔迹与撤销记录，恢复画布背景 | _void_ |\n| undo | 撤销最近一笔，到达历史上限后再次调用会保留现有笔迹 | _void_ |\n| resize | 重新测量并重绘，容器宽高为零时保留原画布 | _Promise&lt;void&gt;_ |\n\n`SignatureResult` 包含 `image` 和 `canvas`。有笔迹时，`image` 为图片的 base64 数据 URL，签名为空时为 `\"\"`。画布尚未就绪时，`getImage()` 返回 `{ image: \"\", canvas: null }`。\n\n## 主题定制\n\n### 样式变量\n\n组件提供了下列 CSS 变量，可用于自定义样式，使用方法请参考 [ConfigProvider](/components/config-provider/) 组件。\n\n| 名称                           | 默认值                      | 描述         |\n| ------------------------------ | --------------------------- | ------------ |\n| --signature-padding            | _var(--van-padding-xs)_     | -            |\n| --signature-content-height     | _200px_                     | 画布高度     |\n| --signature-content-background | _var(--background-color-2)_ | 画布背景色   |\n| --signature-content-border     | _1px dotted #dadada_        | 画布边框样式 |\n| --signature-border-radius      | _8px_                       | 画布圆角     |\n"
       },
       "source": {
         "docs": "packages/core/src/signature/README.md",

@@ -1,5 +1,10 @@
 import Signature from "./signature"
 
-export type { SignatureThemeVars, SignatureInstance } from "./signature.shared"
+export type {
+  SignatureThemeVars,
+  SignatureProps,
+  SignatureInstance,
+  SignatureResult,
+} from "./signature.shared"
 
 export default Signature
